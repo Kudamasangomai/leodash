@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Truck;
+use App\Models\Repair;
+use Carbon\Carbon;
+use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
+class FetchLocationService
+{
+
+    // protected string $apiKey;
+    // protected string $baseurl = 'https://sa.globalwebtrack.com/ssl/xml/xrs_last_positions.xml';
+
+    // public function __construct()
+    // {
+    //     $this->apiKey = env('GLOBAL_TRACK_KEY', '');
+    // }
+
+    /**
+     * Fetch XML positions and update repairs' location and reported_at for matching trucks.
+     *
+     * Returns array with counts: ['processed' => int, 'updated' => int]
+     */
+    // public function fetchAndUpdate(): array
+    // {
+    //     $processed = 0;
+    //     $updated = 0;
+
+    //     if (empty($this->apiKey)) {
+    //         Log::error('FetchLocationService: GLOBAL_TRACK_KEY is not set');
+    //     }
+
+    //     try {
+    //        $query = http_build_query([
+    //             'key' => $this->apiKey,
+    //             'name' => 1,
+    //             'top' => 5000,
+    //         ]);
+
+    //         $url = $this->baseurl . '?' . $query;
+
+    //         $response = Http::timeout(60)->get($url);
+
+    //         // $response = Http::timeout(60)->get($this->url);
+
+    //         if ($response->failed()) {
+    //             Log::error('FetchLocationService: failed to fetch XML', ['status' => $response->status()]);
+    //         }
+
+    //         $body = $response->body();
+    //         if (empty($body)) {
+    //             Log::warning('FetchLocationService: empty response body');
+    //         }
+
+    //         libxml_use_internal_errors(true);
+    //         $xml = simplexml_load_string($body);
+    //         if ($xml === false) {
+    //             Log::error('FetchLocationService: invalid XML', ['errors' => libxml_get_errors()]);
+    //             libxml_clear_errors();
+    //             return compact('processed', 'updated');
+    //         }
+
+    //         $truckMap = Truck::pluck('id', 'unitname')->toArray();
+
+    //         // Loop rows - only get unit_name, position_text and datetime
+    //         foreach ($xml->row ?? [] as $row) {
+    //             $processed++;
+
+    //             $unitName = trim((string) ($row->unit_name ?? ''));
+    //             $positionText = trim((string) ($row->position_text ?? ''));
+    //             $datetime = trim((string) ($row->datetime ?? ''));
+
+    //             // require both unit name and position text per your request
+    //             if ($unitName === '' || $positionText === '') {
+    //                 continue;
+    //             }
+
+    //              if (!isset($truckMap[$unitName])) {
+    //                 continue;
+    //             }
+
+    //              $truckId = $truckMap[$unitName];
+
+    //             $affected = Repair::where('truck_id', $truckId)
+    //                 ->where('status', '!=', 'completed')
+    //                 ->update([
+    //                     'location'        => $positionText,
+    //                     'last_reported_at' => $datetime,
+    //                     'last_check_at'   => now(),
+    //                 ]);
+
+    //             $updated += $affected;
+
+    //             // // Match truck by your truck's unit/name column
+    //             // $truck = Truck::where('unitname', $unitName)->first();
+    //             // if (! $truck) {
+    //             //     continue;
+    //             // }
+
+    //             // Update relevant repair records for this truck (skip completed)
+    //             // $repairs = Repair::where('truck_id', $truck->id)
+    //             //     ->where('status', '!=', 'completed')
+    //             //     ->get();
+
+    //             // if ($repairs->isEmpty()) {
+    //             //     continue;
+    //             // }
+
+    //             // foreach ($repairs as $repair) {
+    //             //     $data = [
+    //             //         'location' => $positionText,
+    //             //         'last_reported_at' => $datetime,
+    //             //         'last_check_at'=> Carbon::now()
+    //             //     ];
+
+
+    //             //     $repair->update($data);
+    //             //     $updated++;
+    //             // }
+    //         }
+    //     } catch (\Throwable $e) {
+    //         Log::error('FetchLocationService exception: '.$e->getMessage(), [
+    //             'trace' => $e->getTraceAsString(),
+    //         ]);
+    //     }
+
+    //     return compact('processed', 'updated');
+    // }
+}
