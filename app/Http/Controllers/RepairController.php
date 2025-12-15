@@ -10,8 +10,7 @@ use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
 use App\Services\FetchLocationService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
+
 
 class RepairController extends Controller
 {
@@ -28,7 +27,6 @@ class RepairController extends Controller
             'repairs' => $repairs,
             'trucks' => $trucks,
             'faults' => $faults,
-            'warning' => session('warning'), 
         ]);
     }
 
@@ -37,17 +35,15 @@ class RepairController extends Controller
 
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
-        $validated['reported_at'] = now();
-        $haspendingrepair = Repair::hasPendingReapir($validated['truck_id'], $validated['fault_id']);
-
+        $haspendingrepair = Repair::hasPendingReapir( $validated['fault_id'],$validated['truck_id']);
 
         if ($haspendingrepair) {
-            return redirect()->route('repairs.index')->with('warning', $haspendingrepair);
+            return back()->with('warning', $haspendingrepair);
+         
         }
 
         Repair::create($validated);
-
-        return redirect()->back();
+        return back()->with('success', 'Record created Successful');
     }
 
     public function show(Repair $repair)
@@ -60,33 +56,22 @@ class RepairController extends Controller
     public function update(UpdateRepairRequest $request, Repair $repair)
     {
 
-
         $validated = $request->validated();
-
         $repair->update($validated);
-
         return redirect()->back();
+
     }
     public function destroy(Repair $repair)
     {
         $repair->delete();
-
-        return redirect()->bak();
+        return redirect()->back();
     }
 
-    /**
-     * Trigger a fetch of current truck positions and update repair locations.
-     * Usable via a button that POSTs to the route bound to this action.
-     */
+
     public function fetchLocations(FetchLocationService $service): RedirectResponse
     {
-
-
         $result = $service->fetchAndUpdate();
-
         $message = "Processed {$result['processed']} positions; updated {$result['updated']} repair(s).";
-        Log::info('RepairController::fetchLocations', $result);
-
         return redirect()->back()->with('success', $message);
     }
 }

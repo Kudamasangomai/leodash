@@ -6,6 +6,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
+import Message from "@/Components/Message.vue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -306,8 +307,8 @@ onMounted(() => {
                                 <span>Calibration</span>
                             </Link>
                         </li>
-                      
-                        <li>
+
+                        <li class="hidden">
                             <a
                                 href="javascript:void(0)"
                                 class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
@@ -375,9 +376,11 @@ onMounted(() => {
                                 <span>Early Start</span>
                             </Link>
                         </li>
-                        <li>
-                            <a
-                                href="javascript:void(0)"
+                        <li class="hidden">
+                            <Link
+                            prefetch="mount"
+                            cache-for="5m"
+                                href="/violations"
                                 class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
@@ -396,7 +399,7 @@ onMounted(() => {
                                     />
                                 </svg>
                                 <span>Violations</span>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -564,7 +567,7 @@ onMounted(() => {
 
             <div class="mx-2 md:ml-40">
                 <main class="py-20">
-                    <Message />
+                    <Message /> 
                     <slot />
                 </main>
             </div>

@@ -56,8 +56,7 @@ class DistanceCalibrationController extends Controller
                 ]);
             }
         }
-
-        return Redirect::route('dstcalibrations.index');
+        return redirect()->route('dstcalibrations.index')->with('success', 'Records created successfully');
     }
     /**
      * Display the specified resource.

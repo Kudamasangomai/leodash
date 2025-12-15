@@ -39,8 +39,6 @@ class Repair extends Model
         ) {
             return 'The Truck with that fault  already have a pending repair.';
         }
-
-
         return null;
     }
 }

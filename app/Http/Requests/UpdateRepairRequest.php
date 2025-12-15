@@ -15,10 +15,9 @@ class UpdateRepairRequest extends FormRequest
     {
         return [
             'truck_id'   => 'required|exists:trucks,id',
-            'fault'      => 'required|string',
-            'status'     => 'required|in:pending,in_progress,completed,on_hold',
+            'fault_id'      => 'required',
             'location'   => 'nullable|string|max:255',
-        
+
         ];
     }
 }

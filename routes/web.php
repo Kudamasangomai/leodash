@@ -7,6 +7,7 @@ use App\Http\Controllers\MovingReportImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\RepairController;
+use App\Http\Controllers\ViolationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('trucks', TruckController::class);
 
     Route::resource('faults', FaultController::class);
-    
+
     Route::resource('dstcalibrations',DistanceCalibrationController::class);
 
     Route::get('/early-start', [MovingReportController::class , 'index'])->name('early-start');
@@ -42,7 +43,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/repairs/fetchlocations', [RepairController::class, 'fetchLocations'])->name('fetchlocations');
     Route::resource('repairs', RepairController::class);
-   
+
+    Route::post('/violations/upload', [ViolationController::class, 'upload'])->name('violations.upload');
+    Route::get('/violations', [ViolationController::class , 'index'])->name('violations');
+
 });
 
 require __DIR__.'/auth.php';

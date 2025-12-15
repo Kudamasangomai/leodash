@@ -12,12 +12,16 @@ import Deleteicon from "@/Components/Deleteicon.vue";
 import Editicon from "@/Components/Editicon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
+import { usePage } from "@inertiajs/vue3";
+import Message from "@/Components/Message.vue";
+
+
+const pageProps = usePage().props;
 
 const props = defineProps({
     repairs: Array,
     trucks: Array,
     faults: Array,
-    warning: Object,
 });
 
 const showFormModal = ref(false);
@@ -59,10 +63,16 @@ const submitForm = () => {
     if (editingRepair.value) {
         form.put(`/repairs/${editingRepair.value.id}`, {
             onSuccess: () => closeFormModal(),
+            onError: (errors) => {
+                console.log('Errors:', errors);
+            }
         });
     } else {
         form.post("/repairs", {
             onSuccess: () => closeFormModal(),
+            onError: (errors) => {
+                console.log('Errors:', errors);
+            }
         });
     }
 };
@@ -135,36 +145,6 @@ function triggerFetchLocations() {
                 </div>
             </PageHeader>
 
-      
-            <span v-if="form.recentlySuccessful" class="flex items-center">
-                <div class="flex justify-center w-full">
-                    <div
-                        class="w-1/2 px-4 py-3 mb-4 text-teal-900 bg-teal-100 border-t-4 border-teal-500 rounded-b shadow-md"
-                        role="alert"
-                    >
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg
-                                    class="w-6 h-6 mr-4 text-teal-500 fill-current"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
-                                    />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold">
-                                    Record created Successful
-                                </p>
-                                <!-- <p class="text-sm">Make sure you know how these changes affect you.</p> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </span>
-
             <span
                 v-if="deleteForm.recentlySuccessful"
                 class="flex items-center"
@@ -188,7 +168,7 @@ function triggerFetchLocations() {
                             </div>
                             <div>
                                 <p class="font-bold">
-                                    Record Deleted Successful
+                                    Record Deleted Successfully
                                 </p>
                                 <!-- <p class="text-sm">Make sure you know how these changes affect you.</p> -->
                             </div>
@@ -197,40 +177,9 @@ function triggerFetchLocations() {
                 </div>
             </span>
 
-              <span
-                v-if="warning"
-                class="flex items-center"
-            >
-                <div class="flex justify-center w-full">
-                    <div
-                        class="w-1/2 px-4 py-3 mb-4 text-yellow-900 bg-yellow-100 border-t-4 border-yellow-500 rounded-b shadow-md"
-                        role="alert"
-                    >
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg
-                                    class="w-6 h-6 mr-4 text-yellow-500 fill-current"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
-                                    />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold">
-                             {{ warning}}
-                                </p>
-                                <!-- <p class="text-sm">Make sure you know how these changes affect you.</p> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </span>
 
-        
-            
+
+
 
             <div class="px-2 overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
@@ -303,13 +252,13 @@ function triggerFetchLocations() {
                             >
                                 <button
                                     @click="openEditModal(repair)"
-                                    class="text-blue-600 hover:text-blue-900"
+
                                 >
                                     <Editicon />
                                 </button>
                                 <button
                                     @click="confirmDelete(repair)"
-                                    class="text-red-600 hover:text-red-900"
+
                                 >
                                     <Deleteicon />
                                 </button>
@@ -389,22 +338,7 @@ function triggerFetchLocations() {
                         </div>
                     </div>
 
-                    <!-- <div>
-                        <label class="block text-sm font-medium text-gray-700"
-                            >Fault</label
-                        >
-                        <textarea
-                            v-model="form.fault"
-                            required
-                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
-                        ></textarea>
-                        <div
-                            v-if="form.errors.fault"
-                            class="mt-1 text-sm text-red-600"
-                        >
-                            {{ form.errors.fault }}
-                        </div>
-                    </div> -->
+
 
                     <div v-if="editingRepair">
                         <label class="block text-sm font-medium text-gray-700"
