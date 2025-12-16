@@ -199,8 +199,9 @@ onMounted(() => {
                 </div>
             </nav>
 
-            <nav
-                class="bg-[#3585DA] fixed h-screen shadow-lg top-18 left-0 min-w-[250px] py-6 px-4 z-40 overflow-y-auto"
+            <nav id="sidebar-menu"
+                x-description="Mobile menu"
+                class="bg-[#3585DA] fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
             >
                 <a href="javascript:void(0)"
                     ><img
@@ -210,13 +211,15 @@ onMounted(() => {
                     />
                 </a>
 
-                <ul class="mt-16">
+                <ul            id="side-menu"
+                        x-data="{selected:1}"
+                        class="flex flex-col float-#ffffff w-full px-1 mt-16  sidebar-small-menu ">
                     <li>
                         <a
                             href="/dashboard"
-                            class="text-white font-normal transition-all text-[18px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                            class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                         >
-                            <!-- <svg
+                            <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
                                 class="w-[18px] h-[18px] mr-3"
@@ -230,7 +233,8 @@ onMounted(() => {
                                     d="M16.32 23.253H7.68a.816.816 0 0 1-.81-.81v-5.4c0-2.83 2.3-5.13 5.13-5.13s5.13 2.3 5.13 5.13v5.4c0 .443-.367.81-.81.81zm-7.83-1.62h7.02v-4.59c0-1.933-1.577-3.51-3.51-3.51s-3.51 1.577-3.51 3.51z"
                                     data-original="#000000"
                                 ></path>
-                            </svg> -->
+                            </svg>
+
                             <span>Dashboard</span>
                         </a>
                     </li>
@@ -240,8 +244,30 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[18px] px-4 flex-1">
-                            Information
+
+                        <h6 class="text-white group- text-[16px] px-4 flex">
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    class="w-[18px] h-[18px] mr-3"
+                                    viewBox="0 0 64 64"
+                                >
+                                    <path
+                                        d="M32.667 5.11A25.116 25.116 0 0 0 32 5.045V2.88a2.08 2.08 0 1 0-4.16 0v2.165C15.027 6.102 4.96 16.837 4.96 29.92v18.5L3.47 52.8h-.59a2.08 2.08 0 1 0 0 4.16h54.08a2.08 2.08 0 1 0 0-4.16h-.59l-1.49-4.38v-9.568a18.585 18.585 0 0 1-4.16 1.209v8.703a2.08 2.08 0 0 0 .11.67l1.145 3.366H7.865l1.144-3.366a2.08 2.08 0 0 0 .111-.67V29.92c0-11.488 9.312-20.8 20.8-20.8.142 0 .285.001.426.004a18.7 18.7 0 0 1 2.32-4.014zM23.68 61.12a2.08 2.08 0 0 1 2.08-2.08h8.32a2.08 2.08 0 1 1 0 4.16h-8.32a2.08 2.08 0 0 1-2.08-2.08z"
+                                        data-original="#000000"
+                                    />
+                                    <g fill-rule="evenodd" clip-rule="evenodd">
+                                        <path
+                                            d="M46.56 12.909c-4.221 0-7.627 3.434-7.627 7.651s3.406 7.651 7.627 7.651c4.22 0 7.626-3.434 7.626-7.651s-3.406-7.651-7.626-7.651zm-3.467 7.651c0-1.936 1.56-3.491 3.467-3.491 1.906 0 3.466 1.555 3.466 3.491s-1.56 3.491-3.466 3.491c-1.906 0-3.467-1.555-3.467-3.491z"
+                                            data-original="#000000"
+                                        />
+                                        <path
+                                            d="M44.342 2.88a2.08 2.08 0 0 0-2.005 1.526l-.75 2.711a14.256 14.256 0 0 0-4.138 2.402l-2.709-.703a2.08 2.08 0 0 0-2.325.978l-2.218 3.86a2.08 2.08 0 0 0 .316 2.49l1.964 2.01a14.478 14.478 0 0 0 0 4.813l-1.965 2.009a2.08 2.08 0 0 0-.315 2.49l2.218 3.86a2.08 2.08 0 0 0 2.325.978l2.709-.702a14.256 14.256 0 0 0 4.139 2.402l.749 2.71a2.08 2.08 0 0 0 2.005 1.526h4.436a2.08 2.08 0 0 0 2.005-1.526l.75-2.71a14.257 14.257 0 0 0 4.14-2.402l2.706.702a2.08 2.08 0 0 0 2.326-.978l2.218-3.86a2.08 2.08 0 0 0-.316-2.49l-1.964-2.01a14.477 14.477 0 0 0 0-4.813l1.965-2.009a2.08 2.08 0 0 0 .315-2.49l-2.219-3.86a2.08 2.08 0 0 0-2.324-.978l-2.709.702a14.256 14.256 0 0 0-4.138-2.402l-.749-2.71a2.08 2.08 0 0 0-2.007-1.526zm.956 6.421.626-2.261h1.271l.627 2.261a2.08 2.08 0 0 0 1.446 1.45 10.098 10.098 0 0 1 4.38 2.544 2.08 2.08 0 0 0 1.983.532l2.257-.585.644 1.12-1.64 1.678a2.08 2.08 0 0 0-.528 1.971c.208.812.32 1.666.32 2.549s-.112 1.737-.32 2.549a2.08 2.08 0 0 0 .527 1.97l1.641 1.68-.644 1.12-2.257-.586a2.08 2.08 0 0 0-1.982.532 10.096 10.096 0 0 1-4.38 2.544 2.08 2.08 0 0 0-1.447 1.45l-.628 2.261h-1.272l-.624-2.261a2.08 2.08 0 0 0-1.447-1.45 10.097 10.097 0 0 1-4.38-2.544 2.08 2.08 0 0 0-1.983-.532l-2.257.585-.645-1.12 1.642-1.678a2.08 2.08 0 0 0 .527-1.971c-.208-.812-.32-1.666-.32-2.549s.112-1.737.32-2.548a2.08 2.08 0 0 0-.527-1.972l-1.642-1.678.645-1.12 2.257.585a2.08 2.08 0 0 0 1.982-.532 10.097 10.097 0 0 1 4.38-2.544 2.08 2.08 0 0 0 1.447-1.45z"
+                                            data-original="#000000"
+                                        />
+                                    </g>
+                                </svg>
+                      <span> Services</span>
                         </h6>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +289,7 @@ onMounted(() => {
                            prefetch="mount"
                             cache-for="5m"
                                 href="/repairs"
-                                class="text-white font-normal transition-all  text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all  text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -283,7 +309,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/dstcalibrations"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -311,7 +337,7 @@ onMounted(() => {
                         <li class="hidden">
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -338,7 +364,71 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[18px] px-4 flex-1">
+                        <h6 class="text-white group- text-[16px] px-4 flex">
+                             <svg
+                                        fill="currentColor"
+                                        class="w-[18px] h-[20px] mr-3"
+                                        viewBox="0 0 64 64"
+                                    >
+                                        <g
+                                            id="SVGRepo_bgCarrier"
+                                            stroke-width="0"
+                                        ></g>
+                                        <g
+                                            id="SVGRepo_tracerCarrier"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        ></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <g>
+                                                <polygon
+                                                    fill="currentColor"
+                                                    stroke="currentColor"
+                                                    stroke-width="4"
+                                                    stroke-miterlimit="10"
+                                                    points="23,1 55,1 55,63 9,63 9,15 "
+                                                ></polygon>
+                                                <polyline
+                                                   fill="#0000FF"
+                                                    stroke="#fff"
+                                                    stroke-width="4"
+                                                    stroke-miterlimit="10"
+                                                    points="9,15 23,15 23,1 "
+                                                ></polyline>
+
+                                                <line
+                                                   fill="#0000FF"
+                                                    stroke="#fff"
+                                                    stroke-width="4"
+                                                    stroke-miterlimit="10"
+                                                    x1="18"
+                                                    y1="24"
+                                                    x2="46"
+                                                    y2="24"
+                                                ></line>
+                                                <line
+                                                   fill="currentColor"
+                                                    stroke="#f0efef"
+                                                    stroke-width="4"
+                                                    stroke-miterlimit="10"
+                                                    x1="18"
+                                                    y1="34"
+                                                    x2="46"
+                                                    y2="34"
+                                                ></line>
+                                                <line
+                                          fill="#0000FF"
+                                                    stroke="#f0efef"
+                                                    stroke-width="4"
+                                                    stroke-miterlimit="10"
+                                                    x1="18"
+                                                    y1="44"
+                                                    x2="46"
+                                                    y2="44"
+                                                ></line>
+                                            </g>
+                                        </g>
+                                    </svg>
                             Reports
                         </h6>
                         <svg
@@ -360,7 +450,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/early-start"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -381,7 +471,7 @@ onMounted(() => {
                             prefetch="mount"
                             cache-for="5m"
                                 href="/violations"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -408,7 +498,28 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[18px] px-4 flex-1">
+                        <h6 class="text-white group- text-[16px] px-4 flex">
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    class="w-[18px] h-[18px] mr-3"
+                                    viewBox="0 0 64 64"
+                                >
+                                    <path
+                                        d="M32.667 5.11A25.116 25.116 0 0 0 32 5.045V2.88a2.08 2.08 0 1 0-4.16 0v2.165C15.027 6.102 4.96 16.837 4.96 29.92v18.5L3.47 52.8h-.59a2.08 2.08 0 1 0 0 4.16h54.08a2.08 2.08 0 1 0 0-4.16h-.59l-1.49-4.38v-9.568a18.585 18.585 0 0 1-4.16 1.209v8.703a2.08 2.08 0 0 0 .11.67l1.145 3.366H7.865l1.144-3.366a2.08 2.08 0 0 0 .111-.67V29.92c0-11.488 9.312-20.8 20.8-20.8.142 0 .285.001.426.004a18.7 18.7 0 0 1 2.32-4.014zM23.68 61.12a2.08 2.08 0 0 1 2.08-2.08h8.32a2.08 2.08 0 1 1 0 4.16h-8.32a2.08 2.08 0 0 1-2.08-2.08z"
+                                        data-original="#000000"
+                                    />
+                                    <g fill-rule="evenodd" clip-rule="evenodd">
+                                        <path
+                                            d="M46.56 12.909c-4.221 0-7.627 3.434-7.627 7.651s3.406 7.651 7.627 7.651c4.22 0 7.626-3.434 7.626-7.651s-3.406-7.651-7.626-7.651zm-3.467 7.651c0-1.936 1.56-3.491 3.467-3.491 1.906 0 3.466 1.555 3.466 3.491s-1.56 3.491-3.466 3.491c-1.906 0-3.467-1.555-3.467-3.491z"
+                                            data-original="#000000"
+                                        />
+                                        <path
+                                            d="M44.342 2.88a2.08 2.08 0 0 0-2.005 1.526l-.75 2.711a14.256 14.256 0 0 0-4.138 2.402l-2.709-.703a2.08 2.08 0 0 0-2.325.978l-2.218 3.86a2.08 2.08 0 0 0 .316 2.49l1.964 2.01a14.478 14.478 0 0 0 0 4.813l-1.965 2.009a2.08 2.08 0 0 0-.315 2.49l2.218 3.86a2.08 2.08 0 0 0 2.325.978l2.709-.702a14.256 14.256 0 0 0 4.139 2.402l.749 2.71a2.08 2.08 0 0 0 2.005 1.526h4.436a2.08 2.08 0 0 0 2.005-1.526l.75-2.71a14.257 14.257 0 0 0 4.14-2.402l2.706.702a2.08 2.08 0 0 0 2.326-.978l2.218-3.86a2.08 2.08 0 0 0-.316-2.49l-1.964-2.01a14.477 14.477 0 0 0 0-4.813l1.965-2.009a2.08 2.08 0 0 0 .315-2.49l-2.219-3.86a2.08 2.08 0 0 0-2.324-.978l-2.709.702a14.256 14.256 0 0 0-4.138-2.402l-.749-2.71a2.08 2.08 0 0 0-2.007-1.526zm.956 6.421.626-2.261h1.271l.627 2.261a2.08 2.08 0 0 0 1.446 1.45 10.098 10.098 0 0 1 4.38 2.544 2.08 2.08 0 0 0 1.983.532l2.257-.585.644 1.12-1.64 1.678a2.08 2.08 0 0 0-.528 1.971c.208.812.32 1.666.32 2.549s-.112 1.737-.32 2.549a2.08 2.08 0 0 0 .527 1.97l1.641 1.68-.644 1.12-2.257-.586a2.08 2.08 0 0 0-1.982.532 10.096 10.096 0 0 1-4.38 2.544 2.08 2.08 0 0 0-1.447 1.45l-.628 2.261h-1.272l-.624-2.261a2.08 2.08 0 0 0-1.447-1.45 10.097 10.097 0 0 1-4.38-2.544 2.08 2.08 0 0 0-1.983-.532l-2.257.585-.645-1.12 1.642-1.678a2.08 2.08 0 0 0 .527-1.971c-.208-.812-.32-1.666-.32-2.549s.112-1.737.32-2.548a2.08 2.08 0 0 0-.527-1.972l-1.642-1.678.645-1.12 2.257.585a2.08 2.08 0 0 0 1.982-.532 10.097 10.097 0 0 1 4.38-2.544 2.08 2.08 0 0 0 1.447-1.45z"
+                                            data-original="#000000"
+                                        />
+                                    </g>
+                                </svg>
                             Assets
                         </h6>
                         <svg
@@ -430,7 +541,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/trucks"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -451,7 +562,7 @@ onMounted(() => {
                             prefetch="mount"
                             cache-for="5m"
                                 href="/faults"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -474,7 +585,7 @@ onMounted(() => {
                           <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -503,7 +614,28 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[18px] px-4 flex-1">
+                        <h6 class="text-white group- text-[16px] px-4 flex">
+                             <svg
+                                        fill="currentColor"
+                                        viewBox="0 0 32 32"
+                                        class="w-[18px] h-[18px] mr-3"
+                                    >
+                                        <g
+                                            id="SVGRepo_bgCarrier"
+                                            stroke-width="0"
+                                        ></g>
+                                        <g
+                                            id="SVGRepo_tracerCarrier"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        ></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <title>truck</title>
+                                            <path
+                                                d="M26.969 13c-0.553 0-1 0-1 0h-1.979l-0.013 1.256c0.598 0.341 0.992 0.989 0.992 1.744l0.042 6.938h-18.98v-6.938c0-0.738 0.404-1.376 1-1.723v-1.277h-2c0 0-0.448 0-1 0-0.553 0-1-0.448-1-1v-1c0-0.553 0.447-1 1-1 0.552 0 1 0 1 0v2h2v-3c0-1.104 0.896-2 2-2h13c1.104 0 2 0.896 2 2l-0.031 3h1.969v-2c0 0 0.447 0 1 0 0.552 0 1 0.447 1 1v1c0 0.552-0.448 1-1 1zM12.031 22h7v-1h-7v1zM12.031 20h7v-1h-7v1zM12.031 18h7v-1h-7v1zM8.031 21c0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1h-1c-0.552 0-1 0.447-1 1zM22.031 10c0-0.553-0.447-1-1-1h-11c-0.553 0-1 0.447-1 1v5h13v-5zM22.031 20h-1c-0.553 0-1 0.447-1 1 0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1zM23.031 6h-15c-1.104 0-2 0.896-2 2v-5c0-0.553 0.447-1 1-1h17c0.552 0 1 0.447 1 1v5c0-1.104-0.895-2-2-2zM25.031 24.938c0 0.552-0.448 1-1 1h-17c-0.553 0-1-0.448-1-1 0-0.553 0-1 0-1h19c0 0 0 0.447 0 1zM11.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2zM23.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2z"
+                                            ></path>
+                                        </g>
+                                    </svg>
                             Actions
                         </h6>
                         <svg
@@ -524,7 +656,7 @@ onMounted(() => {
                         <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[18px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -543,7 +675,7 @@ onMounted(() => {
                         <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[18px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -565,9 +697,9 @@ onMounted(() => {
 
             <!-- Page Content -->
 
-            <div class="mx-2 md:ml-40">
+            <div class="mx-2 md:ml-36">
                 <main class="py-20">
-                    <Message /> 
+                    <Message />
                     <slot />
                 </main>
             </div>

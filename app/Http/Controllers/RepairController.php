@@ -17,7 +17,7 @@ class RepairController extends Controller
     public function index()
     {
         $repairs = Repair::with(['truck', 'user', 'fault'])
-            ->orderBy('last_reported_at', 'desc')
+            ->orderBy('last_reported_at', 'ASC')
             ->get();
 
         $trucks = Truck::all();
@@ -39,7 +39,7 @@ class RepairController extends Controller
 
         if ($haspendingrepair) {
             return back()->with('warning', $haspendingrepair);
-         
+
         }
 
         Repair::create($validated);

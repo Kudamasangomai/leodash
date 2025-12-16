@@ -24,6 +24,7 @@ const props = defineProps({
     faults: Array,
 });
 
+
 const showFormModal = ref(false);
 const confirmDeleteRepair = ref(false);
 const repairToDelete = ref(null);
@@ -202,6 +203,7 @@ function triggerFetchLocations() {
                             :key="repair.id"
                             class="odd:bg-gray-50"
                         >
+
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >

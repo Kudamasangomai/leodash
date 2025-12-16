@@ -76,13 +76,13 @@ watch(
     <span v-if="page.props.flash.warning && show" class="flex items-center">
         <div class="fixed z-50 flex justify-center w-full bottom-2 right-2">
             <div
-                class="w-1/2 px-4 py-3 mb-4 text-teal-900 bg-teal-100 border-t-4 border-teal-500 rounded-b shadow-md"
+                class="w-1/2 px-4 py-3 mb-4 text-yellow-900 bg-yellow-100 border-t-4 border-yellow-500 rounded-b shadow-md"
                 role="alert"
             >
                 <div class="flex">
                     <div class="py-1">
                         <svg
-                            class="w-6 h-6 mr-4 text-teal-500 fill-current"
+                            class="w-6 h-6 mr-4 text-yellow-500 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                         >

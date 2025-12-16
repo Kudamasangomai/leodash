@@ -1,11 +1,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, usePage, router } from "@inertiajs/vue3";
+import { Head, Link, usePage, useForm, router } from "@inertiajs/vue3";
 import MainContent from "@/Components/MainContent.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import PageTitle from "@/Components/PageTitle.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Editicon from "@/Components/Editicon.vue";
+import Modal from "@/Components/Modal.vue";
 import { ref } from "vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const props = defineProps({
     trucks: Array,
@@ -13,6 +16,8 @@ const props = defineProps({
 
 // add loading state and sync function
 const loading = ref(false);
+const showFormModal = ref(false);
+const editingTruck = ref(null);
 
 function syncTrucks() {
     if (loading.value) return;
@@ -25,6 +30,38 @@ function syncTrucks() {
         },
     });
 }
+
+
+const form = useForm({
+    unitname: "",
+ status: "",
+
+});
+
+const openEditModal = (truck) => {
+    editingTruck.value = truck;
+    form.unitname = truck.unitname;
+    form.status  =  truck.status
+    showFormModal.value = true;
+};
+
+const submitForm = () => {
+    if (editingTruck.value) {
+        form.put(`/trucks/${editingTruck.value.id}`, {
+            onSuccess: () => closeFormModal(),
+            onError: (errors) => {
+                console.log('Errors:', errors);
+            }
+        });
+    }
+};
+
+const closeFormModal = () => {
+    showFormModal.value = false;
+    form.reset();
+    editingTruck.value = null;
+};
+const num =  1;
 </script>
 
 <template>
@@ -49,7 +86,7 @@ function syncTrucks() {
                                 ></path>
                             </svg>
 
-                            
+
                             <i v-if="!loading" class="mr-2 bx bx-chat"></i>
                             <svg
                                 v-else
@@ -77,7 +114,7 @@ function syncTrucks() {
                     </div>
                 </div>
             </PageHeader>
-       
+
             <div class="p-6 overflow-x-auto">
                 <div
                     class="flex flex-wrap items-center justify-between gap-4 mb-4"
@@ -127,27 +164,27 @@ function syncTrucks() {
                         <thead class="bg-gray-300 whitespace-nowrap">
                             <tr class="border-b border-gray-200">
                                 <th
-                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-200"
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Id
                                 </th>
                                 <th
-                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-200"
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Asset Name
                                 </th>
-                                <th
-                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-200"
+                                <!-- <th
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Plate
-                                </th>
+                                </th> -->
                                 <th
-                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-200"
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Status
                                 </th>
                                 <th
-                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-200"
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Action
                                 </th>
@@ -163,49 +200,36 @@ function syncTrucks() {
                                 :key="truck.id"
                             >
                                 <td class="px-4 py-3 border-r border-gray-200">
-                                    {{ truck.id }}
+                                    <!-- {{ truck.id }} -->
+                                    {{ num++ }}
                                 </td>
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
                                     {{ truck.unitname }}
                                 </td>
-                                <td
+                                <!-- <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
                                     {{ truck.license_plate }}
-                                </td>
+                                </td> -->
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
-                                    {{ truck.status }}
+                                    {{ truck.status  === 1 ? 'Active' : 'Inactive' }}
                                 </td>
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
                                 >
-                                    <Link
-                                        :href="`/trucks/${truck.id}/edit`"
-                                        class="text-indigo-600 hover:text-indigo-900 me-3"
-                                        >Edit</Link
-                                    >
-                                    <form
-                                        :action="`/trucks/${truck.id}`"
-                                        method="post"
-                                        class="inline"
-                                    >
-                                        <input
-                                            type="hidden"
-                                            name="_method"
-                                            value="delete"
-                                        />
+                                 <button
+                                    @click="openEditModal(truck)"
 
-                                        <button
-                                            type="submit"
-                                            class="text-red-600 hover:text-red-900"
-                                        >
-                                            Delete
-                                        </button>
-                                    </form>
+                                >
+                                    <Editicon />
+                                </button>
+
+
+
                                 </td>
                             </tr>
                         </tbody>
@@ -279,6 +303,77 @@ function syncTrucks() {
                     </div>
                 </div>
             </div>
+
         </MainContent>
+<Modal :show="showFormModal" @close="closeFormModal">
+            <div class="p-6 bg-white">
+                <h2 class="mb-4 text-lg font-medium text-gray-900">
+                    {{ editingTruck ? "Edit Truck" : "Create New Repair" }}
+                </h2>
+
+                <form @submit.prevent="submitForm" class="space-y-4">
+
+
+
+
+
+                    <div v-if="editingTruck">
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Asset Name</label
+                        >
+                        <input
+                            v-model="form.unitname"
+                            type="text"
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        />
+                        <div
+                            v-if="form.errors.unitname"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.unitname }}
+                        </div>
+                    </div>
+
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Status</label
+                        >
+                        <select
+                            v-model="form.status"
+                            required
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        >
+                            <option value="">Select a Fault</option>
+                             <option :value="1">Active</option>
+                            <option :value="0">Inactive</option>
+                        </select>
+                        <div
+                            v-if="form.errors.status"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.status }}
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-6">
+                        <SecondaryButton @click="closeFormModal"
+                            >Cancel</SecondaryButton
+                        >
+                        <PrimaryButton
+                            type="submit"
+                            :disabled="form.processing"
+                        >
+                            {{ editingTruck ? "Update" : "Create" }}
+                            <span
+                                v-if="isFetching || form.processing"
+                                class="flex items-center gap-2"
+                            >
+                                <Spinner />
+                            </span>
+                        </PrimaryButton>
+                    </div>
+                </form>
+            </div>
+        </Modal>
+
     </AuthenticatedLayout>
 </template>

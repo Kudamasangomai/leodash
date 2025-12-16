@@ -69,9 +69,11 @@ class TruckController extends Controller
      */
     public function update(UpdateTruckRequest $request, Truck $truck): RedirectResponse
     {
+
+
         $truck->update($request->validated());
 
-        return Redirect::route('trucks.index');
+        return back()->with('success', 'Truck Details Updated Successfully');
     }
 
     /**
