@@ -23,6 +23,12 @@
 
 <body class="font-sans antialiased">
     @inertia
+
+     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </body>
 
 </html>

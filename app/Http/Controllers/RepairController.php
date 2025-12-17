@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
 use App\Services\FetchLocationService;
 use Illuminate\Http\RedirectResponse;
-
+use Illuminate\Http\Request;
 
 class RepairController extends Controller
 {
@@ -59,6 +59,26 @@ class RepairController extends Controller
         $validated = $request->validated();
         $repair->update($validated);
         return redirect()->back();
+
+    }
+
+
+    public function closerepair(Request $request ,$id)
+    {
+
+     $repair = Repair::where('id', $id)->firstOrFail();
+        $repairdata = $request->validate([
+            'comments' => 'required',
+        ]);
+
+            $repair->update(
+                $repairdata +[
+                'status' => 'completed',
+                ]
+            );
+              return back()->with('success', 'Record Completed Successfully');
+
+
 
     }
     public function destroy(Repair $repair)

@@ -61,7 +61,7 @@ const closeFormModal = () => {
     form.reset();
     editingTruck.value = null;
 };
-const num =  1;
+let  num =  1;
 </script>
 
 <template>
@@ -305,7 +305,7 @@ const num =  1;
             </div>
 
         </MainContent>
-<Modal :show="showFormModal" @close="closeFormModal">
+        <Modal :show="showFormModal" @close="closeFormModal">
             <div class="p-6 bg-white">
                 <h2 class="mb-4 text-lg font-medium text-gray-900">
                     {{ editingTruck ? "Edit Truck" : "Create New Repair" }}

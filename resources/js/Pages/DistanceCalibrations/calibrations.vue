@@ -160,7 +160,7 @@ const closeModal = () => {
 
                                             <Link
                                               prefetch="mount"
-                            cache-for="5m"
+                                                cache-for="2m"
                                                 :href="`/dstcalibrations/${cal.id}/edit`"
                                                 class="text-indigo-600 hover:text-indigo-900 me-3"
                                                 >Edit</Link

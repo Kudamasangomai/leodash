@@ -201,7 +201,7 @@ onMounted(() => {
 
             <nav id="sidebar-menu"
                 x-description="Mobile menu"
-                class="bg-[#3585DA] fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
+                class="bg-blue-600 fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
             >
                 <a href="javascript:void(0)"
                     ><img

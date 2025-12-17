@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/early-start', [MovingReportController::class , 'index'])->name('early-start');
 
     Route::get('/repairs/fetchlocations', [RepairController::class, 'fetchLocations'])->name('fetchlocations');
+    Route::put('/repairs/closerepair/{id}', [RepairController::class, 'closerepair'])->name('closerepair');
     Route::resource('repairs', RepairController::class);
 
     Route::post('/violations/upload', [ViolationController::class, 'upload'])->name('violations.upload');

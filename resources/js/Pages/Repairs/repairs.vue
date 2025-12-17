@@ -14,6 +14,7 @@ import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
 import { usePage } from "@inertiajs/vue3";
 import Message from "@/Components/Message.vue";
+import Closeicon from "@/Components/Closeicon.vue";
 
 
 const pageProps = usePage().props;
@@ -29,15 +30,17 @@ const showFormModal = ref(false);
 const confirmDeleteRepair = ref(false);
 const repairToDelete = ref(null);
 const editingRepair = ref(null);
+const closeRepair = ref(null);
+const deleteForm = useForm({});
+const showRepairModal = ref(false);
 
 const form = useForm({
     truck_id: "",
     fault_id: "",
     status: "pending",
     location: "",
+    comments: "",
 });
-
-const deleteForm = useForm({});
 
 const openCreateModal = () => {
     editingRepair.value = null;
@@ -54,31 +57,51 @@ const openEditModal = (repair) => {
     showFormModal.value = true;
 };
 
+const openRepairModal = (repair) => {
+    closeRepair.value = repair;
+    form.truck_id = repair.truck_id;
+    form.truck = repair.truck.unitname;
+    form.comments = repair.comments;
+    form.fault = repair.fault.name;
+    form.fault_id = repair.fault_id;
+   showRepairModal.value = true;
+
+};
+
+
+const submitForm = () => {
+    if (editingRepair.value) {
+        form.put(`/repairs/${editingRepair.value.id}`, {
+            onSuccess: () => closeFormModal(),
+        });
+    } else {
+        form.post("/repairs", {
+            onSuccess: () => closeFormModal(),
+        });
+    }
+};
+
+
+const CloseRepairForm = () => {
+
+        form.put(`/repairs/closerepair/${closeRepair.value.id}`, {
+            onSuccess: () => closeRepairModal(),
+        });
+
+};
+
+
 const closeFormModal = () => {
     showFormModal.value = false;
     form.reset();
     editingRepair.value = null;
 };
 
-const submitForm = () => {
-    if (editingRepair.value) {
-        form.put(`/repairs/${editingRepair.value.id}`, {
-            onSuccess: () => closeFormModal(),
-            onError: (errors) => {
-                console.log('Errors:', errors);
-            }
-        });
-    } else {
-        form.post("/repairs", {
-            onSuccess: () => closeFormModal(),
-            onError: (errors) => {
-                console.log('Errors:', errors);
-            }
-        });
-    }
+const closeRepairModal = () => {
+    showRepairModal.value = false;
+     form.reset();
+
 };
-
-
 
 const confirmDelete = (repair) => {
     repairToDelete.value = repair;
@@ -100,14 +123,13 @@ const getStatusBadgeColor = (status) => {
     const colors = {
         pending: "bg-yellow-300 text-yellow-800",
         in_progress: "bg-blue-100 text-blue-800",
-        completed: "bg-green-100 text-green-800",
+        completed: "bg-green-300 text-green-800",
         on_hold: "bg-red-100 text-red-800",
     };
     return colors[status] || "bg-gray-100 text-gray-800";
 };
 
 const isFetching = ref(false);
-
 function triggerFetchLocations() {
     if (isFetching.value) return;
     isFetching.value = true;
@@ -207,7 +229,7 @@ function triggerFetchLocations() {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-                                <!-- {{ getTruckName(repair.truck.unitane) }} -->
+
 
                                 {{ repair.truck.unitname }}
                             </td>
@@ -258,6 +280,12 @@ function triggerFetchLocations() {
                                 >
                                     <Editicon />
                                 </button>
+
+                                <button title="Close" class="mr-2"  @click="openRepairModal(repair)">
+
+         <Closeicon />
+
+                                                                        </button>
                                 <button
                                     @click="confirmDelete(repair)"
 
@@ -397,6 +425,60 @@ function triggerFetchLocations() {
                         Delete
                     </DangerButton>
                 </div>
+            </div>
+        </Modal>
+
+
+        <!-- Close repair modal-->
+           <Modal :show="showRepairModal" @close="closeRepairModal">
+            <div class="p-6 bg-white">
+                <h2 class="mb-4 text-lg font-medium text-gray-900">
+                   Close Repair
+                </h2>
+
+                    <h6> Truck -  {{ form.truck }}</h6>
+                        <h6> Fault -  {{ form.fault }} </h6>
+                <form @submit.prevent="CloseRepairForm" class="space-y-4">
+
+
+
+
+
+
+
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Job Done / comment</label
+                        >
+                        <input
+                        v-model="form.comments"
+                            type="text"
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        />
+                        <div
+                            v-if="form.errors.comments"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.comments }}
+                        </div>
+
+                    <div class="flex justify-end gap-3 mt-6">
+                        <SecondaryButton @click="closeRepairModal"
+                            >Cancel</SecondaryButton
+                        >
+                        <PrimaryButton
+                            type="submit"
+                            :disabled="form.processing"
+                        >
+                          Close
+                            <span
+                                v-if="form.processing"
+                                class="flex items-center gap-2"
+                            >
+                                <Spinner />
+                            </span>
+                        </PrimaryButton>
+                    </div>
+                </form>
             </div>
         </Modal>
     </AuthenticatedLayout>

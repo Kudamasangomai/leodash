@@ -5,5 +5,5 @@
         />
     </svg> -->
 
-        <img src="/images/SendemLogo.png" class="w-30 h-30 brand-image img-circle">
+        <img src="/images/SendemLogo.png" class="items-center w-30 h-30 brand-image img-circle">
 </template>
