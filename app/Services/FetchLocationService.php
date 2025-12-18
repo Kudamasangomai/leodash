@@ -14,8 +14,8 @@ class FetchLocationService
 
     protected string $apiKey;
     protected string $baseurl;
-  
- 
+
+
     public function __construct()
     {
         $this->apiKey = config('services.globaltrack.key');
@@ -47,7 +47,7 @@ class FetchLocationService
 
             $response = Http::timeout(600)->get($url);
 
-          
+
 
             if ($response->failed()) {
                 Log::error('FetchLocationService: failed to fetch XML', ['status' => $response->status()]);
@@ -67,7 +67,7 @@ class FetchLocationService
             }
 
             $truckMap = Truck::pluck('id', 'unitname')->toArray();
-
+     $truckUpdates = [];
             // Loop rows - only get unit_name, position_text and datetime
             foreach ($xml->row ?? [] as $row) {
                 $processed++;
@@ -96,6 +96,16 @@ class FetchLocationService
                     ]);
 
                 $updated += $affected;
+
+                if (!isset($truckUpdates[$truckId]) || $datetime > $truckUpdates[$truckId]) {
+                    $truckUpdates[$truckId] = $datetime;
+                }
+            }
+
+            foreach ($truckUpdates as $truckId => $datetime) {
+                Truck::where('id', $truckId)->update([
+                    'last_reported_at' => $datetime,
+                ]);
             }
         } catch (\Throwable $e) {
             Log::error('FetchLocationService exception: ' . $e->getMessage(), [

@@ -39,51 +39,6 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <!-- <form @submit.prevent="submit"> -->
-            <!-- <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="block w-full mt-1"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div> -->
-
-            <!-- <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="block w-full mt-1"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div> -->
-
-
-            <!-- <div class="flex items-center justify-end mt-4">
-
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div> -->
-        <!-- </form> -->
 
         <form @submit.prevent="submit" class="w-full max-w-md p-4 mx-auto md:p-6" >
             <div class="flex items-center justify-center mb-8">
@@ -122,14 +77,7 @@ const submit = () => {
                 <label class="block mb-2 text-sm font-medium text-slate-900">Password</label>
                 <div class="relative flex items-center">
                   <input    id="password"  v-model="form.password"      autocomplete="current-password" type="password" required class="w-full py-3 pl-4 pr-10 text-sm transition-all border rounded-md outline-none text-slate-900 bg-slate-100 focus:bg-transparent border-slate-100 focus:border-blue-600" placeholder="Enter password" />
-                  <!-- <TextInput
-                    id="password"
-                    type="password"
-                    class="block w-full mt-1"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                /> -->
+
 
 
                   <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-4 cursor-pointer" viewBox="0 0 128 128">
@@ -138,26 +86,14 @@ const submit = () => {
                      <InputError class="mt-2" :message="form.errors.password" />
                 </div>
               </div>
-              <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center">
-                  <input id="remember-me" name="remember-me" type="checkbox" class="w-4 h-4 text-blue-600 rounded-md shrink-0 focus:ring-blue-500 border-slate-300" />
-                  <label for="remember-me" class="block ml-3 text-sm text-slate-900">
-                    Remember me
-                  </label>
-                </div>
-                <div class="text-sm">
-                  <a href="jajvascript:void(0);" class="font-medium text-blue-600 hover:underline">
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
+
             </div>
 
             <div class="mt-12">
               <button type="submit" class="w-full shadow-xl py-2 px-4 text-[15px] tracking-wide font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer">
                 Sign in
               </button>
-              <p class="mt-6 text-sm text-center text-slate-600">Don't have an account? <a href="javascript:void(0);" class="ml-1 font-medium tracking-wide text-blue-600 hover:underline">Register here</a></p>
+              <!-- <p class="mt-6 text-sm text-center text-slate-600">Don't have an account? <a href="javascript:void(0);" class="ml-1 font-medium tracking-wide text-blue-600 hover:underline">Register here</a></p> -->
             </div>
           </form>
     </GuestLayout>

@@ -2,6 +2,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
 import MainContent from "@/Components/MainContent.vue";
+
+const props = defineProps({
+   inactiveReportingTrucks: Array,
+   inactiveReportingCount:Number
+});
+
 </script>
 
 <template>
@@ -32,6 +38,16 @@ import MainContent from "@/Components/MainContent.vue";
                   <div class="splide nav-hidden" role="group" aria-label="Splide Basic HTML Example">
                     <div class="splide__track">
 
+<tr v-for="truck in inactiveReportingTrucks" :key="truck.id">
+  <td>{{ truck.unitname }}</td>
+  <td>{{ truck.last_reported_at ?? 'Never' }}</td>
+  <td>
+    {{ truck.days_without_report !== null
+        ? truck.days_without_report + ' days'
+        : 'Never reported'
+    }}
+  </td>
+</tr>
                     </div>
                   </div>
                 </div>
@@ -44,8 +60,8 @@ import MainContent from "@/Components/MainContent.vue";
                   <!-- box card -->
                   <div class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-cyan-50 dark:bg-blue-500 shadow-cyan-700/10">
                     <div class="relative dark:text-slate-100">
-                      <h2 class="mb-2 text-center">Won</h2>
-                      <h3 class="text-4xl font-bold text-center">1340</h3>
+                      <h2 class="mb-2 text-center">Gt  not Reporting</h2>
+                      <h3 class="text-4xl font-bold text-center">{{ inactiveReportingCount }}</h3>
                     </div>
                     <div class="absolute -right-4 -bottom-4 opacity-20">
                       <i class="text-6xl bx bx-smile text-cyan-500"></i>
@@ -57,8 +73,8 @@ import MainContent from "@/Components/MainContent.vue";
                   <!-- box card -->
                   <div class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-red-50 dark:bg-blue-500 shadow-red-800/10">
                     <div class="relative dark:text-slate-100">
-                      <h2 class="mb-2 text-center">Lost</h2>
-                      <h3 class="text-4xl font-bold text-center">640</h3>
+                      <h2 class="mb-2 text-center">No Trip Datat</h2>
+                      <h3 class="text-4xl font-bold text-center">7</h3>
                     </div>
                     <div class="absolute -right-4 -bottom-4 opacity-20">
                       <i class="text-6xl text-red-500 bx bx-sad"></i>
@@ -70,8 +86,8 @@ import MainContent from "@/Components/MainContent.vue";
                   <!-- box card -->
                   <div class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-yellow-50 dark:bg-blue-500 shadow-yellow-800/10">
                     <div class="relative dark:text-slate-100">
-                      <h2 class="mb-2 text-center">Conversion Rate</h2>
-                      <h3 class="text-4xl font-bold text-center">78%</h3>
+                      <h2 class="mb-2 text-center">Using Gps Speed</h2>
+                      <h3 class="text-4xl font-bold text-center">15</h3>
                     </div>
                     <div class="absolute -right-4 -bottom-4 opacity-20">
                       <i class="text-6xl text-yellow-500 bx bx-filter-alt"></i>
@@ -83,8 +99,8 @@ import MainContent from "@/Components/MainContent.vue";
                   <!-- box card -->
                   <div class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-green-50 dark:bg-blue-500 shadow-green-700/10">
                     <div class="relative dark:text-slate-100">
-                      <h2 class="mb-2 text-center">Average Contract</h2>
-                      <h3 class="text-4xl font-bold text-center">$1640</h3>
+                      <h2 class="mb-2 text-center">Fm not Reprting</h2>
+                      <h3 class="text-4xl font-bold text-center">8</h3>
                     </div>
                     <div class="absolute -right-4 -bottom-4 opacity-20">
                       <i class="text-6xl text-green-500 bx bx-dollar-circle"></i>
@@ -327,7 +343,7 @@ import MainContent from "@/Components/MainContent.vue";
               <!-- box card -->
               <div class="h-full p-6 bg-white rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10">
                 <div class="relative">
-                  <h2 class="mb-2 text-center">Todo List</h2>
+                  <h2 class="mb-2 text-center">Todo List / Reminders</h2>
                   <ul class="mb-6 overflow-y-auto task-check h-72 scrollbars show">
                     <li class="relative py-2">
                       <label class="flex items-center">

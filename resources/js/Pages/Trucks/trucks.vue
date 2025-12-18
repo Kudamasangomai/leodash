@@ -178,6 +178,11 @@ let  num =  1;
                                 >
                                     Plate
                                 </th> -->
+                                 <th
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
+                                >
+                                  Last reported At
+                                </th>
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
@@ -217,6 +222,11 @@ let  num =  1;
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
                                     {{ truck.status  === 1 ? 'Active' : 'Inactive' }}
+                                </td>
+                                <td
+                                    class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                                >
+                                    {{ truck.last_reported_at }}
                                 </td>
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
