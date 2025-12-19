@@ -217,7 +217,7 @@ onMounted(() => {
                     <li>
                         <a
                             href="/dashboard"
-                            class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                            class="text-white font-normal transition-all text-[15px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +245,7 @@ onMounted(() => {
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
 
-                        <h6 class="text-white group- text-[16px] px-4 flex">
+                        <h6 class="text-white group- text-[15px] px-4 flex">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
@@ -289,7 +289,7 @@ onMounted(() => {
                            prefetch="mount"
                             cache-for="5m"
                                 href="/repairs"
-                                class="text-white font-normal transition-all  text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all  text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -309,7 +309,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/dstcalibrations"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -337,7 +337,7 @@ onMounted(() => {
                         <li class="hidden">
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -364,7 +364,7 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[16px] px-4 flex">
+                        <h6 class="text-white group- text-[15px] px-4 flex">
                              <svg
                                         fill="currentColor"
                                         class="w-[18px] h-[20px] mr-3"
@@ -450,7 +450,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/early-start"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -471,7 +471,7 @@ onMounted(() => {
                             prefetch="mount"
                             cache-for="5m"
                                 href="/violations"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -498,7 +498,7 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[16px] px-4 flex">
+                        <h6 class="text-white group- text-[15px] px-4 flex">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
@@ -541,7 +541,7 @@ onMounted(() => {
                              <Link  prefetch="mount"
                             cache-for="5m"
                                 href="/trucks"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -562,7 +562,7 @@ onMounted(() => {
                             prefetch="mount"
                             cache-for="5m"
                                 href="/faults"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -585,7 +585,7 @@ onMounted(() => {
                           <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -614,7 +614,7 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-                        <h6 class="text-white group- text-[16px] px-4 flex">
+                        <h6 class="text-white group- text-[15px] px-4 flex">
                              <svg
                                         fill="currentColor"
                                         viewBox="0 0 32 32"
@@ -656,7 +656,7 @@ onMounted(() => {
                         <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[15px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -675,7 +675,7 @@ onMounted(() => {
                         <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[16px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[15px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

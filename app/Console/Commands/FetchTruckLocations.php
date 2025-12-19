@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\FetchLocationService;
+use Illuminate\Support\Facades\Log;
 
 class FetchTruckLocations extends Command
 {
@@ -21,14 +22,17 @@ class FetchTruckLocations extends Command
      */
     protected $description = 'Fetch latest truck positions and update repair locations';
 
-    public function handle(FetchLocationService $service): int
+    public function handle(FetchLocationService $service): void
     {
-        $this->info('Fetching truck locations...');
 
-        $result = $service->fetchAndUpdate();
+        try {
+ Log::info('repairs:fetchlocations STARTED at ' . now());
+            $result = $service->fetchAndUpdate();
+            $this->info("Processed {$result['processed']} positions, updated {$result['updated']} repair(s).");
+    Log::info('repairs:fetchlocations FINISHED at ' . now());
+        } catch (\Throwable $e) {
 
-        $this->info("Processed {$result['processed']} positions, updated {$result['updated']} repair(s).");
-
-        return 0;
+            Log::error('Truck status Error' . $e->getMessage());
+        }
     }
 }

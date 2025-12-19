@@ -78,38 +78,39 @@ const closeModal = () => {
                 <thead class="bg-gray-200 whitespace-nowrap">
                     <tr class="border border-gray-300">
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Id
                         </th>
-                        <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                        <!-- <th
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Asset name
-                        </th>
+                        </th> -->
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Asset Name</th>
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Date Created
                         </th>
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Status(road test done)
                         </th>
 
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Date(road test done)
                         </th>
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                           Created By
                         </th>
                         <th
-                            class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Action
                         </th>

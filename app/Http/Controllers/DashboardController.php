@@ -25,15 +25,11 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($truck) {
                 $truck->days_without_report = $truck->last_reported_at
-                    ? Carbon::parse($truck->last_reported_at)->diffInDays(now())
+             ? Carbon::parse($truck->last_reported_at)->startOfDay()->diffInDays(now()->startOfDay())
                     : null;
 
                 return $truck;
             });
-
-        // dd($inactiveReportingTrucks);
-
-
 
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $inactiveReportingTrucks,

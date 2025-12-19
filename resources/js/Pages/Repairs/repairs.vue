@@ -208,14 +208,14 @@ function triggerFetchLocations() {
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="p-2 border border-r border-gray-300">Truck</th>
-                            <th class="p-2 border border-r border-gray-300">Fault</th>
-                            <th class="p-2 border border-r border-gray-300">Status</th>
-                            <th class="p-2 border border-r border-gray-300">Location</th>
-                            <th class="p-2 border border-r border-gray-300">last Reported At</th>
-                            <th class="p-2 border border-r border-gray-300">last Checked At</th>
-                            <th class="p-2 border border-r border-gray-300">Created By</th>
-                            <th class="p-2 border border-r border-gray-300">Actions</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Truck</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Fault</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Status</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Location</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Reported At</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Checked At</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Created By</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="text-center divide-y divide-gray-200">
