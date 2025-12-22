@@ -2,87 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\EventsReportImport;
 use App\Models\Violation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ViolationController extends Controller
 {
 
     public function index()
     {
-        return Inertia::render('Violations/violations');
+        $violations = Violation::orderBy('event_type')
+            ->orderByDesc('max_speed')
+            ->take(500)
+            ->get()
+                  ->groupBy('event_type');
+        return Inertia::render('Violations/violations', [
+            'violations' => $violations,
+        ]);
     }
 
     public function upload(Request $request)
     {
 
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv,txt|max:2048',
+            'file' => 'required|mimes:xlsx,xls|max:2048',
         ]);
 
-        $path = $request->file('file')->storeAs('speeding-reports');
+        DB::table('violations')->truncate();
+        Excel::import(
+            new EventsReportImport,
+            $request->file('file') // 👈 TEMP FILE
+        );
 
-        $rows = array_map('str_getcsv', file(storage_path("app/$path")));
-        $header = array_map('trim', array_shift($rows));
+        $violations = Violation::latest()->take(500)->get(); // example
 
-        $data = collect($rows)
-            ->filter(fn($row) => count($row) === count($header)) // safety
-            ->map(function ($row) use ($header) {
-                return array_combine($header, $row);
-            })
-            ->map(function ($row) {
-                $row['EventValue'] = (float) $row['EventValue'];
-                return $row;
-            });
+        // Pass to Inertia view
 
-        /**
-         * Get highest EventValue per Asset + EventType
-         */
-        $summary = $data
-            ->groupBy(fn($row) => $row['AssetName'] . '_' . $row['EventType'])
-            ->map(function ($events) {
-                $max = $events->sortByDesc('EventValue')->first();
-
-                return [
-                    'date'        => $max['EventStartDate'],
-                    'asset'       => $max['AssetName'],
-                    'event_type'  => $max['EventType'],
-                    'driver'      => $max['AssetName2'] ?? 'Unknown',
-                    'location'    => $max['EventLocation'],
-                    'duration'    => $max['TotalDuration'],
-                    'max_speed'   => $max['EventValue'],
-                    'destination' => $max['F_EndTown'] ?? null,
-                    'coordinates' => $max['EndLatLong'] ?? null,
-                ];
-            })
-            ->values();
-
-        DB::transaction(function () use ($summary) {
-            foreach ($summary as $row) {
-                Violation::updateOrCreate(
-                    [
-                        'date'       => $row['date'],
-                        'asset'      => $row['asset'],
-                        'event_type' => $row['event_type'],
-                    ],
-                    [
-                        'driver'      => $row['driver'],
-                        'location'    => $row['location'],
-                        'duration'    => $row['duration'],
-                        'max_speed'   => $row['max_speed'], // ✅ FIXED
-                        'destination' => $row['destination'],
-                        'coordinates' => $row['coordinates'],
-                    ]
-                );
-            }
-        });
-
-        return response()->json([
-            'message' => 'Speeding report processed successfully',
-            'count'   => $summary->count(),
-            'data'    => $summary,
-        ]);
+        return Redirect::back()->with('',$violations);
+        // return Inertia::render('Violations/violations', [
+        //     'violations' => $violations,
+        //     'message' => 'Speeding report uploaded successfully',
+        // ]);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistanceCalibrationController;
 use App\Http\Controllers\FaultController;
+use App\Http\Controllers\LightvehiclescoringController;
 use App\Http\Controllers\MovingReportController;
 use App\Http\Controllers\MovingReportImportController;
 use App\Http\Controllers\ProfileController;
@@ -51,7 +52,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/violations/upload', [ViolationController::class, 'upload'])->name('violations.upload');
     Route::get('/violations', [ViolationController::class , 'index'])->name('violations');
 
-
+    Route::post('/lightvehiclescoring/upload', [LightvehiclescoringController::class, 'upload'])->name('lvs.upload');
+    Route::post('/lightvehiclescoring/scoringReport', [LightvehiclescoringController::class, 'scoringReport'])->name('lvs.scoringReport');
+    Route::resource('lightvehiclescoring',LightvehiclescoringController::class);
 
 });
 

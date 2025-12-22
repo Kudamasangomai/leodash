@@ -31,17 +31,15 @@ function syncTrucks() {
     });
 }
 
-
 const form = useForm({
     unitname: "",
- status: "",
-
+    status: "",
 });
 
 const openEditModal = (truck) => {
     editingTruck.value = truck;
     form.unitname = truck.unitname;
-    form.status  =  truck.status
+    form.status = truck.status;
     showFormModal.value = true;
 };
 
@@ -50,8 +48,8 @@ const submitForm = () => {
         form.put(`/trucks/${editingTruck.value.id}`, {
             onSuccess: () => closeFormModal(),
             onError: (errors) => {
-                console.log('Errors:', errors);
-            }
+                console.log("Errors:", errors);
+            },
         });
     }
 };
@@ -61,7 +59,7 @@ const closeFormModal = () => {
     form.reset();
     editingTruck.value = null;
 };
-let  num =  1;
+// let  num =  1;
 </script>
 
 <template>
@@ -85,7 +83,6 @@ let  num =  1;
                                     clip-rule="evenodd"
                                 ></path>
                             </svg>
-
 
                             <i v-if="!loading" class="mr-2 bx bx-chat"></i>
                             <svg
@@ -163,11 +160,11 @@ let  num =  1;
                     <table class="min-w-full border border-gray-200">
                         <thead class="bg-gray-300 whitespace-nowrap">
                             <tr class="border-b border-gray-200">
-                                <th
+                                <!-- <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Id
-                                </th>
+                                </th> -->
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
@@ -178,15 +175,15 @@ let  num =  1;
                                 >
                                     Plate
                                 </th> -->
-                                 <th
-                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
-                                >
-                                  Last reported At
-                                </th>
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Status
+                                </th>
+                                <th
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
+                                >
+                                    Last reported At
                                 </th>
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
@@ -204,10 +201,10 @@ let  num =  1;
                                 v-for="truck in trucks"
                                 :key="truck.id"
                             >
-                                <td class="px-4 py-3 border-r border-gray-200">
-                                    <!-- {{ truck.id }} -->
+                                <!-- <td class="px-4 py-3 border-r border-gray-200">
+
                                     {{ num++ }}
-                                </td>
+                                </td> -->
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
@@ -221,7 +218,11 @@ let  num =  1;
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
-                                    {{ truck.status  === 1 ? 'Active' : 'Inactive' }}
+                                    {{
+                                        truck.status === 1
+                                            ? "Active"
+                                            : "Inactive"
+                                    }}
                                 </td>
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
@@ -231,15 +232,9 @@ let  num =  1;
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
                                 >
-                                 <button
-                                    @click="openEditModal(truck)"
-
-                                >
-                                    <Editicon />
-                                </button>
-
-
-
+                                    <button @click="openEditModal(truck)">
+                                        <Editicon />
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -313,7 +308,6 @@ let  num =  1;
                     </div>
                 </div>
             </div>
-
         </MainContent>
         <Modal :show="showFormModal" @close="closeFormModal">
             <div class="p-6 bg-white">
@@ -322,11 +316,6 @@ let  num =  1;
                 </h2>
 
                 <form @submit.prevent="submitForm" class="space-y-4">
-
-
-
-
-
                     <div v-if="editingTruck">
                         <label class="block text-sm font-medium text-gray-700"
                             >Asset Name</label
@@ -344,7 +333,7 @@ let  num =  1;
                         </div>
                     </div>
 
-                      <div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700"
                             >Status</label
                         >
@@ -354,7 +343,7 @@ let  num =  1;
                             class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
                         >
                             <option value="">Select a Fault</option>
-                             <option :value="1">Active</option>
+                            <option :value="1">Active</option>
                             <option :value="0">Inactive</option>
                         </select>
                         <div
@@ -384,6 +373,5 @@ let  num =  1;
                 </form>
             </div>
         </Modal>
-
     </AuthenticatedLayout>
 </template>

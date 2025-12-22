@@ -45,7 +45,7 @@ class FetchLocationService
 
             $url = $this->baseurl . '?' . $query;
 
-            $response = Http::timeout(600)->get($url);
+            $response = Http::timeout(6000)->get($url);
 
 
 

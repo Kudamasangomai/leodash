@@ -11,22 +11,24 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $cutoff = now()->subDay(); // 24 hours ago
+        $cutoff = now()->subDay();
+        // just delete truck from truck tables
+        $excludedTrucks = ['LEOCC28', 'LEO012', 'LEO261', 'LEO114', 'LEO059', 'h19', 'LEO013'];
+
 
         $inactiveReportingTrucks = Truck::query()
-            ->where('status', 1) // active trucks only
-            ->where('unitname', '!=', 'LEOCC28')
+            ->where('status', 1)
+            ->whereNotIn('unitname', $excludedTrucks)
             ->where(function ($query) use ($cutoff) {
                 $query
-                    ->whereNull('last_reported_at')           // never reported
-                    ->orWhere('last_reported_at', '<', $cutoff); // reported long ago
+                    ->whereNull('last_reported_at')
+                    ->orWhere('last_reported_at', '<', $cutoff);
             })
             ->orderBy('last_reported_at', 'asc')
             ->get()
             ->map(function ($truck) {
                 $truck->days_without_report = $truck->last_reported_at
-             ? Carbon::parse($truck->last_reported_at)->startOfDay()->diffInDays(now()->startOfDay())
-                    : null;
+                    ? Carbon::parse($truck->last_reported_at)->startOfDay()->diffInDays(now()->startOfDay()) : null;
 
                 return $truck;
             });

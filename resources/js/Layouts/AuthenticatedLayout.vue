@@ -45,8 +45,11 @@ onMounted(() => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex items-center shrink-0">
-                                 <Link  prefetch="mount"
-                            cache-for="5m" :href="route('dashboard')">
+                                <Link
+                                    prefetch="mount"
+                                    cache-for="5m"
+                                    :href="route('dashboard')"
+                                >
                                     <ApplicationLogo
                                         class="block w-auto text-gray-800 fill-current h-9"
                                     />
@@ -187,6 +190,14 @@ onMounted(() => {
                             <ResponsiveNavLink :href="route('profile.edit')">
                                 Profile
                             </ResponsiveNavLink>
+                            <DropdownLink href="/repairs">
+                                Repairs
+                            </DropdownLink>
+                            <DropdownLink href="/dstcalibrations">
+                                Calibration
+                            </DropdownLink>
+                            <DropdownLink href="/faults"> Faults </DropdownLink>
+                            <DropdownLink href="/trucks"> Trucks </DropdownLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
                                 method="post"
@@ -199,9 +210,10 @@ onMounted(() => {
                 </div>
             </nav>
 
-            <nav id="sidebar-menu"
+            <nav
+                id="sidebar-menu"
                 x-description="Mobile menu"
-                class="bg-blue-600 fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
+                class="bg-[#446ad7] hidden md:block fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
             >
                 <a href="javascript:void(0)"
                     ><img
@@ -211,29 +223,22 @@ onMounted(() => {
                     />
                 </a>
 
-                <ul            id="side-menu"
-                        x-data="{selected:1}"
-                        class="flex flex-col float-#ffffff w-full px-1 mt-16  sidebar-small-menu ">
+                <ul
+                    id="side-menu"
+                    x-data="{selected:1}"
+                    class="flex flex-col float-#ffffff w-full px-1 mt-16 sidebar-small-menu"
+                >
                     <li>
                         <a
                             href="/dashboard"
                             class="text-white font-normal transition-all text-[15px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                class="w-[18px] h-[18px] mr-3"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M19.56 23.253H4.44a4.051 4.051 0 0 1-4.05-4.05v-9.115c0-1.317.648-2.56 1.728-3.315l7.56-5.292a4.062 4.062 0 0 1 4.644 0l7.56 5.292a4.056 4.056 0 0 1 1.728 3.315v9.115a4.051 4.051 0 0 1-4.05 4.05zM12 2.366a2.45 2.45 0 0 0-1.393.443l-7.56 5.292a2.433 2.433 0 0 0-1.037 1.987v9.115c0 1.34 1.09 2.43 2.43 2.43h15.12c1.34 0 2.43-1.09 2.43-2.43v-9.115c0-.788-.389-1.533-1.037-1.987l-7.56-5.292A2.438 2.438 0 0 0 12 2.377z"
-                                    data-original="#000000"
-                                ></path>
-                                <path
-                                    d="M16.32 23.253H7.68a.816.816 0 0 1-.81-.81v-5.4c0-2.83 2.3-5.13 5.13-5.13s5.13 2.3 5.13 5.13v5.4c0 .443-.367.81-.81.81zm-7.83-1.62h7.02v-4.59c0-1.933-1.577-3.51-3.51-3.51s-3.51 1.577-3.51 3.51z"
-                                    data-original="#000000"
-                                ></path>
-                            </svg>
+
+                              <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 640 512"
+                            fill="#ffffff"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <path
+                                d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V88c0-13.3-10.7-24-24-24s-24 10.7-24 24V292.7c-23.5 9.5-40 32.5-40 59.3c0 35.3 28.7 64 64 64s64-28.7 64-64zM144 176a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm-16 80a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM400 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                        </svg>
 
                             <span>Dashboard</span>
                         </a>
@@ -244,30 +249,13 @@ onMounted(() => {
                     <div
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
-
                         <h6 class="text-white group- text-[15px] px-4 flex">
-                            <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    class="w-[18px] h-[18px] mr-3"
-                                    viewBox="0 0 64 64"
-                                >
-                                    <path
-                                        d="M32.667 5.11A25.116 25.116 0 0 0 32 5.045V2.88a2.08 2.08 0 1 0-4.16 0v2.165C15.027 6.102 4.96 16.837 4.96 29.92v18.5L3.47 52.8h-.59a2.08 2.08 0 1 0 0 4.16h54.08a2.08 2.08 0 1 0 0-4.16h-.59l-1.49-4.38v-9.568a18.585 18.585 0 0 1-4.16 1.209v8.703a2.08 2.08 0 0 0 .11.67l1.145 3.366H7.865l1.144-3.366a2.08 2.08 0 0 0 .111-.67V29.92c0-11.488 9.312-20.8 20.8-20.8.142 0 .285.001.426.004a18.7 18.7 0 0 1 2.32-4.014zM23.68 61.12a2.08 2.08 0 0 1 2.08-2.08h8.32a2.08 2.08 0 1 1 0 4.16h-8.32a2.08 2.08 0 0 1-2.08-2.08z"
-                                        data-original="#000000"
-                                    />
-                                    <g fill-rule="evenodd" clip-rule="evenodd">
-                                        <path
-                                            d="M46.56 12.909c-4.221 0-7.627 3.434-7.627 7.651s3.406 7.651 7.627 7.651c4.22 0 7.626-3.434 7.626-7.651s-3.406-7.651-7.626-7.651zm-3.467 7.651c0-1.936 1.56-3.491 3.467-3.491 1.906 0 3.466 1.555 3.466 3.491s-1.56 3.491-3.466 3.491c-1.906 0-3.467-1.555-3.467-3.491z"
-                                            data-original="#000000"
-                                        />
-                                        <path
-                                            d="M44.342 2.88a2.08 2.08 0 0 0-2.005 1.526l-.75 2.711a14.256 14.256 0 0 0-4.138 2.402l-2.709-.703a2.08 2.08 0 0 0-2.325.978l-2.218 3.86a2.08 2.08 0 0 0 .316 2.49l1.964 2.01a14.478 14.478 0 0 0 0 4.813l-1.965 2.009a2.08 2.08 0 0 0-.315 2.49l2.218 3.86a2.08 2.08 0 0 0 2.325.978l2.709-.702a14.256 14.256 0 0 0 4.139 2.402l.749 2.71a2.08 2.08 0 0 0 2.005 1.526h4.436a2.08 2.08 0 0 0 2.005-1.526l.75-2.71a14.257 14.257 0 0 0 4.14-2.402l2.706.702a2.08 2.08 0 0 0 2.326-.978l2.218-3.86a2.08 2.08 0 0 0-.316-2.49l-1.964-2.01a14.477 14.477 0 0 0 0-4.813l1.965-2.009a2.08 2.08 0 0 0 .315-2.49l-2.219-3.86a2.08 2.08 0 0 0-2.324-.978l-2.709.702a14.256 14.256 0 0 0-4.138-2.402l-.749-2.71a2.08 2.08 0 0 0-2.007-1.526zm.956 6.421.626-2.261h1.271l.627 2.261a2.08 2.08 0 0 0 1.446 1.45 10.098 10.098 0 0 1 4.38 2.544 2.08 2.08 0 0 0 1.983.532l2.257-.585.644 1.12-1.64 1.678a2.08 2.08 0 0 0-.528 1.971c.208.812.32 1.666.32 2.549s-.112 1.737-.32 2.549a2.08 2.08 0 0 0 .527 1.97l1.641 1.68-.644 1.12-2.257-.586a2.08 2.08 0 0 0-1.982.532 10.096 10.096 0 0 1-4.38 2.544 2.08 2.08 0 0 0-1.447 1.45l-.628 2.261h-1.272l-.624-2.261a2.08 2.08 0 0 0-1.447-1.45 10.097 10.097 0 0 1-4.38-2.544 2.08 2.08 0 0 0-1.983-.532l-2.257.585-.645-1.12 1.642-1.678a2.08 2.08 0 0 0 .527-1.971c-.208-.812-.32-1.666-.32-2.549s.112-1.737.32-2.548a2.08 2.08 0 0 0-.527-1.972l-1.642-1.678.645-1.12 2.257.585a2.08 2.08 0 0 0 1.982-.532 10.097 10.097 0 0 1 4.38-2.544 2.08 2.08 0 0 0 1.447-1.45z"
-                                            data-original="#000000"
-                                        />
-                                    </g>
-                                </svg>
-                      <span> Services</span>
+                                  <svg xmlns="http://www.w3.org/2000/svg"    class="w-[18px] h-[18px] mr-2" viewBox="0 0 512 512"
+                            fill="#ffffff"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <path
+                                d="M78.6 5C69.1-2.4 55.6-1.5 47 7L7 47c-8.5 8.5-9.4 22-2.1 31.6l80 104c4.5 5.9 11.6 9.4 19 9.4h54.1l109 109c-14.7 29-10 65.4 14.3 89.6l112 112c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-112-112c-24.2-24.2-60.6-29-89.6-14.3l-109-109V104c0-7.5-3.5-14.5-9.4-19L78.6 5zM19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L233.7 374.3c-7.8-20.9-9-43.6-3.6-65.1l-61.7-61.7L19.9 396.1zM512 144c0-10.5-1.1-20.7-3.2-30.5c-2.4-11.2-16.1-14.1-24.2-6l-63.9 63.9c-3 3-7.1 4.7-11.3 4.7H352c-8.8 0-16-7.2-16-16V102.6c0-4.2 1.7-8.3 4.7-11.3l63.9-63.9c8.1-8.1 5.2-21.8-6-24.2C388.7 1.1 378.5 0 368 0C288.5 0 224 64.5 224 144l0 .8 85.3 85.3c36-9.1 75.8 .5 104 28.7L429 274.5c49-23 83-72.8 83-130.5zM56 432a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z" />
+                        </svg>
+                            <span> Services</span>
                         </h6>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -286,30 +274,26 @@ onMounted(() => {
                     >
                         <li>
                             <Link
-                           prefetch="mount"
-                            cache-for="5m"
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/repairs"
-                                class="text-white font-normal transition-all  text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    class="w-[18px] h-[18px] mr-3"
-                                    viewBox="0 0 512 512"
-                                >
-                                    <path
-                                        d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0"
-                                        data-original="#000000"
-                                    />
-                                </svg>
+
+                         <svg xmlns="http://www.w3.org/2000/svg"  class="w-[20px] h-[20px] mr-2" fill="#ffffff"
+                            viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <path
+                                d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25c-2.3-5.3-4.8-10.5-7.6-15.5L304 89.4c-3-5-6.3-9.9-9.8-14.6c-5.7-7.6-15.7-10.1-24.7-7.1l-28.2 9.3c-10.7-8.8-23-16-36.2-20.9L199 27.1c-1.9-9.3-9.1-16.7-18.5-17.8C173.9 8.4 167.2 8 160.4 8h-.7c-6.8 0-13.5 .4-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9L50.5 67.8c-9-3-19-.5-24.7 7.1c-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6c-3.7 8.7-.9 18.6 6.2 25l22.2 19.8C32.6 161.9 32 168.9 32 176s.6 14.1 1.7 20.9L11.5 216.7c-7.1 6.3-9.9 16.2-6.2 25c2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6c5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8c6.7 .8 13.5 1.2 20.4 1.2s13.7-.4 20.4-1.2c9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1c3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5c3.7-8.7 .9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM504.7 500.5c6.3 7.1 16.2 9.9 25 6.2c5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8c7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2l29.1-6.1c9.3-1.9 16.7-9.1 17.8-18.5c.8-6.7 1.2-13.5 1.2-20.4s-.4-13.7-1.2-20.4c-1.1-9.4-8.6-16.6-17.8-18.5L583.9 307c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7c-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6c-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1 .6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2c-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9c-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2L315.1 313c-9.3 1.9-16.7 9.1-17.8 18.5c-.8 6.7-1.2 13.5-1.2 20.4s.4 13.7 1.2 20.4c1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7c4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6c8.7 3.7 18.6 .9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                        </svg>
                                 <span>Repairs</span>
                             </Link>
                         </li>
                         <li>
-                             <Link  prefetch="mount"
-                            cache-for="5m"
+                            <Link
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/dstcalibrations"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -337,7 +321,7 @@ onMounted(() => {
                         <li class="hidden">
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -365,70 +349,67 @@ onMounted(() => {
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
                         <h6 class="text-white group- text-[15px] px-4 flex">
-                             <svg
-                                        fill="currentColor"
-                                        class="w-[18px] h-[20px] mr-3"
-                                        viewBox="0 0 64 64"
-                                    >
-                                        <g
-                                            id="SVGRepo_bgCarrier"
-                                            stroke-width="0"
-                                        ></g>
-                                        <g
-                                            id="SVGRepo_tracerCarrier"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        ></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <g>
-                                                <polygon
-                                                    fill="currentColor"
-                                                    stroke="currentColor"
-                                                    stroke-width="4"
-                                                    stroke-miterlimit="10"
-                                                    points="23,1 55,1 55,63 9,63 9,15 "
-                                                ></polygon>
-                                                <polyline
-                                                   fill="#0000FF"
-                                                    stroke="#fff"
-                                                    stroke-width="4"
-                                                    stroke-miterlimit="10"
-                                                    points="9,15 23,15 23,1 "
-                                                ></polyline>
+                            <svg
+                                fill="currentColor"
+                                class="w-[18px] h-[20px] mr-3"
+                                viewBox="0 0 64 64"
+                            >
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g
+                                    id="SVGRepo_tracerCarrier"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <g>
+                                        <polygon
+                                            fill="currentColor"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                            stroke-miterlimit="10"
+                                            points="23,1 55,1 55,63 9,63 9,15 "
+                                        ></polygon>
+                                        <polyline
+                                            fill="#446ad7"
+                                            stroke="#446ad7"
+                                            stroke-width="4"
+                                            stroke-miterlimit="10"
+                                            points="9,15 23,15 23,1 "
+                                        ></polyline>
 
-                                                <line
-                                                   fill="#0000FF"
-                                                    stroke="#fff"
-                                                    stroke-width="4"
-                                                    stroke-miterlimit="10"
-                                                    x1="18"
-                                                    y1="24"
-                                                    x2="46"
-                                                    y2="24"
-                                                ></line>
-                                                <line
-                                                   fill="currentColor"
-                                                    stroke="#f0efef"
-                                                    stroke-width="4"
-                                                    stroke-miterlimit="10"
-                                                    x1="18"
-                                                    y1="34"
-                                                    x2="46"
-                                                    y2="34"
-                                                ></line>
-                                                <line
-                                          fill="#0000FF"
-                                                    stroke="#f0efef"
-                                                    stroke-width="4"
-                                                    stroke-miterlimit="10"
-                                                    x1="18"
-                                                    y1="44"
-                                                    x2="46"
-                                                    y2="44"
-                                                ></line>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                        <line
+                                            fill="#446ad7"
+                                            stroke="#446ad7"
+                                            stroke-width="4"
+                                            stroke-miterlimit="10"
+                                            x1="18"
+                                            y1="24"
+                                            x2="46"
+                                            y2="24"
+                                        ></line>
+                                        <line
+                                           fill="#446ad7"
+                                            stroke="#446ad7"
+                                            stroke-width="4"
+                                            stroke-miterlimit="10"
+                                            x1="18"
+                                            y1="34"
+                                            x2="46"
+                                            y2="34"
+                                        ></line>
+                                        <line
+                                            fill="#446ad7"
+                                            stroke="#446ad7"
+                                            stroke-width="4"
+                                            stroke-miterlimit="10"
+                                            x1="18"
+                                            y1="44"
+                                            x2="46"
+                                            y2="44"
+                                        ></line>
+                                    </g>
+                                </g>
+                            </svg>
                             Reports
                         </h6>
                         <svg
@@ -447,10 +428,11 @@ onMounted(() => {
                         class="pl-4 mt-2 space-y-1 overflow-hidden transition-all duration-300 max-h-0"
                     >
                         <li>
-                             <Link  prefetch="mount"
-                            cache-for="5m"
+                            <Link
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/early-start"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -466,12 +448,12 @@ onMounted(() => {
                                 <span>Early Start</span>
                             </Link>
                         </li>
-                        <li class="hidden">
+                        <li class="">
                             <Link
-                            prefetch="mount"
-                            cache-for="5m"
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/violations"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -491,6 +473,32 @@ onMounted(() => {
                                 <span>Violations</span>
                             </Link>
                         </li>
+                        <li class="">
+                            <Link
+                                prefetch="mount"
+                                cache-for="5m"
+                                href="/lightvehiclescoring"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    class="w-[18px] h-[18px] mr-3"
+                                    viewBox="0 0 193.769 193.769"
+                                >
+                                    <path
+                                        d="m149.203 41.104-9.348 12.009c20.15 15.679 30.201 41.063 26.234 66.253-2.906 18.484-12.838 34.73-27.964 45.748-15.131 11.012-33.64 15.488-52.124 12.567-38.157-6.008-64.32-41.938-58.322-80.098C30.585 79.097 40.52 62.85 55.648 51.835c13.208-9.615 28.991-14.233 45.086-13.317L87.579 52.319l9.759 9.313 20.766-21.801.005.008 9.303-9.769-9.752-9.303-.005.003L95.862 0l-9.31 9.769 14.2 13.525c-19.303-.913-38.21 4.702-54.059 16.242C28.28 52.943 16.19 72.717 12.65 95.221c-7.302 46.445 24.54 90.184 70.985 97.493a86.181 86.181 0 0 0 13.434 1.055c17.89 0 35.273-5.623 50.011-16.356 18.415-13.409 30.503-33.183 34.043-55.682 4.829-30.654-7.403-61.55-31.92-80.627z"
+                                        data-original="#000000"
+                                    />
+                                    <path
+                                        d="M105.24 151.971v-.003h.001v-8.757c10.383-1.159 20.485-7.718 20.485-20.17 0-16.919-15.732-18.859-27.223-20.274-7.347-.878-12.97-1.897-12.97-6.348 0-6.188 8.722-6.855 12.473-6.855 5.567 0 11.507 2.617 13.525 5.957l.586.971 11.542-5.341-.571-1.164c-4.301-8.793-12.009-11.337-17.85-12.364v-7.71H91.723v7.677c-12.582 1.856-20.054 8.839-20.054 18.829 0 16.29 14.791 17.943 25.582 19.153 9.617 1.134 14.094 3.51 14.094 7.469 0 7.563-10.474 8.154-13.685 8.154-7.147 0-14.038-3.566-16.031-8.301l-.495-1.169-12.539 5.316.5 1.169c3.713 8.691 11.725 14.137 22.63 15.425v8.336h13.515z"
+                                        data-original="#000000"
+                                    />
+                                </svg>
+                                <span>Buses & Shunts</span>
+
+                            </Link>
+                        </li>
                     </ul>
                 </div>
 
@@ -500,26 +508,20 @@ onMounted(() => {
                     >
                         <h6 class="text-white group- text-[15px] px-4 flex">
                             <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    class="w-[18px] h-[18px] mr-3"
-                                    viewBox="0 0 64 64"
-                                >
-                                    <path
-                                        d="M32.667 5.11A25.116 25.116 0 0 0 32 5.045V2.88a2.08 2.08 0 1 0-4.16 0v2.165C15.027 6.102 4.96 16.837 4.96 29.92v18.5L3.47 52.8h-.59a2.08 2.08 0 1 0 0 4.16h54.08a2.08 2.08 0 1 0 0-4.16h-.59l-1.49-4.38v-9.568a18.585 18.585 0 0 1-4.16 1.209v8.703a2.08 2.08 0 0 0 .11.67l1.145 3.366H7.865l1.144-3.366a2.08 2.08 0 0 0 .111-.67V29.92c0-11.488 9.312-20.8 20.8-20.8.142 0 .285.001.426.004a18.7 18.7 0 0 1 2.32-4.014zM23.68 61.12a2.08 2.08 0 0 1 2.08-2.08h8.32a2.08 2.08 0 1 1 0 4.16h-8.32a2.08 2.08 0 0 1-2.08-2.08z"
-                                        data-original="#000000"
-                                    />
-                                    <g fill-rule="evenodd" clip-rule="evenodd">
-                                        <path
-                                            d="M46.56 12.909c-4.221 0-7.627 3.434-7.627 7.651s3.406 7.651 7.627 7.651c4.22 0 7.626-3.434 7.626-7.651s-3.406-7.651-7.626-7.651zm-3.467 7.651c0-1.936 1.56-3.491 3.467-3.491 1.906 0 3.466 1.555 3.466 3.491s-1.56 3.491-3.466 3.491c-1.906 0-3.467-1.555-3.467-3.491z"
-                                            data-original="#000000"
-                                        />
-                                        <path
-                                            d="M44.342 2.88a2.08 2.08 0 0 0-2.005 1.526l-.75 2.711a14.256 14.256 0 0 0-4.138 2.402l-2.709-.703a2.08 2.08 0 0 0-2.325.978l-2.218 3.86a2.08 2.08 0 0 0 .316 2.49l1.964 2.01a14.478 14.478 0 0 0 0 4.813l-1.965 2.009a2.08 2.08 0 0 0-.315 2.49l2.218 3.86a2.08 2.08 0 0 0 2.325.978l2.709-.702a14.256 14.256 0 0 0 4.139 2.402l.749 2.71a2.08 2.08 0 0 0 2.005 1.526h4.436a2.08 2.08 0 0 0 2.005-1.526l.75-2.71a14.257 14.257 0 0 0 4.14-2.402l2.706.702a2.08 2.08 0 0 0 2.326-.978l2.218-3.86a2.08 2.08 0 0 0-.316-2.49l-1.964-2.01a14.477 14.477 0 0 0 0-4.813l1.965-2.009a2.08 2.08 0 0 0 .315-2.49l-2.219-3.86a2.08 2.08 0 0 0-2.324-.978l-2.709.702a14.256 14.256 0 0 0-4.138-2.402l-.749-2.71a2.08 2.08 0 0 0-2.007-1.526zm.956 6.421.626-2.261h1.271l.627 2.261a2.08 2.08 0 0 0 1.446 1.45 10.098 10.098 0 0 1 4.38 2.544 2.08 2.08 0 0 0 1.983.532l2.257-.585.644 1.12-1.64 1.678a2.08 2.08 0 0 0-.528 1.971c.208.812.32 1.666.32 2.549s-.112 1.737-.32 2.549a2.08 2.08 0 0 0 .527 1.97l1.641 1.68-.644 1.12-2.257-.586a2.08 2.08 0 0 0-1.982.532 10.096 10.096 0 0 1-4.38 2.544 2.08 2.08 0 0 0-1.447 1.45l-.628 2.261h-1.272l-.624-2.261a2.08 2.08 0 0 0-1.447-1.45 10.097 10.097 0 0 1-4.38-2.544 2.08 2.08 0 0 0-1.983-.532l-2.257.585-.645-1.12 1.642-1.678a2.08 2.08 0 0 0 .527-1.971c-.208-.812-.32-1.666-.32-2.549s.112-1.737.32-2.548a2.08 2.08 0 0 0-.527-1.972l-1.642-1.678.645-1.12 2.257.585a2.08 2.08 0 0 0 1.982-.532 10.097 10.097 0 0 1 4.38-2.544 2.08 2.08 0 0 0 1.447-1.45z"
-                                            data-original="#000000"
-                                        />
-                                    </g>
-                                </svg>
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                class="w-[18px] h-[18px] mr-3"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19.56 23.253H4.44a4.051 4.051 0 0 1-4.05-4.05v-9.115c0-1.317.648-2.56 1.728-3.315l7.56-5.292a4.062 4.062 0 0 1 4.644 0l7.56 5.292a4.056 4.056 0 0 1 1.728 3.315v9.115a4.051 4.051 0 0 1-4.05 4.05zM12 2.366a2.45 2.45 0 0 0-1.393.443l-7.56 5.292a2.433 2.433 0 0 0-1.037 1.987v9.115c0 1.34 1.09 2.43 2.43 2.43h15.12c1.34 0 2.43-1.09 2.43-2.43v-9.115c0-.788-.389-1.533-1.037-1.987l-7.56-5.292A2.438 2.438 0 0 0 12 2.377z"
+                                    data-original="#000000"
+                                ></path>
+                                <path
+                                    d="M16.32 23.253H7.68a.816.816 0 0 1-.81-.81v-5.4c0-2.83 2.3-5.13 5.13-5.13s5.13 2.3 5.13 5.13v5.4c0 .443-.367.81-.81.81zm-7.83-1.62h7.02v-4.59c0-1.933-1.577-3.51-3.51-3.51s-3.51 1.577-3.51 3.51z"
+                                    data-original="#000000"
+                                ></path>
+                            </svg>
                             Assets
                         </h6>
                         <svg
@@ -538,10 +540,11 @@ onMounted(() => {
                         class="pl-4 mt-2 space-y-1 overflow-hidden transition-all duration-300 max-h-0"
                     >
                         <li>
-                             <Link  prefetch="mount"
-                            cache-for="5m"
+                            <Link
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/trucks"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -559,10 +562,10 @@ onMounted(() => {
                         </li>
                         <li>
                             <Link
-                            prefetch="mount"
-                            cache-for="5m"
+                                prefetch="mount"
+                                cache-for="5m"
                                 href="/faults"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -582,10 +585,10 @@ onMounted(() => {
                                 <span>Faults</span>
                             </Link>
                         </li>
-                          <li>
+                        <li>
                             <a
                                 href="javascript:void(0)"
-                                class="text-white font-normal transition-all text-[13px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -607,6 +610,32 @@ onMounted(() => {
                                 <span>Faulty Units</span>
                             </a>
                         </li>
+
+                           <li>
+                            <a
+                                href="javascript:void(0)"
+                                class="text-white font-normal transition-all text-[14px] flex items-center hover:bg-blue-300 rounded-md px-4 py-2"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    class="w-[18px] h-[18px] mr-3"
+                                    viewBox="0 0 510 510"
+                                >
+                                    <g fill-opacity="0.9">
+                                        <path
+                                            d="M255 0C114.75 0 0 114.75 0 255s114.75 255 255 255 255-114.75 255-255S395.25 0 255 0zm0 459c-112.2 0-204-91.8-204-204S142.8 51 255 51s204 91.8 204 204-91.8 204-204 204z"
+                                            data-original="#000000"
+                                        />
+                                        <path
+                                            d="M267.75 127.5H229.5v153l132.6 81.6 20.4-33.15-114.75-68.85z"
+                                            data-original="#000000"
+                                        />
+                                    </g>
+                                </svg>
+                                <span>Reminders / Todos</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -615,27 +644,24 @@ onMounted(() => {
                         class="flex items-center cursor-pointer group collapsible-toggle"
                     >
                         <h6 class="text-white group- text-[15px] px-4 flex">
-                             <svg
-                                        fill="currentColor"
-                                        viewBox="0 0 32 32"
-                                        class="w-[18px] h-[18px] mr-3"
-                                    >
-                                        <g
-                                            id="SVGRepo_bgCarrier"
-                                            stroke-width="0"
-                                        ></g>
-                                        <g
-                                            id="SVGRepo_tracerCarrier"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        ></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <title>truck</title>
-                                            <path
-                                                d="M26.969 13c-0.553 0-1 0-1 0h-1.979l-0.013 1.256c0.598 0.341 0.992 0.989 0.992 1.744l0.042 6.938h-18.98v-6.938c0-0.738 0.404-1.376 1-1.723v-1.277h-2c0 0-0.448 0-1 0-0.553 0-1-0.448-1-1v-1c0-0.553 0.447-1 1-1 0.552 0 1 0 1 0v2h2v-3c0-1.104 0.896-2 2-2h13c1.104 0 2 0.896 2 2l-0.031 3h1.969v-2c0 0 0.447 0 1 0 0.552 0 1 0.447 1 1v1c0 0.552-0.448 1-1 1zM12.031 22h7v-1h-7v1zM12.031 20h7v-1h-7v1zM12.031 18h7v-1h-7v1zM8.031 21c0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1h-1c-0.552 0-1 0.447-1 1zM22.031 10c0-0.553-0.447-1-1-1h-11c-0.553 0-1 0.447-1 1v5h13v-5zM22.031 20h-1c-0.553 0-1 0.447-1 1 0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1zM23.031 6h-15c-1.104 0-2 0.896-2 2v-5c0-0.553 0.447-1 1-1h17c0.552 0 1 0.447 1 1v5c0-1.104-0.895-2-2-2zM25.031 24.938c0 0.552-0.448 1-1 1h-17c-0.553 0-1-0.448-1-1 0-0.553 0-1 0-1h19c0 0 0 0.447 0 1zM11.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2zM23.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2z"
-                                            ></path>
-                                        </g>
-                                    </svg>
+                            <svg
+                                fill="currentColor"
+                                viewBox="0 0 32 32"
+                                class="w-[18px] h-[18px] mr-3"
+                            >
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g
+                                    id="SVGRepo_tracerCarrier"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <title>truck</title>
+                                    <path
+                                        d="M26.969 13c-0.553 0-1 0-1 0h-1.979l-0.013 1.256c0.598 0.341 0.992 0.989 0.992 1.744l0.042 6.938h-18.98v-6.938c0-0.738 0.404-1.376 1-1.723v-1.277h-2c0 0-0.448 0-1 0-0.553 0-1-0.448-1-1v-1c0-0.553 0.447-1 1-1 0.552 0 1 0 1 0v2h2v-3c0-1.104 0.896-2 2-2h13c1.104 0 2 0.896 2 2l-0.031 3h1.969v-2c0 0 0.447 0 1 0 0.552 0 1 0.447 1 1v1c0 0.552-0.448 1-1 1zM12.031 22h7v-1h-7v1zM12.031 20h7v-1h-7v1zM12.031 18h7v-1h-7v1zM8.031 21c0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1h-1c-0.552 0-1 0.447-1 1zM22.031 10c0-0.553-0.447-1-1-1h-11c-0.553 0-1 0.447-1 1v5h13v-5zM22.031 20h-1c-0.553 0-1 0.447-1 1 0 0.552 0.447 1 1 1h1c0.552 0 1-0.448 1-1 0-0.553-0.448-1-1-1zM23.031 6h-15c-1.104 0-2 0.896-2 2v-5c0-0.553 0.447-1 1-1h17c0.552 0 1 0.447 1 1v5c0-1.104-0.895-2-2-2zM25.031 24.938c0 0.552-0.448 1-1 1h-17c-0.553 0-1-0.448-1-1 0-0.553 0-1 0-1h19c0 0 0 0.447 0 1zM11.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2zM23.031 29c0 0.552-0.448 1-1 1h-1c-0.553 0-1-0.448-1-1v-2h3v2z"
+                                    ></path>
+                                </g>
+                            </svg>
                             Actions
                         </h6>
                         <svg
@@ -698,7 +724,7 @@ onMounted(() => {
             <!-- Page Content -->
 
             <div class="mx-2 md:ml-36">
-                <main class="py-20">
+                <main class="py-20 bg">
                     <Message />
                     <slot />
                 </main>
@@ -706,3 +732,14 @@ onMounted(() => {
         </div>
     </div>
 </template>
+ <!-- <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    class="w-[18px] h-[18px] mr-3"
+                                    viewBox="0 0 512 512"
+                                >
+                                    <path
+                                        d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0"
+                                        data-original="#000000"
+                                    />
+                                </svg> -->

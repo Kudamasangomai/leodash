@@ -17,10 +17,11 @@ const props = defineProps({
 });
 
 const confirmDeleteCalibration = ref(false);
-
+const copytable = ref(false);
 
 const closeModal = () => {
     confirmDeleteCalibration.value = false;
+    copytable.value = false;
 };
 
 // --- New: upload form logic ---
@@ -52,6 +53,35 @@ function submitUpload() {
     });
 }
 
+
+     // modal visibility
+
+
+// Function to copy table content
+function copyTable() {
+ const table = document.getElementById('table-');
+    if (!table) return;
+
+    let text = '';
+    // Loop through each row
+    for (const row of table.rows) {
+        const rowText = Array.from(row.cells)
+            .map(cell => cell.innerText.trim()) // get text from each cell
+            .join('\t'); // tab-separated
+        text += rowText + '\n'; // add newline at the end of each row
+    }
+
+    // Copy to clipboard
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    copytable.value = true;
+
+}
 </script>
 
 <template>
@@ -66,7 +96,7 @@ function submitUpload() {
             </PageHeader>
 
             <!-- New: Vue-compatible file upload form (replaces Splade form) -->
-            <div class="p-6 space-y-6  rounded shadow-sm mb-4">
+            <div class="p-6 mb-4 space-y-6 rounded shadow-sm">
                 <form @submit.prevent="submitUpload" enctype="multipart/form-data" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">
@@ -77,9 +107,9 @@ function submitUpload() {
                             accept=".xlsx,.xls"
                             @change="onFileChange"
                             required
-                            class="mt-1 block w-full text-sm text-gray-700 p-4"
+                            class="block w-full p-4 mt-1 text-sm text-gray-700"
                         />
-                        <div v-if="uploadForm.errors.file" class="text-red-600 text-sm mt-1">
+                        <div v-if="uploadForm.errors.file" class="mt-1 text-sm text-red-600">
                             {{ uploadForm.errors.file }}
                         </div>
                     </div>
@@ -104,7 +134,15 @@ function submitUpload() {
             <!-- end new -->
 
             <div class="px-2 overflow-x-auto">
-                <table class="min-w-full border border-gray-200">
+                    <div class="mb-2 text-right">
+        <button
+          @click="copyTable()"
+          class="px-3 py-1 text-white bg-blue-500 rounded hover:bg-blue-600"
+        >
+          Copy Table
+        </button>
+      </div>
+                <table :id="'table-'" class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200">
                         <tr>
                             <th class="p-2 border">Location</th>
@@ -113,11 +151,12 @@ function submitUpload() {
                             <th class="p-2 border">1st Truck</th>
                             <th class="p-2 border">Last Truck</th>
                             <th class="p-2 border">Last 3 Trucks</th>
+                            <th class="p-2 border">After 6</th>
 
                         </tr>
                     </thead>
                     <tbody   class="divide-y divide-gray-200 whitespace-nowrap">
-                        <tr v-if="reports" v-for="row in reports" :key="row.id"      class="odd:bg-gray-50 text-center">
+                        <tr v-if="reports" v-for="row in reports" :key="row.id"      class="text-center odd:bg-gray-50">
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
@@ -157,6 +196,14 @@ function submitUpload() {
                                 </p>
                             </td>
 
+                              <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                             <p v-if="row.last_3_after_6am !== undefined">
+        {{ row.last_3_after_6am }}
+    </p>
+                            </td>
+
                         </tr>
                         <tr v-else>
                             <td>nothign to show</td>
@@ -176,6 +223,19 @@ function submitUpload() {
                     <SecondaryButton @click="closeModal">
                         Ok
                     </SecondaryButton>
+                </div>
+            </div>
+        </Modal>
+
+           <Modal :show="copytable" @close="closeModal">
+            <div class="p-4 ">
+                <h2 class="text-lg font-medium text-gray-900">
+
+                   <span class="font-bold">{{ selectedEventType }}</span> Succesfully Copied to Clipboard
+                </h2>
+
+                <div class="flex justify-end mt-6">
+                    <SecondaryButton @click="closeModal"> Ok </SecondaryButton>
                 </div>
             </div>
         </Modal>

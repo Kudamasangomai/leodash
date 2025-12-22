@@ -36,6 +36,21 @@ class MovingReportController extends Controller
             'yard manga' => 'Beira',
 
         ];
+        $desiredOrder = [
+            'Chirundu',
+            'Manica Customs',
+            'Marondera',
+            'At Harare - Leopack Yard',
+            'Forbes',
+            'Lusaka',
+            'Karoi',
+            'Mutare',
+            'Headlands',
+            'Rusape',
+            'Chinhoyi',
+            'Inchope',
+            'Beira',
+        ];
 
         // 1) Fetch all filtered reports
         // Only include locations from our filter list
@@ -46,9 +61,8 @@ class MovingReportController extends Controller
                     $query->orWhere('location', 'LIKE', "%{$keyword}%");
                 }
             })
-            ->get() // Loop through each record and transform it.
+            ->get()
             ->map(function ($item) use ($locationFilters) {
-                // Normalize location
                 $locLower = strtolower($item->location);
 
                 foreach ($locationFilters as $keyword => $name) {
@@ -67,9 +81,16 @@ class MovingReportController extends Controller
                 $item->time_sent = Carbon::parse($item->time_sent);
 
                 return $item;
-            })
-            ->groupBy('clean_location')
-            ->map(function ($group) {
+            });
+        // 2) Group by clean_location
+        $groupedReports = $reports->groupBy('clean_location');
+
+
+
+        // 3) Map over desired order
+        $reports = collect($desiredOrder)->map(function ($location) use ($groupedReports) {
+            if ($groupedReports->has($location)) {
+                $group = $groupedReports->get($location);
 
                 $sortedAsc  = $group->sortBy('time_sent');
                 $sortedDesc = $group->sortByDesc('time_sent');
@@ -77,39 +98,52 @@ class MovingReportController extends Controller
                 $earliest = $sortedAsc->first();
                 $latest   = $sortedDesc->first();
 
+                $last3 = $sortedDesc->take(3)->sortBy('time_sent')->values();
+
+                // Count last 3 trucks with time_sent after 6:00
+                $after6Count = $last3->filter(function ($truck) {
+                    return $truck->time_sent->format('H:i:s') >= '06:00:00';
+                })->count();
+
                 return [
-                    'location'     => $earliest->clean_location,
-                    // 'early_trucks' => 1,
+                    'location'     => $location,
                     'total_trucks' => $group->count(),
-
                     'time_frame'   => $earliest->time_sent->diff($latest->time_sent)->format('%H:%I:%S'),
-
                     'first_truck'  => $earliest->asset_name,
                     'first_time'   => $earliest->time_sent->format('H:i:s'),
-
                     'last_truck'   => $latest->asset_name,
                     'last_time'    => $latest->time_sent->format('H:i:s'),
-
-                    // take latest 3 trucks sort them ascending by time
-
-                    'last_3'       => $sortedDesc->take(3)->sortBy('time_sent')->map(function ($it) {
-                            return [
-                                'asset' => $it->asset_name,
-                                'time'  => $it->time_sent->format('H:i:s'),
-                            ];
-
-                        })
-                        ->values()->all(),
-
+                    'last_3'       => $last3->map(function ($it) {
+                        return [
+                            'asset' => $it->asset_name,
+                            'time'  => $it->time_sent->format('H:i:s'),
+                        ];
+                    })->values()->all(),
+                    'last_3_after_6am'  => $after6Count,
                 ];
-            })
-            ->values();
-  $v = Carbon::createFromTime(6, 0, 0);
-      
+            } else {
+                // Location has no reports
+                return [
+                    'location'     => $location,
+                    'total_trucks' => 0,
+                    'time_frame'   => null,
+                    'first_truck'  => null,
+                    'first_time'   => null,
+                    'last_truck'   => null,
+                    'last_time'    => null,
+                    'last_3'       => [],
+                    'last_3_after_6am'  => 0,
+                ];
+            }
+        })->values();
 
-          return Inertia::render('EarlyStart/show', [
+
+        $v = Carbon::createFromTime(6, 0, 0);
+
+
+        return Inertia::render('EarlyStart/show', [
             'v' => $v,
-            'reports'=> $reports
-          ]);
+            'reports' => $reports
+        ]);
     }
 }
