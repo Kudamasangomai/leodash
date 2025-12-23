@@ -20,24 +20,24 @@ const confirmDeleteCalibration = ref(false);
 const calibrationToDelete = ref(null);
 const deleteform = useForm({});
 
-
-
 const confirmCalibrationDelete = (id) => {
     calibrationToDelete.value = id;
     confirmDeleteCalibration.value = true;
 };
 
 const DeleteCalibration = () => {
-    deleteform.delete(route("dstcalibrations.destroy", calibrationToDelete.value), {
-        preserveScroll: true,
-        onSuccess: () => closeModal(),
-    });
+    deleteform.delete(
+        route("dstcalibrations.destroy", calibrationToDelete.value),
+        {
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+        }
+    );
 };
 
 const closeModal = () => {
     confirmDeleteCalibration.value = false;
 };
-
 </script>
 
 <template>
@@ -73,120 +73,121 @@ const closeModal = () => {
                     </div>
                 </div>
             </PageHeader>
-               <div class="px-2 overflow-x-auto">
-            <table class="min-w-full border border-gray-200">
-                <thead class="bg-gray-200 whitespace-nowrap">
-                    <tr class="border border-gray-300">
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                            Id
-                        </th>
-                        <!-- <th
+            <div class="px-2 overflow-x-auto">
+                <table class="min-w-full border border-gray-200">
+                    <thead class="bg-gray-200 whitespace-nowrap">
+                        <tr class="border border-gray-300">
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Id
+                            </th>
+                            <!-- <th
                             class="p-2 border font-medium border-r text-[13px]  border-gray-300"
                         >
                             Asset name
                         </th> -->
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Asset Name</th>
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                            Date Created
-                        </th>
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                            Status(road test done)
-                        </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Asset Name
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Date Created
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Status(road test done)
+                            </th>
 
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Date(road test done)
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Created By
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 whitespace-nowrap">
+                        <tr
+                            class="odd:bg-gray-50"
+                            v-for="cal in calibrations.data"
+                            :key="cal.id"
                         >
-                            Date(road test done)
-                        </th>
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                          Created By
-                        </th>
-                        <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                 <tbody
-                                    class="divide-y divide-gray-200 whitespace-nowrap"
+                            <td class="px-4 py-3 border-r border-gray-200">
+                                {{ cal.id }}
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ cal.truck.unitname }}
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ cal.created_at }}
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ cal.road_test_done }}
+                            </td>
+
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                <span v-if="cal.date_went_to_roadtest">{{
+                                    cal.date_went_to_roadtest
+                                }}</span>
+                                <span
+                                    v-if="cal.notes"
+                                    class="block text-xs text-gray-500"
+                                    >{{ cal.notes }}</span
                                 >
-                                    <tr
-                                        class="odd:bg-gray-50"
-                                        v-for="cal in calibrations.data" :key="cal.id"
-                                    >
-                                        <td
-                                            class="px-4 py-3 border-r border-gray-200"
-                                        >
-                                            {{ cal.id }}
-                                        </td>
-                                        <td
-                                            class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                        >
-                                            {{ cal.truck.unitname }}
-                                        </td>
-                                        <td
-                                            class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                        >
-                                            {{ cal.created_at }}
-                                        </td>
-                                        <td
-                                            class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                        >
-                                          {{ cal.road_test_done }}
-                                        </td>
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ cal.user.name }}
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
+                            >
+                                <Link
+                                    prefetch="mount"
+                                    cache-for="2m"
+                                    :href="`/dstcalibrations/${cal.id}/edit`"
+                                    class="text-indigo-600 hover:text-indigo-900 me-3"
+                                    >Edit</Link
+                                >
 
-                                          <td
-                                            class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                        >
-                                          <span v-if="cal.date_went_to_roadtest">{{ cal.date_went_to_roadtest }}</span>
-                                          <span v-if="cal.notes" class="block text-xs text-gray-500">{{ cal.notes }}</span>
-                                        </td>
-                                        <td
-                                            class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                        >
-                                          {{ cal.user.name }}
-                                        </td>
-                                        <td
-                                            class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
-                                        >
-
-                                            <Link
-                                                prefetch="mount"
-                                                cache-for="2m"
-                                                :href="`/dstcalibrations/${cal.id}/edit`"
-                                                class="text-indigo-600 hover:text-indigo-900 me-3"
-                                                >Edit</Link
-                                            >
-
-
-                                                <a
-                                            href="#"
-                                            as="button"
-                                            @click="
-                                                confirmCalibrationDelete(
-                                                    cal.id
-                                                )
-                                            "
-                                        >
-                                            <Deleteicon />
-                                        </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-            </table>
+                                <a
+                                    href="#"
+                                    as="button"
+                                    @click="confirmCalibrationDelete(cal.id)"
+                                >
+                                    <Deleteicon />
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </MainContent>
 
-      <Modal :show="confirmDeleteCalibration" @close="closeModal">
+        <Modal :show="confirmDeleteCalibration" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
                     Are you sure you want to delete This Distance Calibration

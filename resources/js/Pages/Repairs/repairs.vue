@@ -23,6 +23,7 @@ const props = defineProps({
     repairs: Array,
     trucks: Array,
     faults: Array,
+    users : Array
 });
 
 
@@ -40,6 +41,8 @@ const form = useForm({
     status: "pending",
     location: "",
     comments: "",
+    donebyid:""
+
 });
 
 const openCreateModal = () => {
@@ -214,7 +217,7 @@ function triggerFetchLocations() {
                             <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Location</th>
                             <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Reported At</th>
                             <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Checked At</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Created By</th>
+                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Created By - Repaired By</th>
                             <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Actions</th>
                         </tr>
                     </thead>
@@ -269,7 +272,8 @@ function triggerFetchLocations() {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-                                {{ repair.user.name }}
+                                {{ repair.user.name }}<br/>
+                                {{ repair.done_by?.name}}
                             </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 flex gap-2"
@@ -460,6 +464,32 @@ function triggerFetchLocations() {
                         >
                             {{ form.errors.comments }}
                         </div>
+
+                         <div>
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Fault</label
+                        >
+                        <select
+                            v-model="form.donebyid"
+                            required
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        >
+                            <option value="">Done By</option>
+                            <option
+                                v-for="user in users"
+                                :key="user.id"
+                                :value="user.id"
+                            >
+                                {{ user.name }}
+                            </option>
+                        </select>
+                        <div
+                            v-if="form.errors.fault_id"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.user_id }}
+                        </div>
+                    </div>
 
                     <div class="flex justify-end gap-3 mt-6">
                         <SecondaryButton @click="closeRepairModal"

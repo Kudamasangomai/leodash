@@ -35,17 +35,11 @@ class ViolationController extends Controller
         DB::table('violations')->truncate();
         Excel::import(
             new EventsReportImport,
-            $request->file('file') // 👈 TEMP FILE
+            $request->file('file')
         );
 
-        $violations = Violation::latest()->take(500)->get(); // example
-
-        // Pass to Inertia view
-
+        $violations = Violation::latest()->take(500)->get();
         return Redirect::back()->with('',$violations);
-        // return Inertia::render('Violations/violations', [
-        //     'violations' => $violations,
-        //     'message' => 'Speeding report uploaded successfully',
-        // ]);
+
     }
 }

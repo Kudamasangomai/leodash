@@ -29,7 +29,7 @@ class DistanceCalibration extends Model
         return Carbon::parse($value)->format('d M Y');
     }
 
-      public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute($value)
     {
         if ($value === null || $value === '') {
             return null;
@@ -46,7 +46,7 @@ class DistanceCalibration extends Model
     }
 
     /**
-     * Get the user who created this calibration.
+     * Get the user who created this calibration record.
      */
     public function user(): BelongsTo
     {

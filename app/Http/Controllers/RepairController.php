@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Requests\StoreRepairRequest;
 use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
+use App\Models\User;
 use App\Services\FetchLocationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,17 +17,19 @@ class RepairController extends Controller
 {
     public function index()
     {
-        $repairs = Repair::with(['truck', 'user', 'fault'])
+        $repairs = Repair::with(['truck', 'user', 'fault','doneBy'])
             ->orderBy('last_reported_at', 'ASC')
             ->get();
 
         $trucks = Truck::all();
         $faults = Fault::all();
+        $users  = User::all();
 
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
             'trucks' => $trucks,
             'faults' => $faults,
+            'users' => $users,
         ]);
     }
 
@@ -35,11 +38,10 @@ class RepairController extends Controller
 
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
-        $haspendingrepair = Repair::hasPendingReapir( $validated['fault_id'],$validated['truck_id']);
+        $haspendingrepair = Repair::hasPendingReapir($validated['fault_id'], $validated['truck_id']);
 
         if ($haspendingrepair) {
             return back()->with('warning', $haspendingrepair);
-
         }
 
         Repair::create($validated);
@@ -55,31 +57,28 @@ class RepairController extends Controller
 
     public function update(UpdateRepairRequest $request, Repair $repair)
     {
-
         $validated = $request->validated();
         $repair->update($validated);
         return redirect()->back();
-
     }
 
 
-    public function closerepair(Request $request ,$id)
+    public function closerepair(Request $request, $id)
     {
 
-     $repair = Repair::where('id', $id)->firstOrFail();
+
+        $repair = Repair::findOrFail($id);
         $repairdata = $request->validate([
             'comments' => 'required',
         ]);
 
-            $repair->update(
-                $repairdata +[
+        $repair->update(
+            $repairdata + [
                 'status' => 'completed',
-                ]
-            );
-              return back()->with('success', 'Record Completed Successfully');
-
-
-
+                'done_by' => $request->donebyid,
+            ]
+        );
+        return back()->with('success', 'Record Completed Successfully');
     }
     public function destroy(Repair $repair)
     {

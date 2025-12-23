@@ -19,7 +19,8 @@ class EventsReportImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         // 1️⃣ Filter rows that have required fields
-        $rows = $rows->filter(fn($row) =>
+        $rows = $rows->filter(
+            fn($row) =>
             isset($row['AssetName'], $row['EventType'], $row['EventStartDate'], $row['EventValue'])
         );
 
@@ -27,7 +28,7 @@ class EventsReportImport implements ToCollection, WithHeadingRow
         $rows = $rows->map(function ($row) {
             $row['EventValue'] = (float) $row['EventValue'];
 
-             $totalSeconds = $row['TotalDuration'] * 24 * 60 * 60;
+            $totalSeconds = $row['TotalDuration'] * 24 * 60 * 60;
             $hours   = floor($totalSeconds / 3600);
             $minutes = floor(($totalSeconds % 3600) / 60);
             $seconds = round($totalSeconds % 60);
@@ -61,7 +62,7 @@ class EventsReportImport implements ToCollection, WithHeadingRow
                     [
                         'driver'      => $row['AssetName2'] ?? 'Unknown',
                         'location'    => $row['StartLocation'] ?? null,
-                        'duration'    =>  $row['Duration_HMS']?? null,
+                        'duration'    =>  $row['Duration_HMS'] ?? null,
                         'max_speed'   => $row['EventValue'],
                         'destination' => null,
                         'coordinates' => $row['StartLatLong'] ?? null,

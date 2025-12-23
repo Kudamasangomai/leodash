@@ -152,7 +152,7 @@ const savefault = () => {
                                             <tr
                                                 v-for="fault in faults"
                                                 :key="faults.id"
-                                                     class="odd:bg-gray-50"
+                                                class="odd:bg-gray-50"
                                             >
                                                 <td
                                                     scope="row"

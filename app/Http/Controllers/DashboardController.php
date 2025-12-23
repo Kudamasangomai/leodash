@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fault;
+use App\Models\Repair;
 use App\Models\Truck;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,9 +35,16 @@ class DashboardController extends Controller
                 return $truck;
             });
 
+        $faultCounts = Fault::withCount([
+            'repairs as total' => fn($q) =>
+            $q->where('status', '!=', 'completed')
+        ])
+            ->pluck('total', 'name');
+
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $inactiveReportingTrucks,
             'inactiveReportingCount'  => $inactiveReportingTrucks->count(),
+            'faultCounts'             => $faultCounts,
         ]);
     }
 }

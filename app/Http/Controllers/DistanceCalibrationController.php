@@ -85,10 +85,7 @@ class DistanceCalibrationController extends Controller
      */
     public function update(UpdateDistanceCalibrationRequest $request, DistanceCalibration $dstcalibration)
     {
-
-
         $dstcalibration->update($request->validated());
-
         return Redirect::route('dstcalibrations.index');
     }
 
@@ -97,7 +94,6 @@ class DistanceCalibrationController extends Controller
      */
     public function destroy(DistanceCalibration $dstcalibration)
     {
-
         $dstcalibration->delete();
         return Redirect::back();
     }

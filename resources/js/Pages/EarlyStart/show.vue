@@ -9,7 +9,6 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Modal from "@/Components/Modal.vue";
 import { ref, watch } from "vue";
 import Spinner from "@/Components/Spinner.vue";
-import DangerButton from "@/Components/DangerButton.vue";
 
 const props = defineProps({
     v: Object,
@@ -36,7 +35,6 @@ function onFileChange(e) {
 
 function submitUpload() {
     if (!uploadForm.file) {
-        // simple client-side guard; server-side validation still applies
         return;
     }
 
@@ -53,8 +51,6 @@ function submitUpload() {
     });
 }
 
-
-     // modal visibility
 
 
 // Function to copy table content
@@ -78,7 +74,6 @@ function copyTable() {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
-
     copytable.value = true;
 
 }

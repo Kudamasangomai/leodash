@@ -22,11 +22,6 @@ class FetchLocationService
         $this->baseurl = config('services.globaltrack.api_url');
     }
 
-    /**
-     * Fetch XML positions and update repairs' location and reported_at for matching trucks.
-     *
-     * Returns array with counts: ['processed' => int, 'updated' => int]
-     */
     public function fetchAndUpdate(): array
     {
         $processed = 0;
@@ -47,8 +42,6 @@ class FetchLocationService
 
             $response = Http::timeout(6000)->get($url);
 
-
-
             if ($response->failed()) {
                 Log::error('FetchLocationService: failed to fetch XML', ['status' => $response->status()]);
             }
@@ -67,7 +60,7 @@ class FetchLocationService
             }
 
             $truckMap = Truck::pluck('id', 'unitname')->toArray();
-     $truckUpdates = [];
+            $truckUpdates = [];
             // Loop rows - only get unit_name, position_text and datetime
             foreach ($xml->row ?? [] as $row) {
                 $processed++;

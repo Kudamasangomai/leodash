@@ -21,13 +21,11 @@ class FaultController extends Controller
 
     public function store(StoreFaultRequest $request)
     {
-
         Fault::create($request->validated());
         return Redirect::back();
     }
 
     public function update(UpdateFaultRequest $request , Fault $fault){
-
         $fault->update($request->validated());
         return Redirect::back();
     }

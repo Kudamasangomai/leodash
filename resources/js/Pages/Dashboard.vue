@@ -9,6 +9,7 @@ import DashboardStats from "@/Components/DashboardStats.vue";
 const props = defineProps({
     inactiveReportingTrucks: Array,
     inactiveReportingCount: Number,
+    faultCounts: Array,
 });
 
 const showGtmodal = ref(false);
@@ -140,6 +141,8 @@ const closeGtmodal = () => {
                                             </label>
                                         </li>
                                     </ul>
+
+
                                 </div>
                             </div>
                         </div>
@@ -151,6 +154,7 @@ const closeGtmodal = () => {
                                 class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
+
                                 <div
                                     @click="openGtmodaldiv()"
                                     class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
@@ -185,11 +189,13 @@ const closeGtmodal = () => {
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
                                             No Trip Data
+
                                         </h2>
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            7
+
+                                                            {{ faultCounts['Fm No Trip Data'] ?? 0 }}
                                         </h3>
                                     </div>
                                     <div
@@ -216,7 +222,8 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            15
+
+                                             {{ faultCounts['Gps Speed'] ?? 0 }}
                                         </h3>
                                     </div>
                                     <div
@@ -238,12 +245,13 @@ const closeGtmodal = () => {
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
-                                            Fm not Reprting
+                                            Fm Not Reporting
                                         </h2>
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            8
+                                            {{ faultCounts['Fm Not Reporting'] ?? 0 }}
+
                                         </h3>
                                     </div>
                                     <div
@@ -272,7 +280,9 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            {{ inactiveReportingCount }}
+                                              {{ faultCounts['No Speed'] ?? 0}}
+
+
                                         </h3>
                                     </div>
                                     <div
@@ -293,7 +303,7 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            {{ inactiveReportingCount }}
+{{ faultCounts['No Rpm'] ?? 0}}
                                         </h3>
                                     </div>
                                     <div
@@ -319,7 +329,8 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            {{ inactiveReportingCount }}
+
+                                               {{ faultCounts['No Rpm and Speed'] ?? 0}}
                                         </h3>
                                     </div>
                                     <div
@@ -340,7 +351,7 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            {{ inactiveReportingCount }}
+                                                  {{ faultCounts['Faulty Gps'] ?? 0 }}
                                         </h3>
                                     </div>
                                     <div

@@ -23,6 +23,10 @@ class Repair extends Model
     {
         return $this->belongsTo(User::class);
     }
+        public function doneBy()
+    {
+        return $this->belongsTo(User::class, 'done_by');
+    }
 
     public function fault()
     {
