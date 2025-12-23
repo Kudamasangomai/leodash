@@ -9,6 +9,7 @@ use App\Http\Controllers\MovingReportImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\RepairController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViolationController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/lightvehiclescoring/upload', [LightvehiclescoringController::class, 'upload'])->name('lvs.upload');
     Route::post('/lightvehiclescoring/scoringReport', [LightvehiclescoringController::class, 'scoringReport'])->name('lvs.scoringReport');
     Route::resource('lightvehiclescoring',LightvehiclescoringController::class);
+
+    Route::resource('users',UserController::class);
 
 });
 

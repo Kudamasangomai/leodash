@@ -13,7 +13,6 @@ import Editicon from "@/Components/Editicon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
 import { usePage } from "@inertiajs/vue3";
-import Message from "@/Components/Message.vue";
 import Closeicon from "@/Components/Closeicon.vue";
 
 

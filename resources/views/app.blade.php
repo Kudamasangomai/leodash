@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" sizes="512x512" class="bg-white rounded-full" href="{{ asset('images/SendemLogo.png') }}" type="image/png">
+    <link rel="icon" sizes="512x512" class="bg-white rounded-full" href="{{ asset('images/sendemlogo.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
