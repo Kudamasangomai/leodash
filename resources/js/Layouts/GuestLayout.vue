@@ -16,7 +16,7 @@ import { Link } from "@inertiajs/vue3";
                     >
                         <img
                             src="/images/dasht2.jpg"
-                            class="object-cover w-full h-full "
+                            class="object-cover w-full h-full"
                             alt="login img"
                         />
 
@@ -24,11 +24,20 @@ import { Link } from "@inertiajs/vue3";
                             class="absolute inset-0 flex items-center justify-center max-w-sm p-6 m-auto"
                         >
                             <div>
-                                <h1 class="text-4xl font-semibold text-white">
-                                    Sign in
+
+                                    <div class="flex items-center justify-center ">   <img
+                            src="/images/leologo.png"
+                            class="items-center h-20 w-30"
+                            alt="login img"
+                        /></div>
+                           <h1 class="mt-2 text-3xl font-medium text-white">
+                                  Comitted To Excellence
                                 </h1>
+                        <div class="py-20 text-transparent"></div>
+
+
                                 <p
-                                    class="text-slate-100 text-[15px] font-medium mt-6 leading-relaxed"
+                                    class="text-slate-100 text-[15px] font-medium mt-10 leading-relaxed"
                                 >
                                     Sign in to your account and explore a world
                                     of possibilities. Your journey begins here.

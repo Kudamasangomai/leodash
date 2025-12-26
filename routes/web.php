@@ -3,9 +3,11 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistanceCalibrationController;
 use App\Http\Controllers\FaultController;
+use App\Http\Controllers\FaultyUnitController;
 use App\Http\Controllers\LightvehiclescoringController;
 use App\Http\Controllers\MovingReportController;
 use App\Http\Controllers\MovingReportImportController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\RepairController;
@@ -50,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('lightvehiclescoring',LightvehiclescoringController::class);
 
     Route::resource('users',UserController::class);
+    Route::resource('notes',NoteController::class)->except('show');
+    Route::resource('faultyunits',FaultyUnitController::class)->except('show');
 
 });
 

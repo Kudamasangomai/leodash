@@ -15,16 +15,14 @@ import Spinner from "@/Components/Spinner.vue";
 import { usePage } from "@inertiajs/vue3";
 import Closeicon from "@/Components/Closeicon.vue";
 
-
 const pageProps = usePage().props;
 
 const props = defineProps({
     repairs: Array,
     trucks: Array,
     faults: Array,
-    users : Array
+    users: Array,
 });
-
 
 const showFormModal = ref(false);
 const confirmDeleteRepair = ref(false);
@@ -40,8 +38,7 @@ const form = useForm({
     status: "pending",
     location: "",
     comments: "",
-    donebyid:""
-
+    donebyid: "",
 });
 
 const openCreateModal = () => {
@@ -66,10 +63,8 @@ const openRepairModal = (repair) => {
     form.comments = repair.comments;
     form.fault = repair.fault.name;
     form.fault_id = repair.fault_id;
-   showRepairModal.value = true;
-
+    showRepairModal.value = true;
 };
-
 
 const submitForm = () => {
     if (editingRepair.value) {
@@ -83,15 +78,11 @@ const submitForm = () => {
     }
 };
 
-
 const CloseRepairForm = () => {
-
-        form.put(`/repairs/closerepair/${closeRepair.value.id}`, {
-            onSuccess: () => closeRepairModal(),
-        });
-
+    form.put(`/repairs/closerepair/${closeRepair.value.id}`, {
+        onSuccess: () => closeRepairModal(),
+    });
 };
-
 
 const closeFormModal = () => {
     showFormModal.value = false;
@@ -101,8 +92,7 @@ const closeFormModal = () => {
 
 const closeRepairModal = () => {
     showRepairModal.value = false;
-     form.reset();
-
+    form.reset();
 };
 
 const confirmDelete = (repair) => {
@@ -202,22 +192,55 @@ function triggerFetchLocations() {
                 </div>
             </span>
 
-
-
-
-
             <div class="px-2 overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Truck</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Fault</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Status</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Location</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Reported At</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">last Checked At</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Created By - Repaired By</th>
-                            <th class="p-2 border font-medium border-r text-[13px]  border-gray-300">Actions</th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Date
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Truck
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Fault
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Status
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Location
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Last Reported At
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Last Checked At
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Created By - Repaired By
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="text-center divide-y divide-gray-200">
@@ -227,12 +250,14 @@ function triggerFetchLocations() {
                             :key="repair.id"
                             class="odd:bg-gray-50"
                         >
-
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-
-
+                                {{ repair.created_at }}
+                            </td>
+                            <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
                                 {{ repair.truck.unitname }}
                             </td>
                             <td
@@ -271,28 +296,24 @@ function triggerFetchLocations() {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-                                {{ repair.user.name }}<br/>
-                                {{ repair.done_by?.name}}
+                                {{ repair.user.name }}<br />
+                                {{ repair.done_by?.name }}
                             </td>
                             <td
-                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 flex gap-2"
+                                class="px-4 py-3 text-[14px] justify-center text-slate-900 border-r border-gray-200 flex gap-2"
                             >
-                                <button
-                                    @click="openEditModal(repair)"
-
-                                >
+                                <button @click="openEditModal(repair)">
                                     <Editicon />
                                 </button>
 
-                                <button title="Close" class="mr-2"  @click="openRepairModal(repair)">
-
-         <Closeicon />
-
-                                                                        </button>
                                 <button
-                                    @click="confirmDelete(repair)"
-
+                                    title="Close"
+                                    class="mr-2"
+                                    @click="openRepairModal(repair)"
                                 >
+                                    <Closeicon />
+                                </button>
+                                <button @click="confirmDelete(repair)">
                                     <Deleteicon />
                                 </button>
                             </td>
@@ -307,6 +328,8 @@ function triggerFetchLocations() {
                         </tr>
                     </tbody>
                 </table>
+
+                
             </div>
         </MainContent>
 
@@ -344,8 +367,7 @@ function triggerFetchLocations() {
                         </div>
                     </div>
 
-
-                      <div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700"
                             >Fault</label
                         >
@@ -371,22 +393,24 @@ function triggerFetchLocations() {
                         </div>
                     </div>
 
-
-
-                    <div v-if="editingRepair">
+               <div v-if="editinguser">
                         <label class="block text-sm font-medium text-gray-700"
-                            >Location</label
+                            >Role</label
                         >
-                        <input
-                            v-model="form.location"
-                            type="text"
-                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
-                        />
+                           <select
+                                    v-model="form.role"
+                                    id="inputState"
+                               class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+
+                                >
+                                    <option value="1">Admin</option>
+                                    <option value="0">User</option>
+                                </select>
                         <div
-                            v-if="form.errors.location"
+                            v-if="form.errors.role"
                             class="mt-1 text-sm text-red-600"
                         >
-                            {{ form.errors.location }}
+                            {{ form.errors.role }}
                         </div>
                     </div>
                     <div class="flex justify-end gap-3 mt-6">
@@ -431,40 +455,32 @@ function triggerFetchLocations() {
             </div>
         </Modal>
 
-
         <!-- Close repair modal-->
-           <Modal :show="showRepairModal" @close="closeRepairModal">
+        <!-- <Modal :show="showRepairModal" @close="closeRepairModal">
             <div class="p-6 bg-white">
                 <h2 class="mb-4 text-lg font-medium text-gray-900">
-                   Close Repair
+                    Close Repair
                 </h2>
 
-                    <h6> Truck -  {{ form.truck }}</h6>
-                        <h6> Fault -  {{ form.fault }} </h6>
+                <h6>Truck - {{ form.truck }}</h6>
+                <h6>Fault - {{ form.fault }}</h6>
                 <form @submit.prevent="CloseRepairForm" class="space-y-4">
-
-
-
-
-
-
-
-                        <label class="block text-sm font-medium text-gray-700"
-                            >Job Done / comment</label
-                        >
-                        <input
+                    <label class="block text-sm font-medium text-gray-700"
+                        >Job Done / comment</label
+                    >
+                    <input
                         v-model="form.comments"
-                            type="text"
-                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
-                        />
-                        <div
-                            v-if="form.errors.comments"
-                            class="mt-1 text-sm text-red-600"
-                        >
-                            {{ form.errors.comments }}
-                        </div>
+                        type="text"
+                        class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                    />
+                    <div
+                        v-if="form.errors.comments"
+                        class="mt-1 text-sm text-red-600"
+                    >
+                        {{ form.errors.comments }}
+                    </div>
 
-                         <div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700"
                             >Fault</label
                         >
@@ -498,7 +514,7 @@ function triggerFetchLocations() {
                             type="submit"
                             :disabled="form.processing"
                         >
-                          Close
+                            Close
                             <span
                                 v-if="form.processing"
                                 class="flex items-center gap-2"
@@ -509,6 +525,6 @@ function triggerFetchLocations() {
                     </div>
                 </form>
             </div>
-        </Modal>
+        </Modal> -->
     </AuthenticatedLayout>
 </template>

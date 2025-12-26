@@ -17,19 +17,15 @@ class RepairController extends Controller
 {
     public function index()
     {
-        $repairs = Repair::with(['truck', 'user', 'fault','doneBy'])
+        $repairs = Repair::with(['truck', 'user', 'fault', 'doneBy'])
             ->orderBy('last_reported_at', 'ASC')
             ->get();
 
-        $trucks = Truck::all();
-        $faults = Fault::all();
-        $users  = User::all();
-
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
-            'trucks' => $trucks,
-            'faults' => $faults,
-            'users' => $users,
+            'trucks' => Truck::all(),
+            'faults' => Fault::all(),
+            'users' =>  User::all()
         ]);
     }
 

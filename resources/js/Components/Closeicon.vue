@@ -5,9 +5,9 @@
         viewBox="0 0 24 29"
         stroke-width="2"
         stroke="#1F51FF"
-        class="inline-block w-5 h-6"
+        class="inline-block w-5 h-6 mt-1"
         height="1em"
-        
+
     >
         <path
             stroke-linecap="round"

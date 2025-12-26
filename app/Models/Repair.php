@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,7 +13,12 @@ class Repair extends Model
     protected $casts = [
         'reported_at' => 'datetime',
         'checked_at' => 'datetime',
+
     ];
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d M Y');
+    }
 
     public function truck(): BelongsTo
     {
@@ -23,7 +29,7 @@ class Repair extends Model
     {
         return $this->belongsTo(User::class);
     }
-        public function doneBy()
+    public function doneBy()
     {
         return $this->belongsTo(User::class, 'done_by');
     }
@@ -33,12 +39,12 @@ class Repair extends Model
         return $this->belongsTo(Fault::class);
     }
 
-      public static function hasPendingReapir($fault_id, $truck_id)
+    public static function hasPendingReapir($fault_id, $truck_id)
     {
         if (
             self::where('fault_id', $fault_id)
-                ->where('truck_id', $truck_id)
-                ->wherestatus('pending')
+            ->where('truck_id', $truck_id)
+            ->wherestatus('pending')
             ->exists()
         ) {
             return 'The Truck with that fault  already have a pending repair.';

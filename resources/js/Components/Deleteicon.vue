@@ -2,7 +2,7 @@
     <svg
         fill="#1F51FF"
         xmlns="http://www.w3.org/2000/svg"
-        class="ml-1 inline-block w-3 h-4"
+        class="inline-block w-3 h-4"
         height="1em"
         viewBox="0 0 448 512"
 

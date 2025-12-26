@@ -1,25 +1,30 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import MainContent from "@/Components/MainContent.vue";
 import Modal from "@/Components/Modal.vue";
-import { ref, warn } from "vue";
-import DashboardStats from "@/Components/DashboardStats.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import { ref } from "vue";
 
 const props = defineProps({
     inactiveReportingTrucks: Array,
     inactiveReportingCount: Number,
     faultCounts: Array,
+    notes: Array,
 });
 
 const showGtmodal = ref(false);
+const activeModalType = ref(null);
+const loadingTrucks = ref(false);
 
-const openGtmodaldiv = () => {
+const openGtmodaldiv = (type) => {
+    activeModalType.value = type;
     showGtmodal.value = true;
 };
 
 const closeGtmodal = () => {
     showGtmodal.value = false;
+    activeModalType.value = null;
 };
 </script>
 
@@ -54,97 +59,48 @@ const closeGtmodal = () => {
                             <div class="relative px-2">
                                 <div class="relative">
                                     <h2 class="my-4 text-center">
-                                        Todo List / Reminders
+                                        Todo List / Reminders / Quick Notes
                                     </h2>
                                     <ul
-                                        class="mb-6 overflow-y-auto task-check h-72 scrollbars show p-2"
+                                        class="p-2 mb-6 overflow-y-auto task-check h-72 scrollbars show"
                                     >
-                                        <li class="relative py-2">
+                                        <li
+                                            class="relative py-2"
+                                            v-for="note in notes"
+                                            :key="note.id"
+                                        >
                                             <label class="flex items-center">
                                                 <input
+                                                    disabled
                                                     type="checkbox"
                                                     name="checked-1"
                                                     value="1"
-                                                    class="w-5 h-5 mr-2 border rounded form-checkbox text-cyan-500 dark:bg-slate-700 border-slate-300 dark:border-slate-700 focus:outline-none"
+                                                    class="w-4 h-4 mr-2 rounded text-cyan-500 bg-[#446ad7]"
                                                 />
                                                 <span
-                                                    >All 30 Telenor Sim cards to
-                                                    be inserted in truck with
-                                                    mix 3617 or mix 4000
+                                                    >{{ note.note }}
 
                                                     <span
-                                                        class="text-xs text-slate-500"
-                                                        >30% progress</span
+                                                        class="text-sm text-slate-600"
+                                                        >{{
+                                                            note.sidenote
+                                                        }}</span
                                                     ></span
-                                                >
-                                            </label>
-                                        </li>
-                                        <li class="relative py-2">
-                                            <label class="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="checked-1"
-                                                    value="1"
-                                                    class="w-5 h-5 mr-2 border rounded form-checkbox text-cyan-500 dark:bg-slate-700 border-slate-300 dark:border-slate-700 focus:outline-none"
-                                                />
-                                                <span
-                                                    >All Truck  using gps speed should be put on Vss
-
-                                                    <span
-                                                        class="text-xs text-slate-500"
-                                                        >WIP</span
-                                                    ></span
-                                                >
-                                            </label>
-                                        </li>
-                                        <li class="relative py-2">
-                                            <label class="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="checked-1"
-                                                    value="1"
-                                                    class="w-5 h-5 mr-2 border rounded form-checkbox text-cyan-500 dark:bg-slate-700 border-slate-300 dark:border-slate-700 focus:outline-none"
-                                                />
-                                                <span
-                                                    >Comms Cloud intallations
-
-
-                                                    <span
-                                                        class="text-xs text-slate-500"
-                                                        >4 left</span
-                                                    >
-                                                </span
-                                                >
-                                            </label>
-                                        </li>
-
-
-                                        <li class="relative py-2">
-                                            <label class="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="checked-3"
-                                                    value="1"
-                                                    class="w-5 h-5 mr-2 border rounded form-checkbox text-cyan-500 dark:bg-slate-700 border-slate-300 dark:border-slate-700 focus:outline-none"
-                                                    checked=""
-                                                />
-                                                <span
-                                                    >Sendem LeoPack Meeting
-
-                                                    on
-                                                    <span
-                                                        class="text-xs text-slate-500"
-                                                        >7 january 2026</span
-                                                    >
-                                                    On Site</span
                                                 >
                                             </label>
                                         </li>
                                     </ul>
-
-
                                 </div>
                             </div>
+                            <p class="mx-4 text-right">
+                                <Link
+                                    prefetch="mount"
+                                    cache-for="2m"
+                                    href="/notes"
+                                >
+                                    View all
+                                </Link>
+                            </p>
                         </div>
                     </div>
                     <div class="flex-shrink w-full max-w-full lg:w-1/2">
@@ -156,8 +112,8 @@ const closeGtmodal = () => {
                                 <!-- box card -->
 
                                 <div
-                                    @click="openGtmodaldiv()"
-                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
+                                    @click="openGtmodaldiv('gtnotreporting')"
+                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -184,18 +140,20 @@ const closeGtmodal = () => {
                             >
                                 <!-- box card -->
                                 <div
-                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-red-800/10"
+                                    @click="openGtmodaldiv('notripdata')"
+                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-red-800/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
                                             No Trip Data
-
                                         </h2>
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-
-                                                            {{ faultCounts['Fm No Trip Data'] ?? 0 }}
+                                            {{
+                                                faultCounts["Fm No Trip Data"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -213,7 +171,7 @@ const closeGtmodal = () => {
                             >
                                 <!-- box card -->
                                 <div
-                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-yellow-800/10"
+                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-yellow-800/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -222,8 +180,10 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-
-                                             {{ faultCounts['Gps Speed'] ?? 0 }}
+                                            {{
+                                                faultCounts["Gps Speed"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -241,7 +201,7 @@ const closeGtmodal = () => {
                             >
                                 <!-- box card -->
                                 <div
-                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-green-700/10"
+                                    class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-green-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -250,8 +210,10 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                            {{ faultCounts['Fm Not Reporting'] ?? 0 }}
-
+                                            {{
+                                                faultCounts["Fm Not Reporting"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -271,7 +233,7 @@ const closeGtmodal = () => {
                             >
                                 <!-- box card -->
                                 <div
-                                    class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
+                                    class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -280,9 +242,10 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                              {{ faultCounts['No Speed'] ?? 0}}
-
-
+                                            {{
+                                                faultCounts["No Speed"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -294,16 +257,17 @@ const closeGtmodal = () => {
                                     </div>
                                 </div>
                                 <div
-                                    class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
+                                    class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
-                                        <h2 class="mb-2 text-center">
-                                            No Rpm
-                                        </h2>
+                                        <h2 class="mb-2 text-center">No Rpm</h2>
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-{{ faultCounts['No Rpm'] ?? 0}}
+                                            {{
+                                                faultCounts["No Rpm"]?.total ??
+                                                0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -320,7 +284,7 @@ const closeGtmodal = () => {
                             >
                                 <!-- box card -->
                                 <div
-                                    class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
+                                    class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -329,8 +293,10 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-
-                                               {{ faultCounts['No Rpm and Speed'] ?? 0}}
+                                            {{
+                                                faultCounts["No Rpm and Speed"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -342,7 +308,7 @@ const closeGtmodal = () => {
                                     </div>
                                 </div>
                                 <div
-                                    class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5  bg-[#446ad7] shadow-cyan-700/10"
+                                    class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
@@ -351,7 +317,10 @@ const closeGtmodal = () => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-                                                  {{ faultCounts['Faulty Gps'] ?? 0 }}
+                                            {{
+                                                faultCounts["Faulty Gps"]
+                                                    ?.total ?? 0
+                                            }}
                                         </h3>
                                     </div>
                                     <div
@@ -364,18 +333,19 @@ const closeGtmodal = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div
-                        class="flex-shrink  w-full  max-w-full px-3 mb-6 md:px-4 md:w-3/4 "
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 md:w-3/4"
                     >
                         <!-- box card -->
                         <div
-                            class="h-full p-6 bg-white border-blue-300 border rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                            class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
                             <div class="relative">
-                                <h2 class="text-center">Repairs For the Month</h2>
+                                <h2 class="text-center">
+                                    Repairs For the Month
+                                </h2>
                                 <canvas
                                     class="max-w-100"
                                     id="BarChart"
@@ -385,40 +355,39 @@ const closeGtmodal = () => {
                     </div>
 
                     <div
-                        class="flex-shrink  w-full max-w-full  px-3 mb-6 md:px-4 md:w-1/4"
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 md:w-1/4"
                     >
                         <!-- box card   class="flex-shrink w-full max-w-full px-3 mb-6 overflow-scroll md:px-4 md:w-1/3"-->
                         <div
-                            class="h-full p-6 bg-white border-blue-300 border rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                            class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
                             <div class="relative">
-                                <h2 class="mb-2 text-center">Most fault by Month/ year</h2>
+                                <h2 class="mb-2 text-center">
+                                    Most fault by Month/ year
+                                </h2>
                                 <div
                                     class="flex flex-col w-full max-w-sm mx-auto funnel-area"
                                 >
-                                        <table
-                                    class="w-full text-sm text-left table-bordered-bottom table-sm"
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left">Fault</th>
-                                            <th class="text-left">Times</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div>Gt not reporting</div>
-                                            </td>
-                                            <td>
-                                                <div>5</div>
-                                            </td>
-                                        </tr>
-
-
-
-                                    </tbody>
-                                </table>
+                                    <table
+                                        class="w-full text-sm text-left table-bordered-bottom table-sm"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Fault</th>
+                                                <th class="text-left">Times</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div>Gt not reporting</div>
+                                                </td>
+                                                <td>
+                                                    <div>5</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -524,57 +493,87 @@ const closeGtmodal = () => {
                     </div> -->
 
                     <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2 "
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
                     >
                         <!-- box card -->
                         <div
-                            class="h-full p-6 bg-white rounded border-blue-300 border shadow-lg overflow-x-auto shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                            class="h-full p-6 overflow-x-auto bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
-                             <h2 class="mb-2 text-center">
-                                   Faulty Units FM & Gt
-                                </h2>
+                            <h2 class="mb-2 text-center">
+                                Faulty Units FM & Gt
+                            </h2>
                             <div class="relative">
                                 <table
-                               class="min-w-full border border-gray-200 overflow-y-auto"
+                                    class="min-w-full overflow-y-auto border border-gray-200"
                                 >
-                                             <thead class="bg-gray-200">
+                                    <thead class="bg-gray-200">
                                         <tr>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Type</th>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Fault</th>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Serial no</th>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Location</th>
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Type
+                                            </th>
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Fault
+                                            </th>
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Serial no
+                                            </th>
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Location
+                                            </th>
                                         </tr>
                                     </thead>
-                                       <tbody class="text-center divide-y divide-gray-200">
+                                    <tbody
+                                        class="text-center divide-y divide-gray-200"
+                                    >
                                         <tr class="odd:bg-gray-50">
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 Mix4000
                                             </td>
-                                         <td class="px-4 py-2 border-r border-gray-200 whitespace-nowrap">
-
-                                                      Not Powering
-
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
+                                            >
+                                                Not Powering
                                             </td>
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 393939040039473
                                             </td>
-                                            <td class="px-4 py-2 border-r border-gray-200 whitespace-nowrap">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
+                                            >
                                                 leo Sendem
                                             </td>
                                         </tr>
-      <tr>
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                        <tr>
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 Mix4000
                                             </td>
-                                              <td class="px-4 py-2 border-r border-gray-200">
-
-                                                      Not Powering
-
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
+                                                Not Powering
                                             </td>
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 393939040039473
                                             </td>
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 leo Sendem
                                             </td>
                                         </tr>
@@ -588,47 +587,55 @@ const closeGtmodal = () => {
                         class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
                     >
                         <!-- box card -->
-                   <div
-                            class="h-full p-6 bg-white rounded shadow-lg border-blue-300 border shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                        <div
+                            class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
-                             <h2 class="mb-2 text-center">
-                                   Asset Register
-                                </h2>
+                            <h2 class="mb-2 text-center">Asset Register</h2>
                             <div class="relative">
                                 <table
-                               class="min-w-full border border-gray-200 overflow-y-auto"
+                                    class="min-w-full overflow-y-auto border border-gray-200"
                                 >
-                                             <thead class="bg-gray-200">
+                                    <thead class="bg-gray-200">
                                         <tr>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Type/Item</th>
-                                            <th   class="p-2 border font-medium border-r text-[13px] border-gray-300">Total</th>
-
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Type/Item
+                                            </th>
+                                            <th
+                                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                            >
+                                                Total
+                                            </th>
                                         </tr>
                                     </thead>
-                                       <tbody class="text-center divide-y divide-gray-200">
+                                    <tbody
+                                        class="text-center divide-y divide-gray-200"
+                                    >
                                         <tr class="odd:bg-gray-50">
-                                            <td class="px-4 py-2 border-r border-gray-200">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
                                                 Mix4000
                                             </td>
-                                         <td class="px-4 py-2 border-r border-gray-200">
-
-                                          5
-
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
+                                                5
                                             </td>
-
                                         </tr>
-                                             <tr class="odd:bg-gray-50">
-                                            <td class="px-4 py-2 border-r border-gray-200">
-                                           Global Track unit
+                                        <tr class="odd:bg-gray-50">
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
+                                                Global Track unit
                                             </td>
-                                         <td class="px-4 py-2 border-r border-gray-200">
-
-                                          5
-
+                                            <td
+                                                class="px-4 py-2 border-r border-gray-200"
+                                            >
+                                                5
                                             </td>
-
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -640,55 +647,96 @@ const closeGtmodal = () => {
 
         <Modal :show="showGtmodal" @close="closeGtmodal">
             <div class="p-6 bg-white">
-                <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    Gt Not reporting Trucks
-                </h2>
-                <div class="px-2 overflow-y-auto h-72 scrollbars show">
-                    <table
-                        class="min-w-full border border-gray-200 overflow-y-auto"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Truck
-                                </th>
+                <div v-if="activeModalType === 'gtnotreporting'">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
+                        Gt Not reporting Trucks
+                    </h2>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table
+                            class="min-w-full overflow-y-auto border border-gray-200"
+                        >
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Truck
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        last Reported At
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Days Ago
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="truck in inactiveReportingTrucks"
+                                    :key="truck.id"
+                                    class="odd:bg-gray-50"
                                 >
-                                    last Reported At
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ truck.last_reported_at ?? "Never" }}
+                                    </td>
+                                    <td>
+                                        {{
+                                            truck.days_without_report !== null
+                                                ? truck.days_without_report +
+                                                  " "
+                                                : "Never reported"
+                                        }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div v-else-if="activeModalType === 'notripdata'">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
+                        No Trip Data
+
+                        <table
+                            class="min-w-full overflow-y-auto border border-gray-200"
+                        >
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts[
+                                        'Fm No Trip Data'
+                                    ]?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
                                 >
-                                    Days Ago
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="truck in inactiveReportingTrucks"
-                                :key="truck.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ truck.last_reported_at ?? "Never" }}
-                                </td>
-                                <td>
-                                    {{
-                                        truck.days_without_report !== null
-                                            ? truck.days_without_report + " "
-                                            : "Never reported"
-                                    }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </h2>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <SecondaryButton @click="closeGtmodal"

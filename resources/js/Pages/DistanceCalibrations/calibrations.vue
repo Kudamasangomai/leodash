@@ -76,11 +76,11 @@ const closeModal = () => {
             <div class="px-2 overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200 whitespace-nowrap">
-                        <tr class="border border-gray-300">
-                            <th
+                        <tr class="border border-gray-300 ">
+                           <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300"
                             >
-                                Id
+                                Date Created
                             </th>
                             <!-- <th
                             class="p-2 border font-medium border-r text-[13px]  border-gray-300"
@@ -92,11 +92,7 @@ const closeModal = () => {
                             >
                                 Asset Name
                             </th>
-                            <th
-                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                            >
-                                Date Created
-                            </th>
+
                             <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300"
                             >
@@ -122,23 +118,21 @@ const closeModal = () => {
                     </thead>
                     <tbody class="divide-y divide-gray-200 whitespace-nowrap">
                         <tr
-                            class="odd:bg-gray-50"
+                            class="text-center odd:bg-gray-50"
                             v-for="cal in calibrations.data"
                             :key="cal.id"
                         >
-                            <td class="px-4 py-3 border-r border-gray-200">
-                                {{ cal.id }}
+                             <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ cal.created_at }}
                             </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
                                 {{ cal.truck.unitname }}
                             </td>
-                            <td
-                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                            >
-                                {{ cal.created_at }}
-                            </td>
+
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
