@@ -66,8 +66,8 @@ const closeFormModal = () => {
     editingFaultyunit.value = null;
 };
 
-const confirmDelete = (repair) => {
-    FaultyunitToDelete.value = repair;
+const confirmDelete = (unit) => {
+    FaultyunitToDelete.value = unit;
     confirmDeleteFaultyUnit.value = true;
 };
 
@@ -98,7 +98,7 @@ const deleteNote = () => {
 
             <span
                 v-if="deleteForm.recentlySuccessful"
-                class="flex items-center"
+                class="flex items-center hidden"
             >
                 <div class="flex justify-center w-full">
                     <div

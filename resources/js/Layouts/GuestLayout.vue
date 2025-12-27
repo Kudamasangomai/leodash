@@ -33,11 +33,11 @@ import { Link } from "@inertiajs/vue3";
                            <h1 class="mt-2 text-3xl font-medium text-white">
                                   Comitted To Excellence
                                 </h1>
-                        <div class="py-20 text-transparent"></div>
+                        <div class="py-28 text-transparent"></div>
 
 
                                 <p
-                                    class="text-slate-100 text-[15px] font-medium mt-10 leading-relaxed"
+                                    class="text-slate-100 text-[15px] font-medium mt-10 leading-relaxed hidden"
                                 >
                                     Sign in to your account and explore a world
                                     of possibilities. Your journey begins here.

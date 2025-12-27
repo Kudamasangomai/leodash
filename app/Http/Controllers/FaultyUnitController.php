@@ -27,27 +27,31 @@ class FaultyUnitController extends Controller
      */
     public function store(StoreFaultyUnitRequest $request)
     {
-     
+
 
         FaultyUnit::create($request->validated()  + [
             'user_id' => $request->user()->id,
         ]);
-        return back()->with('success', 'Record created Successful');
+        return back()->with('success', 'Record created Successfully');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFaultyUnitRequest $request, FaultyUnit $faultyUnit)
+    public function update(UpdateFaultyUnitRequest $request, FaultyUnit $faultyunit)
     {
-        //
+        $faultyunit->update($request->validated());
+        return redirect()->back()->with('success','Record Updated Successfully');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FaultyUnit $faultyUnit)
+    public function destroy(FaultyUnit $faultyunit)
     {
-        //
+        $faultyunit->delete();
+              return redirect()->back()->with('success','Record Deleted Successfully');
+
     }
 }
