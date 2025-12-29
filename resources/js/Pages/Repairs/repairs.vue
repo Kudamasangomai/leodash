@@ -7,7 +7,7 @@ import PageTitle from "@/Components/PageTitle.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Modal from "@/Components/Modal.vue";
-import { ref, warn } from "vue";
+import { ref, watch } from "vue";
 import Deleteicon from "@/Components/Deleteicon.vue";
 import Editicon from "@/Components/Editicon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -31,6 +31,7 @@ const editingRepair = ref(null);
 const closeRepair = ref(null);
 const deleteForm = useForm({});
 const showRepairModal = ref(false);
+
 
 const form = useForm({
     truck_id: "",
@@ -133,6 +134,36 @@ function triggerFetchLocations() {
         preserveScroll: true,
     });
 }
+
+const q = ref("");
+watch(q, (value) => {
+    router.get(
+        '/repairs',
+        value ? { q: value } : {},
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        }
+    )
+})
+
+
+
+const isModalOpen = ref(false)     // controls modal visibility
+const selectedRepair = ref(null)   // stores repair clicked
+
+// Function to open modal
+function openModal(repair) {
+    selectedRepair.value = repair
+    isModalOpen.value = true
+}
+
+// Function to close modal
+function closeModal() {
+    isModalOpen.value = false
+    selectedRepair.value = null
+}
 </script>
 
 <template>
@@ -192,7 +223,21 @@ function triggerFetchLocations() {
                 </div>
             </span>
 
+             <div class="py-4 ml-2 ">
+                        <label for="table-search" class="sr-only">Search</label>
+                        <div
+                            class="relative flex justify-end w-full mt-1 mr-1 md:w-1/3 md:ml-auto"
+                        >
+                            <input
+                                type="text"
+                                 class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                                placeholder="Search for truck or Fault"
+                                v-model="q"
+                            />
+                        </div>
+                    </div>
             <div class="px-2 overflow-x-auto">
+
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200">
                         <tr>
@@ -245,8 +290,8 @@ function triggerFetchLocations() {
                     </thead>
                     <tbody class="text-center divide-y divide-gray-200">
                         <tr
-                            v-if="repairs && repairs.length"
-                            v-for="repair in repairs"
+                            v-if="repairs.data && repairs.data.length"
+                            v-for="repair in repairs.data"
                             :key="repair.id"
                             class="odd:bg-gray-50"
                         >
@@ -258,7 +303,7 @@ function triggerFetchLocations() {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-                                {{ repair.truck.unitname }}
+                            <button @click="openModal(repair)" class="text-blue-500">{{ repair.truck.unitname }}</button>
                             </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
@@ -329,7 +374,7 @@ function triggerFetchLocations() {
                     </tbody>
                 </table>
 
-                
+
             </div>
         </MainContent>
 
@@ -456,7 +501,7 @@ function triggerFetchLocations() {
         </Modal>
 
         <!-- Close repair modal-->
-        <!-- <Modal :show="showRepairModal" @close="closeRepairModal">
+        <Modal :show="showRepairModal" @close="closeRepairModal">
             <div class="p-6 bg-white">
                 <h2 class="mb-4 text-lg font-medium text-gray-900">
                     Close Repair
@@ -525,6 +570,32 @@ function triggerFetchLocations() {
                     </div>
                 </form>
             </div>
-        </Modal> -->
+        </Modal>
+
+        <Modal :show="isModalOpen" @close="closeModal">
+  <!-- Modal Overlay -->
+  <div
+  >
+    <!-- Modal Content -->
+    <div class="bg-white rounded-lg p-6 w-96">
+      <h2 class="text-xl font-bold mb-4">Repair Details</h2>
+
+      <p><strong>Unit:</strong> {{ selectedRepair.truck.unitname }}</p>
+      <p><strong>Status:</strong> {{ selectedRepair.status }}</p>
+      <p><strong>Fault:</strong> {{ selectedRepair.fault.name }}</p>
+      <p><strong>Reported At:</strong> {{ selectedRepair.last_reported_at }}</p>
+      <p><strong>Done By:</strong> {{ selectedRepair.done_by?.name ?? 'N/A' }}</p>
+       <p><strong>Job Description:</strong> {{ selectedRepair.comments ?? 'N/A' }}</p>
+
+      <button
+        @click="closeModal"
+        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</Modal>
+
     </AuthenticatedLayout>
 </template>

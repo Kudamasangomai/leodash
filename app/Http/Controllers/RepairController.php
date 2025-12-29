@@ -10,22 +10,35 @@ use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
 use App\Models\User;
 use App\Services\FetchLocationService;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RepairController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $repairs = Repair::with(['truck', 'user', 'fault', 'doneBy'])
+        $repairs = Repair::query()
+            ->when(request('q'), function ($query, $q) {
+                $query->where(function ($query) use ($q) {
+                    $query->whereHas('truck', function ($query) use ($q) {
+                        $query->where('unitname', 'like', "%{$q}%");
+                    })
+                        ->orWhereHas('fault', function ($query) use ($q) {
+                            $query->where('name', 'like', "%{$q}%");
+                        });
+                });
+            })->with(['truck', 'user', 'fault', 'doneBy'])
+            ->orderByRaw("(status = 'pending') DESC")
             ->orderBy('last_reported_at', 'ASC')
-            ->get();
+            ->paginate(100)
+            ->withQueryString();
 
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
             'trucks' => Truck::all(),
             'faults' => Fault::all(),
-            'users' =>  User::all()
+            'users' =>  User::all(),
         ]);
     }
 
