@@ -5,6 +5,8 @@ import MainContent from "@/Components/MainContent.vue";
 import Modal from "@/Components/Modal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import { ref } from "vue";
+import { onMounted } from "vue";
+import { Chart } from "chart.js/auto";
 
 const props = defineProps({
     inactiveReportingTrucks: Array,
@@ -26,6 +28,65 @@ const closeGtmodal = () => {
     showGtmodal.value = false;
     activeModalType.value = null;
 };
+
+onMounted(() => {
+    const canvas = document.getElementById("BarChart");
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    const labels = Object.keys(props.faultCounts);
+
+    const completed = labels.map(
+        key => props.faultCounts[key].completed_count
+    );
+
+    const pending = labels.map(
+        key => props.faultCounts[key].pending_count
+    );
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: "Completed Repairs",
+                    data: completed,
+                    backgroundColor: "#16a34a",
+                },
+                {
+                    label: "Pending Repairs",
+                    data: pending,
+                    backgroundColor: "#dc2626",
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    position: "top",
+                },
+                title: {
+                    display: true,
+                    text: "Repairs Status Per Fault",
+                },
+            },
+        },
+    });
+});
+
 </script>
 
 <template>
@@ -125,16 +186,41 @@ const closeGtmodal = () => {
                                             {{ inactiveReportingCount }}
                                         </h3>
                                     </div>
-                                    <div
-                                        class="absolute right-1 bottom-1"
-                                    >
+                                    <div class="absolute right-1 bottom-1">
                                         <i
                                             class="text-m bx bx-smile text-white w-[18px] h-[18px]"
                                         >
-<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="3.5" stroke="#ffffff"></circle> <path d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z" stroke="#ffffff"></path> </g></svg></i>
-
+                                            <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                stroke="#ffffff"
+                                            >
+                                                <g
+                                                    id="SVGRepo_bgCarrier"
+                                                    stroke-width="0"
+                                                ></g>
+                                                <g
+                                                    id="SVGRepo_tracerCarrier"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                ></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <circle
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="3.5"
+                                                        stroke="#ffffff"
+                                                    ></circle>
+                                                    <path
+                                                        d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z"
+                                                        stroke="#ffffff"
+                                                    ></path>
+                                                </g></svg
+                                        ></i>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -159,20 +245,47 @@ const closeGtmodal = () => {
                                             }}
                                         </h3>
                                     </div>
-                                   <div
-                                        class="absolute right-1 bottom-1"
-                                    >
+                                    <div class="absolute right-1 bottom-1">
                                         <i
                                             class="text-m bx bx-smile text-white w-[18px] h-[18px]"
                                         >
-<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="3.5" stroke="#ffffff"></circle> <path d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z" stroke="#ffffff"></path> </g></svg></i>
-
+                                            <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                stroke="#ffffff"
+                                            >
+                                                <g
+                                                    id="SVGRepo_bgCarrier"
+                                                    stroke-width="0"
+                                                ></g>
+                                                <g
+                                                    id="SVGRepo_tracerCarrier"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                ></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <circle
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="3.5"
+                                                        stroke="#ffffff"
+                                                    ></circle>
+                                                    <path
+                                                        d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z"
+                                                        stroke="#ffffff"
+                                                    ></path>
+                                                </g></svg
+                                        ></i>
                                     </div>
                                 </div>
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4" @click="openGtmodaldiv('gpsspeed')"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                @click="openGtmodaldiv('gpsspeed')"
                             >
                                 <!-- box card -->
                                 <div
@@ -191,20 +304,47 @@ const closeGtmodal = () => {
                                             }}
                                         </h3>
                                     </div>
-                                   <div
-                                        class="absolute right-1 bottom-1"
-                                    >
+                                    <div class="absolute right-1 bottom-1">
                                         <i
                                             class="text-m bx bx-smile text-white w-[18px] h-[18px]"
                                         >
-<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="3.5" stroke="#ffffff"></circle> <path d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z" stroke="#ffffff"></path> </g></svg></i>
-
+                                            <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                stroke="#ffffff"
+                                            >
+                                                <g
+                                                    id="SVGRepo_bgCarrier"
+                                                    stroke-width="0"
+                                                ></g>
+                                                <g
+                                                    id="SVGRepo_tracerCarrier"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                ></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <circle
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="3.5"
+                                                        stroke="#ffffff"
+                                                    ></circle>
+                                                    <path
+                                                        d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z"
+                                                        stroke="#ffffff"
+                                                    ></path>
+                                                </g></svg
+                                        ></i>
                                     </div>
                                 </div>
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4" @click="openGtmodaldiv('fmnotreporting')"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                @click="openGtmodaldiv('fmnotreporting')"
                             >
                                 <!-- box card -->
                                 <div
@@ -223,14 +363,40 @@ const closeGtmodal = () => {
                                             }}
                                         </h3>
                                     </div>
-                                     <div
-                                        class="absolute right-1 bottom-1"
-                                    >
+                                    <div class="absolute right-1 bottom-1">
                                         <i
                                             class="text-m bx bx-smile text-white w-[18px] h-[18px]"
                                         >
-<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="3.5" stroke="#ffffff"></circle> <path d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z" stroke="#ffffff"></path> </g></svg></i>
-
+                                            <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                stroke="#ffffff"
+                                            >
+                                                <g
+                                                    id="SVGRepo_bgCarrier"
+                                                    stroke-width="0"
+                                                ></g>
+                                                <g
+                                                    id="SVGRepo_tracerCarrier"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                ></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <circle
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="3.5"
+                                                        stroke="#ffffff"
+                                                    ></circle>
+                                                    <path
+                                                        d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z"
+                                                        stroke="#ffffff"
+                                                    ></path>
+                                                </g></svg
+                                        ></i>
                                     </div>
                                 </div>
                             </div>
@@ -359,6 +525,8 @@ const closeGtmodal = () => {
                                     class="max-w-100"
                                     id="BarChart"
                                 ></canvas>
+
+                                <!-- {{ faultCounts }} -->
                             </div>
                         </div>
                     </div>
@@ -716,192 +884,150 @@ const closeGtmodal = () => {
                 <div v-else-if="activeModalType === 'notripdata'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
                         No Trip Data
-   </h2>
-                        <table
-                            class="min-w-full overflow-y-auto border border-gray-200"
-                        >
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                        Asset Name
-                                    </th>
-
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                     Location
-                                    </th>
-                                        <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                 Last Reported At
-                                    </th>
-                                </tr>
-                            </thead>
-
-
-                            <tbody class="text-center divide-y divide-gray-200">
-                                <tr
-                                    v-for="repair in faultCounts[
-                                        'Fm No Trip Data'
-                                    ]?.repairs"
-                                    :key="repair.id"
-                                    class="odd:bg-gray-50"
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
                                 >
-                                    <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-                                        {{ repair.truck.unitname }}
+                                    Asset Name
+                                </th>
 
-                                    </td>
-                                       <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
 
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['Fm No Trip Data']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
 
-                                        {{ repair.location }}
-                                    </td>
-
-                                         <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-
-
-                                        {{ repair.last_reported_at }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div v-else-if="activeModalType === 'gpsspeed'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
                         On Gps Speed
-   </h2>
-                        <table
-                            class="min-w-full overflow-y-auto border border-gray-200"
-                        >
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                        Asset Name
-                                    </th>
-
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                     Location
-                                    </th>
-                                        <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                 Last Reported At
-                                    </th>
-                                </tr>
-                            </thead>
-
-
-                            <tbody class="text-center divide-y divide-gray-200">
-                                <tr
-                                    v-for="repair in faultCounts[
-                                        'Gps Speed'
-                                    ]?.repairs"
-                                    :key="repair.id"
-                                    class="odd:bg-gray-50"
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
                                 >
-                                    <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-                                        {{ repair.truck.unitname }}
+                                    Asset Name
+                                </th>
 
-                                    </td>
-                                       <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
 
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['Gps Speed']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
 
-                                        {{ repair.location }}
-                                    </td>
-
-                                         <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-
-
-                                        {{ repair.last_reported_at }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                 <div v-else-if="activeModalType === 'fmnotreporting'">
+                <div v-else-if="activeModalType === 'fmnotreporting'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
                         On Gps Speed
-   </h2>
-                        <table
-                            class="min-w-full overflow-y-auto border border-gray-200"
-                        >
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                        Asset Name
-                                    </th>
-
-                                    <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                     Location
-                                    </th>
-                                        <th
-                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                    >
-                                 Last Reported At
-                                    </th>
-                                </tr>
-                            </thead>
-
-
-                            <tbody class="text-center divide-y divide-gray-200">
-                                <tr
-                                    v-for="repair in faultCounts[
-                                        'Fm Not Reporting'
-                                    ]?.repairs"
-                                    :key="repair.id"
-                                    class="odd:bg-gray-50"
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
                                 >
-                                    <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-                                        {{ repair.truck.unitname }}
+                                    Asset Name
+                                </th>
 
-                                    </td>
-                                       <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
 
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['Fm Not Reporting']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
 
-                                        {{ repair.location }}
-                                    </td>
-
-                                         <td
-                                        class="px-4 py-2 border-r border-gray-200"
-                                    >
-
-
-                                        {{ repair.last_reported_at }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <SecondaryButton @click="closeGtmodal"

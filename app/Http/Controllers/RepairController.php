@@ -24,14 +24,15 @@ class RepairController extends Controller
                     $query->whereHas('truck', function ($query) use ($q) {
                         $query->where('unitname', 'like', "%{$q}%");
                     })
-                        ->orWhereHas('fault', function ($query) use ($q) {
+                    ->orWhereHas('fault', function ($query) use ($q) {
                             $query->where('name', 'like', "%{$q}%");
                         });
                 });
             })->with(['truck', 'user', 'fault', 'doneBy'])
             ->orderByRaw("(status = 'pending') DESC")
             ->orderBy('last_reported_at', 'ASC')
-            ->paginate(100)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('Repairs/repairs', [

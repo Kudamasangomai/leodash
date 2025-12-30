@@ -18,7 +18,7 @@ import Closeicon from "@/Components/Closeicon.vue";
 const pageProps = usePage().props;
 
 const props = defineProps({
-    repairs: Array,
+    repairs: Object,
     trucks: Array,
     faults: Array,
     users: Array,
@@ -374,6 +374,20 @@ function closeModal() {
                     </tbody>
                 </table>
 
+<div class="flex gap-2 mt-4 justify-end">
+  <Link
+    v-for="link in repairs.links"
+    :key="link.label"
+    :href="link.url ?? ''"
+    v-html="link.label"
+    class="px-3 py-1 border rounded border-gray-200"
+    :class="{
+      'bg-blue-500 text-white': link.active,
+      'text-gray-400': !link.url
+    }"
+    preserve-scroll
+  />
+</div>
 
             </div>
         </MainContent>
