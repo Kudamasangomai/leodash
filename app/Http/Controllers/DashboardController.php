@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FaultyUnit;
 use App\Models\Note;
 use App\Services\TruckStatusService;
 use Inertia\Inertia;
@@ -11,11 +12,17 @@ class DashboardController extends Controller
 {
     public function index(TruckStatusService $truckStatusService,FaultsStatsService $faultsStats)
     {
+
+
+
+
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $truckStatusService->inactiveReportingTrucks(),
             'inactiveReportingCount'  => $truckStatusService->inactiveReportingTrucks()->count(),
             'faultCounts'             => $faultsStats->faultstats(),
-            'notes' =>  Note::orderBy('created_at', 'DESC')->get()
+            'notes' =>  Note::orderBy('created_at', 'DESC')->get(),
+            'faultyunits' => FaultyUnit::take(15)->get(),
+            'chartData' => $faultsStats->faultstats()->pluck('total'),
         ]);
     }
 }

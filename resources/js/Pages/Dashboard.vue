@@ -5,82 +5,71 @@ import MainContent from "@/Components/MainContent.vue";
 import Modal from "@/Components/Modal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import { ref } from "vue";
-import { onMounted } from "vue";
-import { Chart } from "chart.js/auto";
+import { onMounted, onBeforeUnmount } from "vue";
+import Chart from "chart.js/auto";
 
 const props = defineProps({
     inactiveReportingTrucks: Array,
     inactiveReportingCount: Number,
-    faultCounts: Array,
+    faultCounts: Object,
     notes: Array,
+    faultyunits : Array,
+    chartData: Object,
 });
 
 const showGtmodal = ref(false);
 const activeModalType = ref(null);
-const loadingTrucks = ref(false);
 
-const openGtmodaldiv = (type) => {
+const OpenStatsModal = (type) => {
     activeModalType.value = type;
     showGtmodal.value = true;
 };
 
-const closeGtmodal = () => {
+const CloseStatsModal = () => {
     showGtmodal.value = false;
     activeModalType.value = null;
 };
 
+
+
 onMounted(() => {
-    const canvas = document.getElementById("BarChart");
+    const ctx = document.getElementById("BarChart").getContext("2d");
 
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-
-    const labels = Object.keys(props.faultCounts);
-
-    const completed = labels.map(
-        key => props.faultCounts[key].completed_count
-    );
-
-    const pending = labels.map(
-        key => props.faultCounts[key].pending_count
-    );
 
     new Chart(ctx, {
-        type: "bar",
         data: {
-            labels,
+            labels:props.chartData.labels,
             datasets: [
                 {
-                    label: "Completed Repairs",
-                    data: completed,
-                    backgroundColor: "#16a34a",
+                    type: "bar",
+                    label: "Monthly Repairs",
+                     data: props.chartData.totals,
+                    backgroundColor: "#446ad7",
+
                 },
-                {
-                    label: "Pending Repairs",
-                    data: pending,
-                    backgroundColor: "#dc2626",
-                },
+
             ],
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: true },
+                title: {
+                    display: false,
+
+                },
+            },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: {
-                        stepSize: 1,
+                    grid: {
+                        display: true,
                     },
                 },
-            },
-            plugins: {
-                legend: {
-                    position: "top",
-                },
-                title: {
-                    display: true,
-                    text: "Repairs Status Per Fault",
+                x: {
+                    grid: {
+                        display: false,
+                    },
                 },
             },
         },
@@ -173,7 +162,7 @@ onMounted(() => {
                                 <!-- box card -->
 
                                 <div
-                                    @click="openGtmodaldiv('gtnotreporting')"
+                                    @click="OpenStatsModal('gtnotreporting')"
                                     class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -229,7 +218,7 @@ onMounted(() => {
                             >
                                 <!-- box card -->
                                 <div
-                                    @click="openGtmodaldiv('notripdata')"
+                                    @click="OpenStatsModal('notripdata')"
                                     class="relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-red-800/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -285,7 +274,7 @@ onMounted(() => {
 
                             <div
                                 class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
-                                @click="openGtmodaldiv('gpsspeed')"
+                                @click="OpenStatsModal('gpsspeed')"
                             >
                                 <!-- box card -->
                                 <div
@@ -344,7 +333,7 @@ onMounted(() => {
 
                             <div
                                 class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
-                                @click="openGtmodaldiv('fmnotreporting')"
+                                @click="OpenStatsModal('fmnotreporting')"
                             >
                                 <!-- box card -->
                                 <div
@@ -526,7 +515,7 @@ onMounted(() => {
                                     id="BarChart"
                                 ></canvas>
 
-                                <!-- {{ faultCounts }} -->
+                                {{ chartData}}
                             </div>
                         </div>
                     </div>
@@ -674,11 +663,14 @@ onMounted(() => {
                     >
                         <!-- box card -->
                         <div
-                            class="h-full p-6 overflow-x-auto bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                            class="h-full p-6 overflow-x-auto bg-white border border-blue-300 rounded shadow-lg just shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
+
+                        <Link href="/faultyunits" prefetch="mount" cache-for="2m">View All</Link>
                             <h2 class="mb-2 text-center">
                                 Faulty Units FM & Gt
                             </h2>
+
                             <div class="relative">
                                 <table
                                     class="min-w-full overflow-y-auto border border-gray-200"
@@ -710,50 +702,29 @@ onMounted(() => {
                                     <tbody
                                         class="text-center divide-y divide-gray-200"
                                     >
-                                        <tr class="odd:bg-gray-50">
+                                        <tr class="odd:bg-gray-50" v-for="unit in faultyunits" :key="unit.it">
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200"
                                             >
-                                                Mix4000
+                                             {{ unit.unit_type }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
                                             >
-                                                Not Powering
+                                                 {{ unit.fault }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200"
                                             >
-                                                393939040039473
+                                               {{ unit.serial_number }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
                                             >
-                                                leo Sendem
+                                               {{ unit.location }}
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td
-                                                class="px-4 py-2 border-r border-gray-200"
-                                            >
-                                                Mix4000
-                                            </td>
-                                            <td
-                                                class="px-4 py-2 border-r border-gray-200"
-                                            >
-                                                Not Powering
-                                            </td>
-                                            <td
-                                                class="px-4 py-2 border-r border-gray-200"
-                                            >
-                                                393939040039473
-                                            </td>
-                                            <td
-                                                class="px-4 py-2 border-r border-gray-200"
-                                            >
-                                                leo Sendem
-                                            </td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -822,7 +793,7 @@ onMounted(() => {
             </div>
         </MainContent>
 
-        <Modal :show="showGtmodal" @close="closeGtmodal">
+        <Modal :show="showGtmodal" @close="CloseStatsModal">
             <div class="p-6 bg-white">
                 <div v-if="activeModalType === 'gtnotreporting'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
@@ -1030,7 +1001,7 @@ onMounted(() => {
                     </table>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
-                    <SecondaryButton @click="closeGtmodal"
+                    <SecondaryButton @click="CloseStatsModal"
                         >Close</SecondaryButton
                     >
                 </div>

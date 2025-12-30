@@ -21,11 +21,13 @@ class TruckStatusService
             'LEO114',
             'LEO059',
             'h19',
-            'LEO013'
+            'LEO013',
+            'LEO103',
+            'LEO030'
         ];
 
         return Truck::query()
-            ->where('status', 1)
+            ->where('status', true)
             ->whereNotIn('unitname', $excludedTrucks)
             ->where(function ($query) use ($cutoff) {
                 $query

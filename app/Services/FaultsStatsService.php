@@ -14,15 +14,10 @@ class FaultsStatsService
                 ->with('truck')
         ])
             ->withCount([
-                'repairs as total' => fn($q) =>
-                $q->where('status', '!=', 'completed'),
 
-                // 👇 NEW (won’t affect frontend)
-                'repairs as completed_count' => fn($q) =>
+                'repairs as total' => fn($q) =>
                 $q->where('status', 'completed'),
 
-                'repairs as pending_count' => fn($q) =>
-                $q->where('status', 'pending'),
             ])
             ->get()
             ->keyBy('name');
