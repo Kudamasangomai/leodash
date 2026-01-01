@@ -404,7 +404,7 @@ onMounted(() => {
                         </div>
 
                         <div class="flex flex-row flex-wrap bg">
-                            <div
+                            <div   @click="OpenStatsModal('nospeed')"
                                 class="flex w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
@@ -432,7 +432,7 @@ onMounted(() => {
                                         ></i>
                                     </div>
                                 </div>
-                                <div
+                                <div  @click="OpenStatsModal('norpm')"
                                     class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -460,7 +460,7 @@ onMounted(() => {
                                 class="flex w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
-                                <div
+                                <div       @click="OpenStatsModal('nospeedrpm')"
                                     class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -895,6 +895,154 @@ onMounted(() => {
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
                                 v-for="repair in faultCounts['Fm Not Reporting']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
+
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div v-else-if="activeModalType === 'norpm'">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
+                    No Rpm
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Asset Name
+                                </th>
+
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['No Rpm']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
+
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div v-else-if="activeModalType === 'nospeed'">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
+                    No Rpm
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Asset Name
+                                </th>
+
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['No Speed']
+                                    ?.repairs"
+                                :key="repair.id"
+                                class="odd:bg-gray-50"
+                            >
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.truck.unitname }}
+                                </td>
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.location }}
+                                </td>
+
+                                <td class="px-4 py-2 border-r border-gray-200">
+                                    {{ repair.last_reported_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                  <div v-else-if="activeModalType === 'nospeedrpm'">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
+                    No Rpm
+                    </h2>
+                    <table
+                        class="min-w-full overflow-y-auto border border-gray-200"
+                    >
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Asset Name
+                                </th>
+
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Location
+                                </th>
+                                <th
+                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                >
+                                    Last Reported At
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-center divide-y divide-gray-200">
+                            <tr
+                                v-for="repair in faultCounts['No Rpm and Speed']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"

@@ -23,7 +23,8 @@ class TruckStatusService
             'h19',
             'LEO013',
             'LEO103',
-            'LEO030'
+            'LEO030',
+            'LEO038'
         ];
 
         return Truck::query()
