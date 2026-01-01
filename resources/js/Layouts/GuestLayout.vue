@@ -33,14 +33,13 @@ import { Link } from "@inertiajs/vue3";
                            <h1 class="mt-2 text-3xl font-medium text-white">
                                   Comitted To Excellence
                                 </h1>
-                        <div class="py-28 text-transparent"></div>
+                        <div class="py-16 text-transparent"></div>
 
 
                                 <p
-                                    class="text-slate-100 text-[15px] font-medium mt-10 leading-relaxed hidden"
+                                    class="text-slate-100 text-[18px] mt-10 leading-relaxed text-justify"
                                 >
-                                    Sign in to your account and explore a world
-                                    of possibilities. Your journey begins here.
+                            From repairs to routine maintenance , see everything you need at a glance , stay informed , Plan ahead, act fast and never miss a task and keep your fleet perfoming at its best
                                 </p>
                             </div>
                         </div>

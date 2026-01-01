@@ -37,6 +37,7 @@ class TruckStatusService
             ->orderBy('last_reported_at', 'asc')
             ->get()
             ->map(function ($truck) {
+            // Calculate how many days the truck hasn't reported
                 $truck->days_without_report = $truck->last_reported_at
                     ? Carbon::parse($truck->last_reported_at)
                     ->startOfDay()

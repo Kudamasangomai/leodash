@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
 use App\Models\User;
 use App\Services\FetchLocationService;
-use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -24,16 +24,25 @@ class RepairController extends Controller
                     $query->whereHas('truck', function ($query) use ($q) {
                         $query->where('unitname', 'like', "%{$q}%");
                     })
-                    ->orWhereHas('fault', function ($query) use ($q) {
+                        ->orWhereHas('fault', function ($query) use ($q) {
                             $query->where('name', 'like', "%{$q}%");
                         });
                 });
             })->with(['truck', 'user', 'fault', 'doneBy'])
             ->orderByRaw("(status = 'pending') DESC")
-            ->orderBy('last_reported_at', 'ASC')
             ->orderBy('created_at', 'DESC')
             ->paginate(50)
             ->withQueryString();
+
+        // Calculate days without report for each repair
+        $repairs->getCollection()->transform(function ($repair) {
+            $repair->days_without_report = $repair->last_reported_at
+                ? Carbon::parse($repair->last_reported_at)
+                ->startOfDay()
+                ->diffInDays(now()->startOfDay())
+                : null;
+            return $repair;
+        });
 
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
@@ -80,6 +89,7 @@ class RepairController extends Controller
         $repair = Repair::findOrFail($id);
         $repairdata = $request->validate([
             'comments' => 'required',
+            'repairedondate' => 'required|date|before_or_equal:today',
         ]);
 
         $repair->update(

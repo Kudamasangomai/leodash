@@ -10,11 +10,8 @@ use App\Services\FaultsStatsService;
 
 class DashboardController extends Controller
 {
-    public function index(TruckStatusService $truckStatusService,FaultsStatsService $faultsStats)
+    public function index(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
     {
-
-
-
 
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $truckStatusService->inactiveReportingTrucks(),
@@ -22,7 +19,11 @@ class DashboardController extends Controller
             'faultCounts'             => $faultsStats->faultstats(),
             'notes' =>  Note::orderBy('created_at', 'DESC')->get(),
             'faultyunits' => FaultyUnit::take(15)->get(),
-            'chartData' => $faultsStats->faultstats()->pluck('total'),
+
+            'chartData' => [
+                'labels' => $faultsStats->faultstats()->keys(),   // names of the faults
+                'totaldone' => $faultsStats->faultstats()->pluck('totaldone'), // counts
+            ]
         ]);
     }
 }

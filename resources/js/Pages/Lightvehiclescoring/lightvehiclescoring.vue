@@ -85,7 +85,7 @@ const submitForm = () => {
             </PageHeader>
 
             <!-- New: Vue-compatible file upload form (replaces Splade form) -->
-            <div class="p-6 mb-4 space-y-6 rounded shadow-sm">
+            <div class="p-6 mb-4 space-y-6 shadow-sm bg-white rounded-md">
                 <form
                     @submit.prevent="submitUpload"
                     enctype="multipart/form-data"

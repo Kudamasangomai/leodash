@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Violation;
+use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +19,49 @@ class EventsReportImport implements ToCollection, WithHeadingRow
      */
     public function collection(Collection $rows)
     {
+        if ($rows->isEmpty()) {
+            throw new Exception('Excel file is empty');
+        }
+
+      
+          //Validate required headers
+
+        $requiredHeaders = [
+            'AssetName',
+            'EventDescription',
+            'EventStartDate',
+            'EventValue',
+            'TotalDuration',
+        ];
+
+        $excelHeaders = array_keys($rows->first()->toArray());
+
+
+        foreach ($requiredHeaders as $header) {
+            if (!in_array($header, $excelHeaders)) {
+                throw new Exception("Missing required column: {$header}");
+            }
+        }
+
         // 1️⃣ Filter rows that have required fields
-        $rows = $rows->filter(
-            fn($row) =>
-            isset($row['AssetName'], $row['EventType'], $row['EventStartDate'], $row['EventValue'])
-        );
+        // $rows = $rows->filter(
+        //     fn($row) =>
+        //     isset($row['AssetName'], $row['EventType'], $row['EventStartDate'], $row['EventValue'])
+        // );
 
         // 2️⃣ Convert Excel numeric dates & EventValue
-        $rows = $rows->map(function ($row) {
+        $rows = $rows->map(function ($row, $index) {
+
+            if (
+                empty($row['AssetName']) ||
+                empty($row['EventDescription']) ||
+                empty($row['EventStartDate']) ||
+                !is_numeric($row['EventValue']) ||
+                !is_numeric($row['TotalDuration'])
+            ) {
+                throw new Exception("Invalid data found at row " . ($index + 2));
+            }
+
             $row['EventValue'] = (float) $row['EventValue'];
 
             $totalSeconds = $row['TotalDuration'] * 24 * 60 * 60;

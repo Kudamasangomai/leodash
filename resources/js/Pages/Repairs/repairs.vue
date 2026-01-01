@@ -15,8 +15,6 @@ import Spinner from "@/Components/Spinner.vue";
 import { usePage } from "@inertiajs/vue3";
 import Closeicon from "@/Components/Closeicon.vue";
 
-const pageProps = usePage().props;
-
 const props = defineProps({
     repairs: Object,
     trucks: Array,
@@ -31,6 +29,9 @@ const editingRepair = ref(null);
 const closeRepair = ref(null);
 const deleteForm = useForm({});
 const showRepairModal = ref(false);
+const isModalOpen = ref(false)     // controls modal visibility
+const selectedRepair = ref(null)   // stores repair clicked
+
 
 
 const form = useForm({
@@ -40,6 +41,7 @@ const form = useForm({
     location: "",
     comments: "",
     donebyid: "",
+    repairedondate:""
 });
 
 const openCreateModal = () => {
@@ -54,6 +56,7 @@ const openEditModal = (repair) => {
     form.fault_id = repair.fault_id;
     form.status = repair.status;
     form.location = repair.location;
+    form.repairedondate = repair.repairedondate;
     showFormModal.value = true;
 };
 
@@ -70,45 +73,43 @@ const openRepairModal = (repair) => {
 const submitForm = () => {
     if (editingRepair.value) {
         form.put(`/repairs/${editingRepair.value.id}`, {
-            onSuccess: () => closeFormModal(),
+            onSuccess: () => closeModal(),
         });
     } else {
         form.post("/repairs", {
-            onSuccess: () => closeFormModal(),
+            onSuccess: () => closeModal(),
         });
     }
 };
 
 const CloseRepairForm = () => {
     form.put(`/repairs/closerepair/${closeRepair.value.id}`, {
-        onSuccess: () => closeRepairModal(),
+        onSuccess: () => closeModal(),
     });
 };
 
-const closeFormModal = () => {
-    showFormModal.value = false;
+const closeModal = () => {
     form.reset();
+    showFormModal.value = false;
     editingRepair.value = null;
+    showRepairModal.value = false;
+    confirmDeleteRepair.value = false;
+    repairToDelete.value = null;
+    isModalOpen.value = false
+    selectedRepair.value = null
 };
 
-const closeRepairModal = () => {
-    showRepairModal.value = false;
-    form.reset();
-};
 
 const confirmDelete = (repair) => {
     repairToDelete.value = repair;
     confirmDeleteRepair.value = true;
 };
 
-const closeDeleteModal = () => {
-    confirmDeleteRepair.value = false;
-    repairToDelete.value = null;
-};
+
 
 const deleteRepair = () => {
     deleteForm.delete(`/repairs/${repairToDelete.value.id}`, {
-        onSuccess: () => closeDeleteModal(),
+        onSuccess: () => closeModal(),
     });
 };
 
@@ -148,21 +149,10 @@ watch(q, (value) => {
     )
 })
 
-
-
-const isModalOpen = ref(false)     // controls modal visibility
-const selectedRepair = ref(null)   // stores repair clicked
-
 // Function to open modal
 function openModal(repair) {
     selectedRepair.value = repair
     isModalOpen.value = true
-}
-
-// Function to close modal
-function closeModal() {
-    isModalOpen.value = false
-    selectedRepair.value = null
 }
 </script>
 
@@ -329,6 +319,7 @@ function closeModal() {
                                 {{ repair.location || "N/A" }}
                             </td>
                             <td
+                              :class="repair.days_without_report > 1 ? 'bg-red-200' : ''"
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
                                 {{ repair.last_reported_at }}
@@ -366,7 +357,7 @@ function closeModal() {
                         <tr v-else>
                             <td
                                 colspan="8"
-                                class="px-4 py-3 text-center text-gray-500"
+                                class="px-4 py-3 text-center "
                             >
                                 Nothing to show
                             </td>
@@ -393,7 +384,7 @@ function closeModal() {
         </MainContent>
 
         <!-- Form Modal -->
-        <Modal :show="showFormModal" @close="closeFormModal">
+        <Modal :show="showFormModal" @close="closeModal">
             <div class="p-6 bg-white">
                 <h2 class="mb-4 text-lg font-medium text-gray-900">
                     {{ editingRepair ? "Edit Repair" : "Create New Repair" }}
@@ -401,7 +392,7 @@ function closeModal() {
 
                 <form @submit.prevent="submitForm" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700"
+                        <label class="block text-sm font-medium "
                             >Truck</label
                         >
                         <select
@@ -427,7 +418,7 @@ function closeModal() {
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700"
+                        <label class="block text-sm font-medium "
                             >Fault</label
                         >
                         <select
@@ -453,7 +444,7 @@ function closeModal() {
                     </div>
 
                <div v-if="editinguser">
-                        <label class="block text-sm font-medium text-gray-700"
+                        <label class="block text-sm font-medium "
                             >Role</label
                         >
                            <select
@@ -473,7 +464,7 @@ function closeModal() {
                         </div>
                     </div>
                     <div class="flex justify-end gap-3 mt-6">
-                        <SecondaryButton @click="closeFormModal"
+                        <SecondaryButton @click="closeModal"
                             >Cancel</SecondaryButton
                         >
                         <PrimaryButton
@@ -494,14 +485,14 @@ function closeModal() {
         </Modal>
 
         <!-- Delete Confirmation Modal -->
-        <Modal :show="confirmDeleteRepair" @close="closeDeleteModal">
+        <Modal :show="confirmDeleteRepair" @close="closeModal">
             <div class="p-6 bg-white">
                 <h2 class="text-lg font-medium text-gray-900">
                     Are you sure you want to delete this repair record?
                 </h2>
 
                 <div class="flex justify-end gap-3 mt-6">
-                    <SecondaryButton @click="closeDeleteModal"
+                    <SecondaryButton @click="closeModal"
                         >Cancel</SecondaryButton
                     >
                     <DangerButton
@@ -515,7 +506,7 @@ function closeModal() {
         </Modal>
 
         <!-- Close repair modal-->
-        <Modal :show="showRepairModal" @close="closeRepairModal">
+        <Modal :show="showRepairModal" @close="closeModal">
             <div class="p-6 bg-white">
                 <h2 class="mb-4 text-lg font-medium text-gray-900">
                     Close Repair
@@ -524,7 +515,7 @@ function closeModal() {
                 <h6>Truck - {{ form.truck }}</h6>
                 <h6>Fault - {{ form.fault }}</h6>
                 <form @submit.prevent="CloseRepairForm" class="space-y-4">
-                    <label class="block text-sm font-medium text-gray-700"
+                    <label class="block text-sm font-medium "
                         >Job Done / comment</label
                     >
                     <input
@@ -540,7 +531,7 @@ function closeModal() {
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700"
+                        <label class="block text-sm font-medium "
                             >Fault</label
                         >
                         <select
@@ -565,8 +556,31 @@ function closeModal() {
                         </div>
                     </div>
 
+                       <div>
+
+                        <label class="block text-sm font-medium "
+                            >Repaired On</label
+                        >
+                     <input
+
+
+
+                            v-model="form.repairedondate"
+                            type="date"
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        />
+
+
+                        <div
+                        v-if="form.errors.repairedondate"
+                        class="mt-1 text-sm text-red-600"
+                    >
+                        {{ form.errors.repairedondate }}
+                    </div>
+                    </div>
+
                     <div class="flex justify-end gap-3 mt-6">
-                        <SecondaryButton @click="closeRepairModal"
+                        <SecondaryButton @click="closeModal"
                             >Cancel</SecondaryButton
                         >
                         <PrimaryButton
@@ -591,23 +605,87 @@ function closeModal() {
   <div
   >
     <!-- Modal Content -->
-    <div class="bg-white rounded-lg p-6 w-96">
-      <h2 class="text-xl font-bold mb-4">Repair Details</h2>
+ <div class="bg-white rounded-2xl shadow-xl p-6 w-full ">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-bold">
+            Repair Details
+        </h2>
 
-      <p><strong>Unit:</strong> {{ selectedRepair.truck.unitname }}</p>
-      <p><strong>Status:</strong> {{ selectedRepair.status }}</p>
-      <p><strong>Fault:</strong> {{ selectedRepair.fault.name }}</p>
-      <p><strong>Reported At:</strong> {{ selectedRepair.last_reported_at }}</p>
-      <p><strong>Done By:</strong> {{ selectedRepair.done_by?.name ?? 'N/A' }}</p>
-       <p><strong>Job Description:</strong> {{ selectedRepair.comments ?? 'N/A' }}</p>
-
-      <button
-        @click="closeModal"
-        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Close
-      </button>
+        <span
+            class="px-3 py-1 font-medium rounded-full"
+            :class="{
+                'bg-green-100 text-green-700': selectedRepair.status === 'completed',
+                'bg-yellow-100 text-yellow-700': selectedRepair.status === 'pending',
+                'bg-red-100 text-red-700': selectedRepair.status === 'failed',
+            }"
+        >
+            {{ selectedRepair.status }}
+        </span>
     </div>
+
+    <!-- Info Grid -->
+    <div class="space-y-4 ">
+        <div class="flex justify-between">
+            <span class="">Truck</span>
+            <span class="font-medium">
+                {{ selectedRepair.truck.unitname }}
+            </span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="">Fault</span>
+            <span class="font-medium">
+                {{ selectedRepair.fault.name }}
+            </span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="">Last Reported At</span>
+            <span class="font-medium">
+                {{ selectedRepair.last_reported_at }}
+            </span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="">Done By</span>
+            <span class="font-medium">
+                {{ selectedRepair.done_by?.name ?? 'N/A' }}
+            </span>
+        </div>
+
+            <div class="flex justify-between">
+            <span class="">Done On</span>
+            <span class="font-medium">
+                  {{ selectedRepair.repairedondate ?? 'N/A' }}
+            </span>
+
+
+        </div>
+
+        <!-- Description -->
+        <div class="pt-3 border-t">
+            <p class=" mb-1">Job Description</p>
+            <p class="bg-gray-200 rounded-lg p-3 ">
+                {{ selectedRepair.comments ?? 'No description provided' }}
+            </p>
+        </div>
+
+
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-6 flex justify-end">
+        <button
+            @click="closeModal"
+            class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg
+                   hover:bg-blue-700 transition"
+        >
+            Close
+        </button>
+    </div>
+</div>
+
   </div>
 </Modal>
 

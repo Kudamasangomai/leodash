@@ -11,7 +11,7 @@ import Chart from "chart.js/auto";
 const props = defineProps({
     inactiveReportingTrucks: Array,
     inactiveReportingCount: Number,
-    faultCounts: Object,
+    faultCounts: Array,
     notes: Array,
     faultyunits : Array,
     chartData: Object,
@@ -42,18 +42,21 @@ onMounted(() => {
             datasets: [
                 {
                     type: "bar",
-                    label: "Monthly Repairs",
-                     data: props.chartData.totals,
+                    label: "  Repairs For the Last 30 days",
+                     data: props.chartData.totaldone,
                     backgroundColor: "#446ad7",
+                    borderRadius: 10,
+                    barPercentage:0.6
 
                 },
+
 
             ],
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { display: true },
+                legend: { display: false },
                 title: {
                     display: false,
 
@@ -67,6 +70,10 @@ onMounted(() => {
                     },
                 },
                 x: {
+                    ticks:{
+                        autoSkip:false,
+
+                    },
                     grid: {
                         display: false,
                     },
@@ -142,13 +149,15 @@ onMounted(() => {
                                     </ul>
                                 </div>
                             </div>
-                            <p class="mx-4 text-right">
+
+                            <p class="mx-2 text-right my-4">
                                 <Link
                                     prefetch="mount"
                                     cache-for="2m"
                                     href="/notes"
+                                    class="bg-blue-500 p-2  rounded-xl text-white"
                                 >
-                                    View all
+                                    View All
                                 </Link>
                             </p>
                         </div>
@@ -157,7 +166,7 @@ onMounted(() => {
                         <!-- row -->
                         <div class="flex flex-row flex-wrap">
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
                             >
                                 <!-- box card -->
 
@@ -214,7 +223,7 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
                             >
                                 <!-- box card -->
                                 <div
@@ -273,8 +282,9 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
                                 @click="OpenStatsModal('gpsspeed')"
+
                             >
                                 <!-- box card -->
                                 <div
@@ -287,8 +297,9 @@ onMounted(() => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
+
                                             {{
-                                                faultCounts["Gps Speed"]
+                                                faultCounts['Gps Speed']
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -332,7 +343,7 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
                                 @click="OpenStatsModal('fmnotreporting')"
                             >
                                 <!-- box card -->
@@ -428,6 +439,7 @@ onMounted(() => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
+
                                             {{
                                                 faultCounts["No Rpm"]?.total ??
                                                 0
@@ -507,15 +519,13 @@ onMounted(() => {
                             class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
                             <div class="relative">
-                                <h2 class="text-center">
-                                    Repairs For the Month
+                                <h2 class="text-center mb-4">
+                                    Repairs For the Last 30 days
                                 </h2>
                                 <canvas
                                     class="max-w-100"
                                     id="BarChart"
                                 ></canvas>
-
-                                {{ chartData}}
                             </div>
                         </div>
                     </div>
@@ -666,12 +676,11 @@ onMounted(() => {
                             class="h-full p-6 overflow-x-auto bg-white border border-blue-300 rounded shadow-lg just shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
 
-                        <Link href="/faultyunits" prefetch="mount" cache-for="2m">View All</Link>
                             <h2 class="mb-2 text-center">
                                 Faulty Units FM & Gt
                             </h2>
 
-                            <div class="relative">
+                            <div class="relative mb-2">
                                 <table
                                     class="min-w-full overflow-y-auto border border-gray-200"
                                 >
@@ -728,6 +737,9 @@ onMounted(() => {
                                     </tbody>
                                 </table>
                             </div>
+                             <p class="mx-2 text-right my-2">
+                        <Link href="/faultyunits" prefetch="mount" class="bg-blue-500 p-2  rounded-xl text-white" cache-for="1m">View All</Link>
+                           </p>
                         </div>
                     </div>
 

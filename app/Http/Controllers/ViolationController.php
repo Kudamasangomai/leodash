@@ -17,9 +17,12 @@ class ViolationController extends Controller
     {
         $violations = Violation::orderBy('event_type')
             ->orderByDesc('max_speed')
-            ->take(500)
+            ->orWhereNotNull('location')
+            ->Where('location', 'NOT LIKE', '%Macheke%')
+            ->take(400)
             ->get()
-                  ->groupBy('event_type');
+            ->groupBy('event_type');
+
         return Inertia::render('Violations/violations', [
             'violations' => $violations,
         ]);
@@ -32,14 +35,15 @@ class ViolationController extends Controller
             'file' => 'required|mimes:xlsx,xls|max:2048',
         ]);
 
-        DB::table('violations')->truncate();
-        Excel::import(
-            new EventsReportImport,
-            $request->file('file')
-        );
+        try {
+            DB::table('violations')->truncate();
+            Excel::import(new EventsReportImport, $request->file('file'));
 
-        $violations = Violation::latest()->take(500)->get();
-        return Redirect::back()->with('',$violations);
-
+            $violations = Violation::latest()->take(400)->get();
+            return Redirect::back()->with('', $violations);
+        } catch (\Throwable $th) {
+            
+            return back()->withErrors('warning', 'Something is Wrong with your file');
+        }
     }
 }

@@ -17,6 +17,7 @@ class UpdateRepairRequest extends FormRequest
             'truck_id'   => 'required|exists:trucks,id',
             'fault_id'      => 'required',
             'location'   => 'nullable|string|max:255',
+            'repairedondate'=> 'required',
 
         ];
     }
