@@ -240,7 +240,7 @@ onMounted(() => {
                     <h6 class="text-white text-[15px] font-semibold px-4">
                         Services
                     </h6>
-                    <ul class="space-y-1 mt-3">
+                    <ul class="mt-3 space-y-1">
                         <li>
                             <Link
                                 prefetch="mount"
@@ -299,7 +299,7 @@ onMounted(() => {
                     <h6 class="text-white text-[15px] font-semibold px-4">
                         Reports
                     </h6>
-                    <ul class="space-y-1 mt-3">
+                    <ul class="mt-3 space-y-1">
                         <li>
                             <Link
                                 prefetch="mount"
@@ -389,7 +389,7 @@ onMounted(() => {
                     <h6 class="text-white text-[15px] font-semibold px-4">
                         Assets
                     </h6>
-                    <ul class="space-y-1 mt-3">
+                    <ul class="mt-3 space-y-1">
                         <li>
                             <Link
                                 prefetch="mount"
@@ -449,7 +449,7 @@ onMounted(() => {
                     <h6 class="text-white text-[15px] font-semibold px-4">
                         Maintenance
                     </h6>
-                    <ul class="space-y-1 mt-3">
+                    <ul class="mt-3 space-y-1">
                         <li>
                             <Link
                                 prefetch="mount"
@@ -532,7 +532,7 @@ onMounted(() => {
                 <div
                     class="fixed bottom-0 left-0 bg-[#446ad7] mt-20 min-w-[219px] border-t border-white rounded-lg px-5 py-2"
                 >
-                    <ul class="space-y-1 mt-3">
+                    <ul class="mt-3 space-y-1">
                         <li>
                             <Link
                                 prefetch="mount"
@@ -554,20 +554,14 @@ onMounted(() => {
                                 <span>Profile</span>
                             </Link>
                         </li>
-  <!-- <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink> -->
+
                         <li>
                             <Link
 
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
-                                prefetch="mount"
+
                                 class="text-white font-normal hover:text-slate-900 text-[14px] w-full flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
                             >
                                 <svg

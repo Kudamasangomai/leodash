@@ -160,21 +160,13 @@ const closeFormModal = () => {
                     <table class="min-w-full border border-gray-200">
                         <thead class="bg-gray-300 whitespace-nowrap">
                             <tr class="border-b border-gray-200">
-                                <!-- <th
-                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
-                                >
-                                    Id
-                                </th> -->
+
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Asset Name
                                 </th>
-                                <!-- <th
-                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
-                                >
-                                    Plate
-                                </th> -->
+
                                 <th
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
@@ -201,20 +193,13 @@ const closeFormModal = () => {
                                 v-for="truck in trucks"
                                 :key="truck.id"
                             >
-                                <!-- <td class="px-4 py-3 border-r border-gray-200">
 
-                                    {{ num++ }}
-                                </td> -->
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
                                     {{ truck.unitname }}
                                 </td>
-                                <!-- <td
-                                    class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
-                                >
-                                    {{ truck.license_plate }}
-                                </td> -->
+                                
                                 <td
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >

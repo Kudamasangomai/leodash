@@ -150,12 +150,12 @@ onMounted(() => {
                                 </div>
                             </div>
 
-                            <p class="mx-2 text-right my-4">
+                            <p class="mx-2 my-4 text-right">
                                 <Link
                                     prefetch="mount"
                                     cache-for="2m"
                                     href="/notes"
-                                    class="bg-blue-500 p-2  rounded-xl text-white"
+                                    class="p-2 text-white bg-blue-500 rounded-xl"
                                 >
                                     View All
                                 </Link>
@@ -166,7 +166,7 @@ onMounted(() => {
                         <!-- row -->
                         <div class="flex flex-row flex-wrap">
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 cursor-pointer md:px-4"
                             >
                                 <!-- box card -->
 
@@ -223,7 +223,7 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 cursor-pointer md:px-4"
                             >
                                 <!-- box card -->
                                 <div
@@ -282,7 +282,7 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 cursor-pointer md:px-4"
                                 @click="OpenStatsModal('gpsspeed')"
 
                             >
@@ -299,9 +299,10 @@ onMounted(() => {
                                         >
 
                                             {{
-                                                faultCounts['Gps Speed']
+                                                faultCounts["Gps Speed"]
                                                     ?.total ?? 0
                                             }}
+
                                         </h3>
                                     </div>
                                     <div class="absolute right-1 bottom-1">
@@ -343,7 +344,7 @@ onMounted(() => {
                             </div>
 
                             <div
-                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 md:px-4 cursor-pointer"
+                                class="flex-shrink w-1/2 max-w-full px-3 mb-6 cursor-pointer md:px-4"
                                 @click="OpenStatsModal('fmnotreporting')"
                             >
                                 <!-- box card -->
@@ -464,7 +465,7 @@ onMounted(() => {
                                 >
                                     <div class="relative dark:text-slate-100">
                                         <h2 class="mb-2 text-center">
-                                            No Speed & rpm
+                                            No Speed & Rpm
                                         </h2>
                                         <h3
                                             class="text-4xl font-bold text-center"
@@ -519,7 +520,7 @@ onMounted(() => {
                             class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
                             <div class="relative">
-                                <h2 class="text-center mb-4">
+                                <h2 class="mb-4 text-center">
                                     Repairs For the Last 30 days
                                 </h2>
                                 <canvas
@@ -568,106 +569,6 @@ onMounted(() => {
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 sm:w-1/2 md:w-full lg:w-1/3"
-                    >
-
-                        <div
-                            class="h-full p-6 bg-white rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
-                        >
-                            <div class="relative">
-                                <h2 class="mb-2 text-center">Sales Activity</h2>
-                                <canvas
-                                    class="max-w-100"
-                                    id="SalesActifity"
-                                ></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 sm:w-1/2 md:w-full lg:w-1/3"
-                    >
-
-                        <div
-                            class="h-full p-6 bg-white rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
-                        >
-                            <div class="relative">
-                                <h2 class="mb-2 text-center">Lead Sources</h2>
-                                <canvas
-                                    class="max-w-100"
-                                    id="LeadSources"
-                                ></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/3"
-                    >
-
-                        <div
-                            class="h-full p-6 bg-white rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
-                        >
-                            <div class="relative">
-                                <h2 class="mb-2 text-center">Top Deals</h2>
-                                <table
-                                    class="w-full text-sm text-left table-bordered-bottom table-sm"
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left">Client</th>
-                                            <th class="text-left">Deal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div>WMA Company</div>
-                                            </td>
-                                            <td>
-                                                <div>7929$</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>Fruits Inc</div>
-                                            </td>
-                                            <td>
-                                                <div>5629$</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>Wofttee LLC</div>
-                                            </td>
-                                            <td>
-                                                <div>5329$</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>Beozta Inc</div>
-                                            </td>
-                                            <td>
-                                                <div>4529$</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>Mr Danieal</div>
-                                            </td>
-                                            <td>
-                                                <div>3229$</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div
                         class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
                     >
@@ -677,7 +578,7 @@ onMounted(() => {
                         >
 
                             <h2 class="mb-2 text-center">
-                                Faulty Units FM & Gt
+                                Faulty Units FM / Gt
                             </h2>
 
                             <div class="relative mb-2">
@@ -737,8 +638,8 @@ onMounted(() => {
                                     </tbody>
                                 </table>
                             </div>
-                             <p class="mx-2 text-right my-2">
-                        <Link href="/faultyunits" prefetch="mount" class="bg-blue-500 p-2  rounded-xl text-white" cache-for="1m">View All</Link>
+                             <p class="mx-2 my-2 text-right">
+                        <Link href="/faultyunits" prefetch="mount" class="p-2 text-white bg-blue-500 rounded-xl" cache-for="1m">View All</Link>
                            </p>
                         </div>
                     </div>
@@ -965,7 +866,7 @@ onMounted(() => {
 
                 <div v-else-if="activeModalType === 'fmnotreporting'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                        On Gps Speed
+                    Fm Not Reporting
                     </h2>
                     <table
                         class="min-w-full overflow-y-auto border border-gray-200"
