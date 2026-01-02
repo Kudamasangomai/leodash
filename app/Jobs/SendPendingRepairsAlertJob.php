@@ -49,7 +49,7 @@ class SendPendingRepairsAlertJob implements ShouldQueue
             return;
         }
 
-        $technicians = ['kudam775@gmail.com','sendem@leozim', 'sendem2@leozim'
+        $technicians = ['kudam775@gmail.com','sendem@leozim.com', 'sendem2@leozim.com'
     ];
 
 
