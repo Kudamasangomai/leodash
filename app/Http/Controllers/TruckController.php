@@ -19,10 +19,9 @@ class TruckController extends Controller
      */
     public function index(Request $request): Response
     {
-        $trucks = Truck::all();
 
         return Inertia::render('Trucks/trucks', [
-            'trucks' => $trucks,
+            'trucks' =>Truck::paginate(50)
         ]);
     }
 

@@ -39,6 +39,7 @@ onMounted(() => {
     new Chart(ctx, {
         data: {
             labels:props.chartData.labels,
+
             datasets: [
                 {
                     type: "bar",
@@ -238,7 +239,7 @@ onMounted(() => {
                                             class="text-4xl font-bold text-center"
                                         >
                                             {{
-                                                faultCounts["Fm No Trip Data"]
+                                                faultCounts["fm_no_trip_data"]
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -299,7 +300,7 @@ onMounted(() => {
                                         >
 
                                             {{
-                                                faultCounts["Gps Speed"]
+                                                faultCounts["gps_speed"]
                                                     ?.total ?? 0
                                             }}
 
@@ -359,7 +360,7 @@ onMounted(() => {
                                             class="text-4xl font-bold text-center"
                                         >
                                             {{
-                                                faultCounts["Fm Not Reporting"]
+                                                faultCounts["fm_not_reporting"]
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -404,11 +405,11 @@ onMounted(() => {
                         </div>
 
                         <div class="flex flex-row flex-wrap bg">
-                            <div   @click="OpenStatsModal('nospeed')"
+                            <div
                                 class="flex w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
-                                <div
+                                <div   @click="OpenStatsModal('nospeed')"
                                     class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -419,7 +420,7 @@ onMounted(() => {
                                             class="text-4xl font-bold text-center"
                                         >
                                             {{
-                                                faultCounts["No Speed"]
+                                                faultCounts["no_speed"]
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -442,7 +443,7 @@ onMounted(() => {
                                         >
 
                                             {{
-                                                faultCounts["No Rpm"]?.total ??
+                                                faultCounts["no_rpm"]?.total ??
                                                 0
                                             }}
                                         </h3>
@@ -471,7 +472,7 @@ onMounted(() => {
                                             class="text-4xl font-bold text-center"
                                         >
                                             {{
-                                                faultCounts["No Rpm and Speed"]
+                                                faultCounts["no_rpm_and_speed"]
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -495,7 +496,7 @@ onMounted(() => {
                                             class="text-4xl font-bold text-center"
                                         >
                                             {{
-                                                faultCounts["Faulty Gps"]
+                                                faultCounts["faulty_gps"]
                                                     ?.total ?? 0
                                             }}
                                         </h3>
@@ -795,7 +796,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['Fm No Trip Data']
+                                v-for="repair in faultCounts['fm_no_trip_data']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"
@@ -844,7 +845,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['Gps Speed']
+                                v-for="repair in faultCounts['gps_speed']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"
@@ -894,7 +895,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['Fm Not Reporting']
+                                v-for="repair in faultCounts['fm_not_reporting']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"
@@ -944,7 +945,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['No Rpm']
+                                v-for="repair in faultCounts['no_rpm']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"
@@ -965,7 +966,7 @@ onMounted(() => {
                 </div>
                  <div v-else-if="activeModalType === 'nospeed'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    No Rpm
+                    No Speed
                     </h2>
                     <table
                         class="min-w-full overflow-y-auto border border-gray-200"
@@ -993,7 +994,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['No Speed']
+                                v-for="repair in faultCounts['no_speed']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"
@@ -1014,7 +1015,7 @@ onMounted(() => {
                 </div>
                   <div v-else-if="activeModalType === 'nospeedrpm'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    No Rpm
+                    No Speed and Rpm
                     </h2>
                     <table
                         class="min-w-full overflow-y-auto border border-gray-200"
@@ -1042,7 +1043,7 @@ onMounted(() => {
 
                         <tbody class="text-center divide-y divide-gray-200">
                             <tr
-                                v-for="repair in faultCounts['No Rpm and Speed']
+                                v-for="repair in faultCounts['no_rpm_and_speed']
                                     ?.repairs"
                                 :key="repair.id"
                                 class="odd:bg-gray-50"

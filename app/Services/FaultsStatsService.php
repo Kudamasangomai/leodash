@@ -11,27 +11,31 @@ class FaultsStatsService
     {
 
         $last30days = Carbon::now()->subDays(30)->startOfDay();
+
         $faults = [
-         'Gt Not Reporting',
-         'Fm Not Reporting',
-         'Fm No Trip Data',
-         'No Rpm',
-         'No Rpm and Speed',
-         'No Speed',
-         'Gps Speed',
-         'Faulty Gps',
+         'gt_not_reporting',
+         'fm_not_reporting',
+         'fm_no_trip_data',
+         'no_rpm',
+         'no_rpm_and_speed',
+         'no_speed',
+         'gps_speed',
+         'faulty_gps',
         ];
 
         return Fault::with([
-            'repairs' => fn($q) => $q->where('status', '!=', 'completed')->with('truck')
-        ])->whereIn('name', $faults)
+
+            'repairs' => fn($q) => $q->where('status', 'pending')
+            ->with('truck')
+
+        ])->whereIn('slug', $faults)
             ->withCount([
-                'repairs as total' => fn($q) => $q->where('status', 'pending'),
+                'repairs as total' => fn($q) => $q->where('status','pending'),
 
                 'repairs as totaldone' => fn($q) => $q->where('repairedondate', '>=', $last30days)
                                         ->where('status', 'completed'),
             ])
             ->get()
-            ->keyBy('name');
+            ->keyBy('slug');
     }
 }

@@ -12,7 +12,6 @@ import Deleteicon from "@/Components/Deleteicon.vue";
 import Editicon from "@/Components/Editicon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
-import { usePage } from "@inertiajs/vue3";
 import Closeicon from "@/Components/Closeicon.vue";
 
 const props = defineProps({
@@ -29,10 +28,8 @@ const editingRepair = ref(null);
 const closeRepair = ref(null);
 const deleteForm = useForm({});
 const showRepairModal = ref(false);
-const isModalOpen = ref(false)     // controls modal visibility
-const selectedRepair = ref(null)   // stores repair clicked
-
-
+const isModalOpen = ref(false); // controls modal visibility
+const selectedRepair = ref(null); // stores repair clicked
 
 const form = useForm({
     truck_id: "",
@@ -41,7 +38,7 @@ const form = useForm({
     location: "",
     comments: "",
     donebyid: "",
-    repairedondate:""
+    repairedondate: "",
 });
 
 const openCreateModal = () => {
@@ -95,17 +92,14 @@ const closeModal = () => {
     showRepairModal.value = false;
     confirmDeleteRepair.value = false;
     repairToDelete.value = null;
-    isModalOpen.value = false
-    selectedRepair.value = null
+    isModalOpen.value = false;
+    selectedRepair.value = null;
 };
-
 
 const confirmDelete = (repair) => {
     repairToDelete.value = repair;
     confirmDeleteRepair.value = true;
 };
-
-
 
 const deleteRepair = () => {
     deleteForm.delete(`/repairs/${repairToDelete.value.id}`, {
@@ -115,9 +109,9 @@ const deleteRepair = () => {
 
 const getStatusBadgeColor = (status) => {
     const colors = {
-        pending: "bg-yellow-300 text-yellow-800",
+        pending: "bg-yellow-400 text-yellow-800",
         in_progress: "bg-blue-100 text-blue-800",
-        completed: "bg-green-300 text-green-800",
+        completed: "bg-green-400 text-green-800",
         on_hold: "bg-red-100 text-red-800",
     };
     return colors[status] || "bg-gray-100 text-gray-800";
@@ -138,21 +132,17 @@ function triggerFetchLocations() {
 
 const q = ref("");
 watch(q, (value) => {
-    router.get(
-        '/repairs',
-        value ? { q: value } : {},
-        {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-        }
-    )
-})
+    router.get("/repairs", value ? { q: value } : {}, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
+});
 
 // Function to open modal
 function openModal(repair) {
-    selectedRepair.value = repair
-    isModalOpen.value = true
+    selectedRepair.value = repair;
+    isModalOpen.value = true;
 }
 </script>
 
@@ -161,7 +151,7 @@ function openModal(repair) {
     <AuthenticatedLayout>
         <MainContent>
             <PageHeader>
-                <PageTitle>Repairs Management</PageTitle>
+                <PageTitle>Repairs Managementppp</PageTitle>
                 <div>
                     <PrimaryButton
                         @click="triggerFetchLocations"
@@ -213,21 +203,42 @@ function openModal(repair) {
                 </div>
             </span>
 
-             <div class="py-4 ml-2 ">
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div
-                            class="relative flex justify-end w-full mt-1 mr-1 md:w-1/3 md:ml-auto"
-                        >
-                            <input
-                                type="text"
-                                 class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
-                                placeholder="Search for truck or Fault"
-                                v-model="q"
-                            />
-                        </div>
-                    </div>
-            <div class="px-2 overflow-x-auto">
+            <div class="py-4 ml-2">
+                <label for="table-search" class="sr-only">Search</label>
+                <div
+                    class="relative flex justify-end w-full mt-1 mr-1 md:w-1/3 md:ml-auto"
+                >
+                    <input
+                        type="text"
+                        class="block w-full px-3 border border-gray-300 rounded shadow-sm"
+                        placeholder="Search for truck or Fault"
+                        v-model="q"
+                    />
 
+                    <div
+                        class="flex flex-wrap items-center justify-between gap-4"
+                    >
+                        <PrimaryButton type="button">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="inline w-4 h-4 mr-2 fill-current"
+                                viewBox="0 0 67.671 67.671"
+                            >
+                                <path
+                                    d="M52.946 23.348H42.834v6h10.112c3.007 0 5.34 1.536 5.34 2.858v26.606c0 1.322-2.333 2.858-5.34 2.858H14.724c-3.007 0-5.34-1.536-5.34-2.858V32.207c0-1.322 2.333-2.858 5.34-2.858h10.11v-6h-10.11c-6.359 0-11.34 3.891-11.34 8.858v26.606c0 4.968 4.981 8.858 11.34 8.858h38.223c6.358 0 11.34-3.891 11.34-8.858V32.207c-.001-4.968-4.982-8.859-11.341-8.859z"
+                                    data-original="#000000"
+                                />
+                                <path
+                                    d="M24.957 14.955a2.99 2.99 0 0 0 2.121-.879l3.756-3.756v30.522a3 3 0 1 0 6 0V10.117l3.959 3.959c.586.586 1.354.879 2.121.879s1.535-.293 2.121-.879a2.998 2.998 0 0 0 0-4.242L36.078.877A2.987 2.987 0 0 0 33.958 0h-.046c-.767 0-1.534.291-2.12.877l-8.957 8.957a2.998 2.998 0 0 0 2.122 5.121z"
+                                    data-original="#000000"
+                                />
+                            </svg>
+                            Export
+                        </PrimaryButton>
+                    </div>
+                </div>
+            </div>
+            <div class="px-2 overflow-x-auto">
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-200">
                         <tr>
@@ -293,7 +304,12 @@ function openModal(repair) {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
-                            <button @click="openModal(repair)" class="text-blue-500">{{ repair.truck.unitname }}</button>
+                                <button
+                                    @click="openModal(repair)"
+                                    class="text-blue-500"
+                                >
+                                    {{ repair.truck.unitname }}
+                                </button>
                             </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
@@ -305,7 +321,7 @@ function openModal(repair) {
                             >
                                 <span
                                     :class="[
-                                        'px-3 py-2 rounded text-xs font-semibold',
+                                        'px-3 py-2 rounded text-[14px] font-semibold',
                                         getStatusBadgeColor(repair.status),
                                     ]"
                                 >
@@ -319,7 +335,11 @@ function openModal(repair) {
                                 {{ repair.location || "N/A" }}
                             </td>
                             <td
-                              :class="repair.days_without_report > 1 ? 'bg-red-200' : ''"
+                                :class="{
+                                    'bg-red-300':
+                                        repair.status === 'pending' &&
+                                        repair.days_without_report > 1,
+                                }"
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
                                 {{ repair.last_reported_at }}
@@ -355,31 +375,27 @@ function openModal(repair) {
                             </td>
                         </tr>
                         <tr v-else>
-                            <td
-                                colspan="8"
-                                class="px-4 py-3 text-center "
-                            >
+                            <td colspan="8" class="px-4 py-3 text-center">
                                 Nothing to show
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-<div class="flex gap-2 mt-4 justify-end">
-  <Link
-    v-for="link in repairs.links"
-    :key="link.label"
-    :href="link.url ?? ''"
-    v-html="link.label"
-    class="px-3 py-1 border rounded border-gray-200"
-    :class="{
-      'bg-blue-500 text-white': link.active,
-      'text-gray-400': !link.url
-    }"
-    preserve-scroll
-  />
-</div>
-
+                <div class="flex gap-2 mt-4 justify-end">
+                    <Link
+                        v-for="link in repairs.links"
+                        :key="link.label"
+                        :href="link.url ?? ''"
+                        v-html="link.label"
+                        class="px-3 py-1 border rounded border-gray-200"
+                        :class="{
+                            'bg-blue-500 text-white': link.active,
+                            'text-gray-400': !link.url,
+                        }"
+                        preserve-scroll
+                    />
+                </div>
             </div>
         </MainContent>
 
@@ -392,9 +408,7 @@ function openModal(repair) {
 
                 <form @submit.prevent="submitForm" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium "
-                            >Truck</label
-                        >
+                        <label class="block text-sm font-medium">Truck</label>
                         <select
                             v-model="form.truck_id"
                             required
@@ -418,9 +432,7 @@ function openModal(repair) {
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium "
-                            >Fault</label
-                        >
+                        <label class="block text-sm font-medium">Fault</label>
                         <select
                             v-model="form.fault_id"
                             required
@@ -443,19 +455,16 @@ function openModal(repair) {
                         </div>
                     </div>
 
-               <div v-if="editinguser">
-                        <label class="block text-sm font-medium "
-                            >Role</label
+                    <div v-if="editinguser">
+                        <label class="block text-sm font-medium">Role</label>
+                        <select
+                            v-model="form.role"
+                            id="inputState"
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
                         >
-                           <select
-                                    v-model="form.role"
-                                    id="inputState"
-                               class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
-
-                                >
-                                    <option value="1">Admin</option>
-                                    <option value="0">User</option>
-                                </select>
+                            <option value="1">Admin</option>
+                            <option value="0">User</option>
+                        </select>
                         <div
                             v-if="form.errors.role"
                             class="mt-1 text-sm text-red-600"
@@ -515,7 +524,7 @@ function openModal(repair) {
                 <h6>Truck - {{ form.truck }}</h6>
                 <h6>Fault - {{ form.fault }}</h6>
                 <form @submit.prevent="CloseRepairForm" class="space-y-4">
-                    <label class="block text-sm font-medium "
+                    <label class="block text-sm font-medium"
                         >Job Done / comment</label
                     >
                     <input
@@ -531,9 +540,7 @@ function openModal(repair) {
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium "
-                            >Fault</label
-                        >
+                        <label class="block text-sm font-medium">Fault</label>
                         <select
                             v-model="form.donebyid"
                             required
@@ -556,27 +563,22 @@ function openModal(repair) {
                         </div>
                     </div>
 
-                       <div>
-
-                        <label class="block text-sm font-medium "
+                    <div>
+                        <label class="block text-sm font-medium"
                             >Repaired On</label
                         >
-                     <input
-
-
-
+                        <input
                             v-model="form.repairedondate"
                             type="date"
                             class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
                         />
 
-
                         <div
-                        v-if="form.errors.repairedondate"
-                        class="mt-1 text-sm text-red-600"
-                    >
-                        {{ form.errors.repairedondate }}
-                    </div>
+                            v-if="form.errors.repairedondate"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.repairedondate }}
+                        </div>
                     </div>
 
                     <div class="flex justify-end gap-3 mt-6">
@@ -601,93 +603,89 @@ function openModal(repair) {
         </Modal>
 
         <Modal :show="isModalOpen" @close="closeModal">
-  <!-- Modal Overlay -->
-  <div
-  >
-    <!-- Modal Content -->
- <div class="bg-white rounded-2xl shadow-xl p-6 w-full ">
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-5">
-        <h2 class="text-xl font-bold">
-            Repair Details
-        </h2>
+            <!-- Modal Overlay -->
+            <div>
+                <!-- Modal Content -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 w-full">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-xl font-bold">Repair Details</h2>
 
-        <span
-            class="px-3 py-1 font-medium rounded-full"
-            :class="{
-                'bg-green-100 text-green-700': selectedRepair.status === 'completed',
-                'bg-yellow-100 text-yellow-700': selectedRepair.status === 'pending',
-                'bg-red-100 text-red-700': selectedRepair.status === 'failed',
-            }"
-        >
-            {{ selectedRepair.status }}
-        </span>
-    </div>
+                        <span
+                            class="px-3 py-1 font-medium rounded-full"
+                            :class="{
+                                'bg-green-100 text-green-700':
+                                    selectedRepair.status === 'completed',
+                                'bg-yellow-100 text-yellow-700':
+                                    selectedRepair.status === 'pending',
+                                'bg-red-100 text-red-700':
+                                    selectedRepair.status === 'failed',
+                            }"
+                        >
+                            {{ selectedRepair.status }}
+                        </span>
+                    </div>
 
-    <!-- Info Grid -->
-    <div class="space-y-4 ">
-        <div class="flex justify-between">
-            <span class="">Truck</span>
-            <span class="font-medium">
-                {{ selectedRepair.truck.unitname }}
-            </span>
-        </div>
+                    <!-- Info Grid -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="">Truck</span>
+                            <span class="font-medium">
+                                {{ selectedRepair.truck.unitname }}
+                            </span>
+                        </div>
 
-        <div class="flex justify-between">
-            <span class="">Fault</span>
-            <span class="font-medium">
-                {{ selectedRepair.fault.name }}
-            </span>
-        </div>
+                        <div class="flex justify-between">
+                            <span class="">Fault</span>
+                            <span class="font-medium">
+                                {{ selectedRepair.fault.name }}
+                            </span>
+                        </div>
 
-        <div class="flex justify-between">
-            <span class="">Last Reported At</span>
-            <span class="font-medium">
-                {{ selectedRepair.last_reported_at }}
-            </span>
-        </div>
+                        <div class="flex justify-between">
+                            <span class="">Last Reported At</span>
+                            <span class="font-medium">
+                                {{ selectedRepair.last_reported_at }}
+                            </span>
+                        </div>
 
-        <div class="flex justify-between">
-            <span class="">Done By</span>
-            <span class="font-medium">
-                {{ selectedRepair.done_by?.name ?? 'N/A' }}
-            </span>
-        </div>
+                        <div class="flex justify-between">
+                            <span class="">Done By</span>
+                            <span class="font-medium">
+                                {{ selectedRepair.done_by?.name ?? "N/A" }}
+                            </span>
+                        </div>
 
-            <div class="flex justify-between">
-            <span class="">Done On</span>
-            <span class="font-medium">
-                  {{ selectedRepair.repairedondate ?? 'N/A' }}
-            </span>
+                        <div class="flex justify-between">
+                            <span class="">Done On</span>
+                            <span class="font-medium">
+                                {{ selectedRepair.repairedondate ?? "N/A" }}
+                            </span>
+                        </div>
 
+                        <!-- Description -->
+                        <div class="pt-3 border-t">
+                            <p class="mb-1">Job Description</p>
+                            <p class="bg-gray-200 rounded-lg p-3">
+                                {{
+                                    selectedRepair.comments ??
+                                    "No description provided"
+                                }}
+                            </p>
+                        </div>
+                    </div>
 
-        </div>
-
-        <!-- Description -->
-        <div class="pt-3 border-t">
-            <p class=" mb-1">Job Description</p>
-            <p class="bg-gray-200 rounded-lg p-3 ">
-                {{ selectedRepair.comments ?? 'No description provided' }}
-            </p>
-        </div>
-
-
-    </div>
-
-    <!-- Footer -->
-    <div class="mt-6 flex justify-end">
-        <button
-            @click="closeModal"
-            class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg
-                   hover:bg-blue-700 transition"
-        >
-            Close
-        </button>
-    </div>
-</div>
-
-  </div>
-</Modal>
-
+                    <!-- Footer -->
+                    <div class="mt-6 flex justify-end">
+                        <button
+                            @click="closeModal"
+                            class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>

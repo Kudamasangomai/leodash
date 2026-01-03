@@ -26,10 +26,12 @@ class FetchTruckLocations extends Command
     {
 
         try {
- Log::info('repairs:fetchlocations STARTED at ' . now());
+            
+            Log::info('repairs:fetchlocations STARTED at ' . now());
             $result = $service->fetchAndUpdate();
             $this->info("Processed {$result['processed']} positions, updated {$result['updated']} repair(s).");
-    Log::info('repairs:fetchlocations FINISHED at ' . now());
+            Log::info('repairs:fetchlocations FINISHED at ' . now());
+
         } catch (\Throwable $e) {
 
             Log::error('Truck status Error' . $e->getMessage());

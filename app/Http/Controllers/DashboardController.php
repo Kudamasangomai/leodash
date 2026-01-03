@@ -12,17 +12,17 @@ class DashboardController extends Controller
 {
     public function index(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
     {
+        $faultsStats = $faultsStats->faultstats();
 
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $truckStatusService->inactiveReportingTrucks(),
             'inactiveReportingCount'  => $truckStatusService->inactiveReportingTrucks()->count(),
-            'faultCounts'             => $faultsStats->faultstats(),
-            'notes' =>  Note::orderBy('created_at', 'DESC')->get(),
+            'faultCounts'             => $faultsStats,
+            'notes' =>  Note::orderBy('created_at', 'DESC')->take(15)->get(),
             'faultyunits' => FaultyUnit::take(15)->get(),
-
             'chartData' => [
-                'labels' => $faultsStats->faultstats()->keys(),   // names of the faults
-                'totaldone' => $faultsStats->faultstats()->pluck('totaldone'), // counts
+                 'labels' => $faultsStats->map(fn($fault) => $fault->name)->values(),
+                'totaldone' => $faultsStats->pluck('totaldone'),
             ]
         ]);
     }

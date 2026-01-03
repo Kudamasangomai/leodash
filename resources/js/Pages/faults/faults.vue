@@ -132,6 +132,12 @@ const savefault = () => {
                                                     Name
                                                 </th>
 
+                                                   <th
+                                                    class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
+                                                >
+                                                  Code
+                                                </th>
+
                                                 <th
                                                     scope="col"
                                                     class="px-4 py-3 text-left text-[13px] font-medium text-slate-600 border-r border-gray-300"
@@ -159,6 +165,12 @@ const savefault = () => {
                                                     class="px-4 py-3 border-r border-gray-200"
                                                 >
                                                     {{ fault.name }}
+                                                </td>
+                                                   <td
+                                                    scope="row"
+                                                    class="px-4 py-3 border-r border-gray-200"
+                                                >
+                                                    {{ fault.slug }}
                                                 </td>
                                                 <td
                                                     scope="row"
