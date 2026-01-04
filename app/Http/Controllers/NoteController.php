@@ -24,16 +24,12 @@ class NoteController extends Controller
         return back()->with('success', 'Record created Successful');
     }
 
-
-
     public function update(UpdateNoteRequest $request, Note $note)
     {
         $validated = $request->validated();
         $note->update($validated);
         return back()->with('success', 'Record Updated Successfully');
     }
-
-
 
     public function destroy(Note $note)
     {

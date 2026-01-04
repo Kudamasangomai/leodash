@@ -23,18 +23,12 @@ class DistanceCalibration extends Model
      */
     public function getDateWentToRoadtestAttribute($value)
     {
-        if ($value === null || $value === '') {
-            return null;
-        }
-        return Carbon::parse($value)->format('d M Y');
+        return empty($value) ? null : Carbon::parse($value)->format('d M Y');
     }
 
     public function getCreatedAtAttribute($value)
     {
-        if ($value === null || $value === '') {
-            return null;
-        }
-        return Carbon::parse($value)->format('d M Y');
+         return empty($value) ? null : Carbon::parse($value)->format('d M Y');
     }
 
     /**

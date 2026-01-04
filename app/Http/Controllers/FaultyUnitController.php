@@ -27,8 +27,6 @@ class FaultyUnitController extends Controller
      */
     public function store(StoreFaultyUnitRequest $request)
     {
-
-
         FaultyUnit::create($request->validated()  + [
             'user_id' => $request->user()->id,
         ]);
@@ -51,7 +49,6 @@ class FaultyUnitController extends Controller
     public function destroy(FaultyUnit $faultyunit)
     {
         $faultyunit->delete();
-              return redirect()->back()->with('success','Record Deleted Successfully');
-
+        return redirect()->back()->with('success','Record Deleted Successfully');
     }
 }

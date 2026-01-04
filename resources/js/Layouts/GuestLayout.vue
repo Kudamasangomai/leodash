@@ -30,8 +30,8 @@ import { Link } from "@inertiajs/vue3";
                             class="items-center h-20 w-30"
                             alt="login img"
                         /></div>
-                           <h1 class="mt-2 text-3xl font-medium text-white">
-                                  Comitted To Excellence
+                           <h1 class="mt-2 text-2xl font-medium text-white text-center">
+                                  Committed To Excellence
                                 </h1>
                         <div class="py-16 text-transparent"></div>
 

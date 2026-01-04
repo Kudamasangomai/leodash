@@ -10,7 +10,7 @@ use App\Services\FaultsStatsService;
 
 class DashboardController extends Controller
 {
-    public function index(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
+    public function __invoke(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
     {
         $faultsStats = $faultsStats->faultstats();
 

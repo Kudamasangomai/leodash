@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 class RepairController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $repairs = Repair::query()
             ->when(request('q'), function ($query, $q) {

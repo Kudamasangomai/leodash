@@ -52,7 +52,7 @@ class MovingReportController extends Controller
             'Beira',
         ];
 
-        // 1) Fetch all filtered reports
+        //  Fetch all filtered reports
         // Only include locations from our filter list
         $reports = MovingReport::where('stationary_minutes', '>=', 240)
             ->whereNotIn('asset_name', $excludedTrucks)
@@ -82,12 +82,12 @@ class MovingReportController extends Controller
 
                 return $item;
             });
-        // 2) Group by clean_location
+        // Group by clean_location
         $groupedReports = $reports->groupBy('clean_location');
 
 
 
-        // 3) Map over desired order
+        // Map over desired order
         $reports = collect($desiredOrder)->map(function ($location) use ($groupedReports) {
             if ($groupedReports->has($location)) {
                 $group = $groupedReports->get($location);

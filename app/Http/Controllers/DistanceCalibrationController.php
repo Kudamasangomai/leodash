@@ -17,7 +17,7 @@ class DistanceCalibrationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index()
     {
         $calibrations = DistanceCalibration::with('user', 'truck')
             ->paginate(50);

@@ -21,7 +21,6 @@ class FaultyUnit extends Model
     }
 
     protected $casts = [
-
         'location' => FaultUnitLocation::class,
     ];
 }

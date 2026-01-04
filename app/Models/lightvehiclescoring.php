@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class lightvehiclescoring extends Model
 {
     protected $guarded = ['id'];
+    
     protected $appends = [
         'total_duration_time',
         'greenband_duration_time',

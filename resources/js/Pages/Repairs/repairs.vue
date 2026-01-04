@@ -151,7 +151,7 @@ function openModal(repair) {
     <AuthenticatedLayout>
         <MainContent>
             <PageHeader>
-                <PageTitle>Repairs Managementppp</PageTitle>
+                <PageTitle>Repairs Management</PageTitle>
                 <div>
                     <PrimaryButton
                         @click="triggerFetchLocations"

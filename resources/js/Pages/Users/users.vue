@@ -14,21 +14,16 @@ import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
 import { usePage } from "@inertiajs/vue3";
 
-
-const pageProps = usePage().props;
-
 const props = defineProps({
     users: Array,
 });
 
 const showFormModal = ref(false);
-const confirmDeleteRepair = ref(false);
+const confirmDeleteUser = ref(false);
 const editinguser = ref(null);
 const deleteForm = useForm({});
+const userToDelete = ref(null);
 
-const showRepairModal = ref(false);
-const repairToDelete = ref(null);
-const closeRepair = ref(null);
 
 const form = useForm({
     name: "",
@@ -71,10 +66,25 @@ const submitForm = () => {
     }
 };
 
+const confirmDelete = (user) => {
+    userToDelete.value = user;
+    confirmDeleteUser.value = true;
+};
+
+
+const deleteRepair = () => {
+    deleteForm.delete(`/users/${userToDelete.value.id}`, {
+        onSuccess: () => closeFormModal(),
+    });
+};
+
+
 const closeFormModal = () => {
     showFormModal.value = false;
+     editinguser.value = null;
+     confirmDeleteUser.value= false;
     form.reset();
-    editinguser.value = null;
+
 };
 </script>
 
@@ -171,7 +181,7 @@ const closeFormModal = () => {
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
                                 {{ user.role === 0 ? "NO" : "Yes" }}
-                             
+
                             </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 flex gap-2"
@@ -179,9 +189,9 @@ const closeFormModal = () => {
                                 <button @click="openEditModal(user)">
                                     <Editicon />
                                 </button>
-                                <button @click="confirmDelete(user)">
+                                <!-- <button @click="confirmDelete(user)">
                                     <Deleteicon />
-                                </button>
+                                </button> -->
                             </td>
                         </tr>
                         <tr v-else>
@@ -298,14 +308,14 @@ const closeFormModal = () => {
         </Modal>
 
         <!-- Delete Confirmation Modal -->
-        <Modal :show="confirmDeleteRepair" @close="closeDeleteModal">
+        <Modal :show="confirmDeleteUser" @close="closeFormModal">
             <div class="p-6 bg-white">
                 <h2 class="text-lg font-medium text-gray-900">
                     Are you sure you want to delete this record?
                 </h2>
 
                 <div class="flex justify-end gap-3 mt-6">
-                    <SecondaryButton @click="closeDeleteModal"
+                    <SecondaryButton @click="closeFormModal"
                         >Cancel</SecondaryButton
                     >
                     <DangerButton

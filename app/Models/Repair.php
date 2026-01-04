@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Repair extends Model
 {
+
+      use HasFactory;
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -47,7 +50,7 @@ class Repair extends Model
             ->wherestatus('pending')
             ->exists()
         ) {
-            return 'The Truck with that fault  already have a pending repair.';
+            return 'The Truck with that fault  already has a pending repair.';
         }
         return null;
     }
