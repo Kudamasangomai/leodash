@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Fault;
+use App\Models\Truck;
 use Carbon\Carbon;
 
 class FaultsStatsService
@@ -13,29 +14,45 @@ class FaultsStatsService
         $last30days = Carbon::now()->subDays(30)->startOfDay();
 
         $faults = [
-         'gt_not_reporting',
-         'fm_not_reporting',
-         'fm_no_trip_data',
-         'no_rpm',
-         'no_rpm_and_speed',
-         'no_speed',
-         'gps_speed',
-         'faulty_gps',
+            'gt_not_reporting',
+            'fm_not_reporting',
+            'fm_no_trip_data',
+            'no_rpm',
+            'no_rpm_and_speed',
+            'no_speed',
+            'gps_speed',
+            'faulty_gps',
         ];
 
-        return Fault::with([
+        $faults = Fault::with([
 
             'repairs' => fn($q) => $q->where('status', 'pending')
-            ->with('truck')
+                ->with('truck')
 
         ])->whereIn('slug', $faults)
             ->withCount([
-                'repairs as total' => fn($q) => $q->where('status','pending'),
+                'repairs as total' => fn($q) => $q->where('status', 'pending'),
 
                 'repairs as totaldone' => fn($q) => $q->where('repairedondate', '>=', $last30days)
-                                        ->where('status', 'completed'),
+                    ->where('status', 'completed'),
             ])
+            ->orderByDesc('totaldone')
             ->get()
             ->keyBy('slug');
+
+        // trucks repaired twice in the last 30 days or 60 will see
+        $topTrucks = Truck::withCount([
+            'repairs as completed_repairs' => fn($q) =>
+            $q->where('status', 'completed')
+                ->where('repairedondate', '>=', $last30days)
+        ])
+            ->having('completed_repairs', '>=', 2)
+            ->orderByDesc('completed_repairs')
+            ->get();
+
+        return [
+            'faults'     => $faults,
+            'topTrucks'  => $topTrucks,
+        ];
     }
 }

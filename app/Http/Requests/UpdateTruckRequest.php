@@ -25,6 +25,7 @@ class UpdateTruckRequest extends FormRequest
             ],
 
             'status' => ['required'],
+            'make' => ['required'],
 
         ];
     }

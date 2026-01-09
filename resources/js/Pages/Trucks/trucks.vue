@@ -34,12 +34,14 @@ function syncTrucks() {
 const form = useForm({
     unitname: "",
     status: "",
+    make:""
 });
 
 const openEditModal = (truck) => {
     editingTruck.value = truck;
     form.unitname = truck.unitname;
     form.status = truck.status;
+      form.make = truck.make;
     showFormModal.value = true;
 };
 
@@ -59,7 +61,7 @@ const closeFormModal = () => {
     form.reset();
     editingTruck.value = null;
 };
-// let  num =  1;
+
 </script>
 
 <template>
@@ -113,7 +115,7 @@ const closeFormModal = () => {
             </PageHeader>
 
             <div class="p-6 overflow-x-auto">
-              
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full border border-gray-200">
                         <thead class="bg-gray-300 whitespace-nowrap">
@@ -123,6 +125,12 @@ const closeFormModal = () => {
                                     class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
                                 >
                                     Asset Name
+                                </th>
+
+                                  <th
+                                    class="px-4 py-3 text-left text-[14px] font-medium text-slate-600 border-r border-gray-200"
+                                >
+                              Make
                                 </th>
 
                                 <th
@@ -156,6 +164,12 @@ const closeFormModal = () => {
                                     class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                                 >
                                     {{ truck.unitname }}
+                                </td>
+
+                                  <td
+                                    class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                                >
+                                    {{ truck.make }}
                                 </td>
 
                                 <td
@@ -238,7 +252,7 @@ const closeFormModal = () => {
                             required
                             class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
                         >
-                            <option value="">Select a Fault</option>
+                            <!-- <option value="">Select a Fault</option> -->
                             <option :value="1">Active</option>
                             <option :value="0">Inactive</option>
                         </select>
@@ -247,6 +261,28 @@ const closeFormModal = () => {
                             class="mt-1 text-sm text-red-600"
                         >
                             {{ form.errors.status }}
+                        </div>
+                    </div>
+
+                     <div v-if="editingTruck">
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Make</label
+                        >
+                        <select
+                            v-model="form.make"
+                            required
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        >
+                            <!-- <option value="">Select a Fault</option> -->
+                            <option value="Shacman">Shacman</option>
+                            <option value="Argosy">Argosy</option>
+                            <option value="Fld">Fld</option>
+                        </select>
+                        <div
+                            v-if="form.errors.make"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.make}}
                         </div>
                     </div>
                     <div class="flex justify-end gap-3 mt-6">

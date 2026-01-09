@@ -19,8 +19,17 @@ class DistanceCalibrationController extends Controller
      */
     public function index()
     {
-        $calibrations = DistanceCalibration::with('user', 'truck')
-            ->paginate(50);
+
+        $calibrations = DistanceCalibration::query()
+            ->when(request('q'), function ($query, $q) {
+                $query->where(function ($query) use ($q) {
+                    $query->whereHas('truck', function ($query) use ($q) {
+                        $query->where('unitname', 'like', "%{$q}%");
+                    });
+                });
+            })->with(['truck', 'user'])
+            ->paginate(50)
+            ->withQueryString();
 
         return Inertia::render('DistanceCalibrations/calibrations', [
             'calibrations' => $calibrations,

@@ -12,17 +12,20 @@ class DashboardController extends Controller
 {
     public function __invoke(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
     {
-        $faultsStats = $faultsStats->faultstats();
+
+
+        $stats = $faultsStats->faultstats();
 
         return Inertia::render('Dashboard', [
             'inactiveReportingTrucks' => $truckStatusService->inactiveReportingTrucks(),
             'inactiveReportingCount'  => $truckStatusService->inactiveReportingTrucks()->count(),
-            'faultCounts'             => $faultsStats,
+            'faultCounts'             => $stats['faults'],
+            'topTrucks' => $stats['topTrucks'],
             'notes' =>  Note::orderBy('created_at', 'DESC')->take(15)->get(),
             'faultyunits' => FaultyUnit::take(15)->get(),
             'chartData' => [
-                 'labels' => $faultsStats->map(fn($fault) => $fault->name)->values(),
-                'totaldone' => $faultsStats->pluck('totaldone'),
+                'labels' => $stats['faults']->map(fn($fault) => $fault->name)->values(),
+                'totaldone' => $stats['faults']->pluck('totaldone')->values(),
             ]
         ]);
     }

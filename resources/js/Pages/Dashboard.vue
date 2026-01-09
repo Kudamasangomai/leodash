@@ -13,8 +13,9 @@ const props = defineProps({
     inactiveReportingCount: Number,
     faultCounts: Array,
     notes: Array,
-    faultyunits : Array,
+    faultyunits: Array,
     chartData: Object,
+    topTrucks: Array,
 });
 
 const showGtmodal = ref(false);
@@ -30,28 +31,22 @@ const CloseStatsModal = () => {
     activeModalType.value = null;
 };
 
-
-
 onMounted(() => {
     const ctx = document.getElementById("BarChart").getContext("2d");
 
-
     new Chart(ctx, {
         data: {
-            labels:props.chartData.labels,
+            labels: props.chartData.labels,
 
             datasets: [
                 {
                     type: "bar",
-                    label: "  Repairs For the Last 30 days",
-                     data: props.chartData.totaldone,
+                    label: "  Repairs - Last 30 days",
+                    data: props.chartData.totaldone,
                     backgroundColor: "#446ad7",
                     borderRadius: 10,
-                    barPercentage:0.6
-
+                    barPercentage: 0.6,
                 },
-
-
             ],
         },
         options: {
@@ -60,20 +55,21 @@ onMounted(() => {
                 legend: { display: false },
                 title: {
                     display: false,
-
                 },
             },
             scales: {
                 y: {
+                    ticks: {
+                        stepSize: 1,
+                    },
                     beginAtZero: true,
                     grid: {
                         display: true,
                     },
                 },
                 x: {
-                    ticks:{
-                        autoSkip:false,
-
+                    ticks: {
+                        autoSkip: false,
                     },
                     grid: {
                         display: false,
@@ -83,7 +79,6 @@ onMounted(() => {
         },
     });
 });
-
 </script>
 
 <template>
@@ -119,6 +114,8 @@ onMounted(() => {
                                     <h2 class="my-4 text-center">
                                         Todo List / Reminders / Quick Notes
                                     </h2>
+
+                                    <!-- {{ faultCounts }} -->
                                     <ul
                                         class="p-2 mb-6 overflow-y-auto task-check h-72 scrollbars show"
                                     >
@@ -285,7 +282,6 @@ onMounted(() => {
                             <div
                                 class="flex-shrink w-1/2 max-w-full px-3 mb-6 cursor-pointer md:px-4"
                                 @click="OpenStatsModal('gpsspeed')"
-
                             >
                                 <!-- box card -->
                                 <div
@@ -298,12 +294,10 @@ onMounted(() => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-
                                             {{
                                                 faultCounts["gps_speed"]
                                                     ?.total ?? 0
                                             }}
-
                                         </h3>
                                     </div>
                                     <div class="absolute right-1 bottom-1">
@@ -409,7 +403,8 @@ onMounted(() => {
                                 class="flex w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
-                                <div   @click="OpenStatsModal('nospeed')"
+                                <div
+                                    @click="OpenStatsModal('nospeed')"
                                     class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -433,7 +428,8 @@ onMounted(() => {
                                         ></i>
                                     </div>
                                 </div>
-                                <div  @click="OpenStatsModal('norpm')"
+                                <div
+                                    @click="OpenStatsModal('norpm')"
                                     class="relative h-full p-3 ml-2 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -441,7 +437,6 @@ onMounted(() => {
                                         <h3
                                             class="text-4xl font-bold text-center"
                                         >
-
                                             {{
                                                 faultCounts["no_rpm"]?.total ??
                                                 0
@@ -461,7 +456,8 @@ onMounted(() => {
                                 class="flex w-1/2 max-w-full px-3 mb-6 md:px-4"
                             >
                                 <!-- box card -->
-                                <div       @click="OpenStatsModal('nospeedrpm')"
+                                <div
+                                    @click="OpenStatsModal('nospeedrpm')"
                                     class="relative h-full p-3 w-1/2 overflow-hidden rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10"
                                 >
                                     <div class="relative dark:text-slate-100">
@@ -514,15 +510,15 @@ onMounted(() => {
                     </div>
 
                     <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 md:w-3/4"
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-3/4"
                     >
                         <!-- box card -->
                         <div
-                            class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
+                            class="h-76 p-2 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
                             <div class="relative">
                                 <h2 class="mb-4 text-center">
-                                    Repairs For the Last 30 days
+                                    Repairs - Last 30 days
                                 </h2>
                                 <canvas
                                     class="max-w-100"
@@ -533,43 +529,209 @@ onMounted(() => {
                     </div>
 
                     <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 md:w-1/4"
+                        class="flex-shrink w-full max-w-full p-2 mb-6 md:px-2 lg:w-1/4 overflow-y-scroll"
                     >
-                        <!-- box card   class="flex-shrink w-full max-w-full px-3 mb-6 overflow-scroll md:px-4 md:w-1/3"-->
-                        <div
-                            class="h-full p-6 bg-white border border-blue-300 rounded shadow-lg shadow-cyan-100/10 dark:shadow-cyan-700/10"
-                        >
-                            <div class="relative">
-                                <h2 class="mb-2 text-center">
-                                    Most fault by Month/ year
-                                </h2>
+                        <div class="flex flex-row flex-wrap h-80">
+                            <div
+                                class="flex-shrink w-full max-w-full px-1 mb-6 cursor-pointer"
+                            >
+                                <!-- box card -->
+
                                 <div
-                                    class="flex flex-col w-full max-w-sm mx-auto funnel-area"
+                                    class="relative mb-2 p-3 text-center rounded shadow-lg sm:p-5 bg-[#446ad7] shadow-cyan-700/10 text-white"
                                 >
-                                    <table
-                                        class="w-full text-sm text-left table-bordered-bottom table-sm"
+                                    Last 30 days Stats
+                                </div>
+
+                                <div
+                                    class="flex-shrink w-full max-w-full my-4 cursor-pointer"
+                                >
+                                    <!-- box card -->
+
+                                    <div
+                                        class="border-blue-300 border relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-white shadow-cyan-700/10"
                                     >
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">Fault</th>
-                                                <th class="text-left">Times</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div>Gt not reporting</div>
-                                                </td>
-                                                <td>
-                                                    <div>5</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <h2 class="mb-2 text-left">
+                                            Most Faults
+                                        </h2>
+                                        <div
+                                            class="flex flex-col w-full max-w-sm mx-auto funnel-area"
+                                        >
+                                            <table
+                                                class="w-full text-sm text-center table-bordered-bottom table-sm"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Fault
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Occurences
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="fault in Object.values(
+                                                            faultCounts
+                                                        )"
+                                                        :key="fault.id"
+                                                    >
+                                                        <td class="text-left">
+                                                            <div>
+                                                                {{ fault.name }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                {{
+                                                                    fault.totaldone
+                                                                }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-row flex-wrap">
+                                    <div
+                                        class="flex-shrink w-full max-w-full my-4 cursor-pointer"
+                                    >
+                                        <!-- box card -->
+
+                                        <div
+                                            class="border-blue-300 border relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-white shadow-cyan-700/10"
+                                        >
+                                            <h2 class="mb-2 text-center">
+                                                Most Trucks with Faults
+                                            </h2>
+                                            <div
+                                                class="flex flex-col w-full max-w-sm mx-auto funnel-area"
+                                            >
+                                                <table
+                                                    class="w-full text-sm table-bordered-bottom table-sm text-center"
+                                                >
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                class="text-left"
+                                                            >
+                                                                Truck
+                                                            </th>
+                                                            <th
+                                                                class="text-center"
+                                                            >
+                                                                Occurences
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            v-for="truck in topTrucks"
+                                                            :key="truck.id"
+                                                        >
+                                                            <td
+                                                                class="text-left"
+                                                            >
+                                                                <div>
+                                                                    {{
+                                                                        truck.unitname
+                                                                    }}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    {{
+                                                                        truck.completed_repairs
+                                                                    }}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="flex-shrink w-full max-w-full my-4 cursor-pointer"
+                                    >
+                                        <!-- box card -->
+
+                                        <div
+                                            class="border-blue-300 border relative h-full p-3 overflow-hidden rounded shadow-lg sm:p-5 bg-white shadow-cyan-700/10"
+                                        >
+                                            <h2 class="mb-2 text-center">
+                                                Distance Calibration by Model
+                                            </h2>
+                                            <div
+                                                class="flex flex-col w-full max-w-sm mx-auto funnel-area"
+                                            >
+                                                <table
+                                                    class="w-full text-sm text-center table-bordered-bottom table-sm"
+                                                >
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                class="text-left"
+                                                            >
+                                                                Model
+                                                            </th>
+                                                            <th
+                                                                class="text-center"
+                                                            >
+                                                                Occurences
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td
+                                                                class="text-left"
+                                                            >
+                                                                <div>FLD</div>
+                                                            </td>
+                                                            <td>
+                                                                <div>5</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td
+                                                                class="text-left"
+                                                            >
+                                                                <div>
+                                                                    Argosy
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>5</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td
+                                                                class="text-left"
+                                                            >
+                                                                <div>
+                                                                    Shacman
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div>5</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div
                         class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
                     >
@@ -577,7 +739,6 @@ onMounted(() => {
                         <div
                             class="h-full p-6 overflow-x-auto bg-white border border-blue-300 rounded shadow-lg just shadow-cyan-100/10 dark:shadow-cyan-700/10"
                         >
-
                             <h2 class="mb-2 text-center">
                                 Faulty Units FM / Gt
                             </h2>
@@ -613,35 +774,44 @@ onMounted(() => {
                                     <tbody
                                         class="text-center divide-y divide-gray-200"
                                     >
-                                        <tr class="odd:bg-gray-50" v-for="unit in faultyunits" :key="unit.it">
+                                        <tr
+                                            class="odd:bg-gray-50"
+                                            v-for="unit in faultyunits"
+                                            :key="unit.it"
+                                        >
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200"
                                             >
-                                             {{ unit.unit_type }}
+                                                {{ unit.unit_type }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
                                             >
-                                                 {{ unit.fault }}
+                                                {{ unit.fault }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200"
                                             >
-                                               {{ unit.serial_number }}
+                                                {{ unit.serial_number }}
                                             </td>
                                             <td
                                                 class="px-4 py-2 border-r border-gray-200 whitespace-nowrap"
                                             >
-                                               {{ unit.location }}
+                                                {{ unit.location }}
                                             </td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
-                             <p class="mx-2 my-2 text-right">
-                        <Link href="/faultyunits" prefetch="mount" class="p-2 text-white bg-blue-500 rounded-xl" cache-for="1m">View All</Link>
-                           </p>
+                            <p class="mx-2 my-2 text-right">
+                                <Link
+                                    href="/faultyunits"
+                                    prefetch="mount"
+                                    class="p-2 text-white bg-blue-500 rounded-xl"
+                                    cache-for="1m"
+                                    >View All</Link
+                                >
+                            </p>
                         </div>
                     </div>
 
@@ -770,57 +940,64 @@ onMounted(() => {
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
                         No Trip Data
                     </h2>
-                    <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Asset Name
-                                </th>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table class="min-w-full border border-gray-200">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Location
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Last Reported At
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Location
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Last Reported At
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="repair in faultCounts['fm_no_trip_data']
-                                    ?.repairs"
-                                :key="repair.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.location }}
-                                </td>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts[
+                                        'fm_no_trip_data'
+                                    ]?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
+                                >
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.location }}
+                                    </td>
 
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.last_reported_at }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.last_reported_at }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div v-else-if="activeModalType === 'gpsspeed'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
                         On Gps Speed
                     </h2>
                     <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
+                        class="min-w-full overflow-y-auto h-72 scrollbars showborder border-gray-200"
                     >
                         <thead class="bg-gray-200">
                             <tr>
@@ -867,200 +1044,232 @@ onMounted(() => {
 
                 <div v-else-if="activeModalType === 'fmnotreporting'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    Fm Not Reporting
+                        Fm Not Reporting
                     </h2>
-                    <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Asset Name
-                                </th>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table class="min-w-full border border-gray-200">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Location
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Last Reported At
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Location
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Last Reported At
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="repair in faultCounts['fm_not_reporting']
-                                    ?.repairs"
-                                :key="repair.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.location }}
-                                </td>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts[
+                                        'fm_not_reporting'
+                                    ]?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
+                                >
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.location }}
+                                    </td>
 
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.last_reported_at }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.last_reported_at }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div v-else-if="activeModalType === 'norpm'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    No Rpm
+                        No Rpm
                     </h2>
-                    <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Asset Name
-                                </th>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table
+                            class="min-w-full overflow-y-auto h-72 scrollbars show border border-gray-200"
+                        >
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Location
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Last Reported At
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Location
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Last Reported At
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="repair in faultCounts['no_rpm']
-                                    ?.repairs"
-                                :key="repair.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.location }}
-                                </td>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts['no_rpm']
+                                        ?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
+                                >
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.location }}
+                                    </td>
 
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.last_reported_at }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.last_reported_at }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                 <div v-else-if="activeModalType === 'nospeed'">
+                <div v-else-if="activeModalType === 'nospeed'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    No Speed
+                        No Speed
                     </h2>
-                    <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Asset Name
-                                </th>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table
+                            class="min-w-full overflow-y-auto h-72 scrollbars show border border-gray-200"
+                        >
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Location
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Last Reported At
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Location
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Last Reported At
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="repair in faultCounts['no_speed']
-                                    ?.repairs"
-                                :key="repair.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.location }}
-                                </td>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts['no_speed']
+                                        ?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
+                                >
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.location }}
+                                    </td>
 
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.last_reported_at }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.last_reported_at }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                  <div v-else-if="activeModalType === 'nospeedrpm'">
+                <div v-else-if="activeModalType === 'nospeedrpm'">
                     <h2 class="mb-4 text-lg font-medium text-gray-900">
-                    No Speed and Rpm
+                        No Speed and Rpm
                     </h2>
-                    <table
-                        class="min-w-full overflow-y-auto border border-gray-200"
-                    >
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Asset Name
-                                </th>
+                    <div class="px-2 overflow-y-auto h-72 scrollbars show">
+                        <table
+                            class="min-w-full overflow-y-auto h-72 scrollbars show border border-gray-200"
+                        >
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Asset Name
+                                    </th>
 
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Location
-                                </th>
-                                <th
-                                    class="p-2 border font-medium border-r text-[13px] border-gray-300"
-                                >
-                                    Last Reported At
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Location
+                                    </th>
+                                    <th
+                                        class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                    >
+                                        Last Reported At
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="text-center divide-y divide-gray-200">
-                            <tr
-                                v-for="repair in faultCounts['no_rpm_and_speed']
-                                    ?.repairs"
-                                :key="repair.id"
-                                class="odd:bg-gray-50"
-                            >
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.truck.unitname }}
-                                </td>
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.location }}
-                                </td>
+                            <tbody class="text-center divide-y divide-gray-200">
+                                <tr
+                                    v-for="repair in faultCounts[
+                                        'no_rpm_and_speed'
+                                    ]?.repairs"
+                                    :key="repair.id"
+                                    class="odd:bg-gray-50"
+                                >
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.truck.unitname }}
+                                    </td>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.location }}
+                                    </td>
 
-                                <td class="px-4 py-2 border-r border-gray-200">
-                                    {{ repair.last_reported_at }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td
+                                        class="px-4 py-2 border-r border-gray-200"
+                                    >
+                                        {{ repair.last_reported_at }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <SecondaryButton @click="CloseStatsModal"

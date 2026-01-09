@@ -6,16 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" sizes="512x512" class="bg-white rounded-full" href="{{ asset('images/sendemlogo.png') }}" type="image/png">
+    <link rel="icon" sizes="512x512" class="bg-white rounded-full" href="{{ asset('images/sendemlogo.png') }}"
+        type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3/dist/style.css">
-     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" defer></script>
+
+    <!-- Excel export helper -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js" defer></script>
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
@@ -25,7 +29,7 @@
 <body class="font-sans antialiased">
     @inertia
 
-     <style>
+    <style>
         [x-cloak] {
             display: none !important;
         }

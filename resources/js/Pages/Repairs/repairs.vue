@@ -86,7 +86,6 @@ const CloseRepairForm = () => {
 };
 
 const closeModal = () => {
-    form.reset();
     showFormModal.value = false;
     editingRepair.value = null;
     showRepairModal.value = false;
@@ -94,6 +93,7 @@ const closeModal = () => {
     repairToDelete.value = null;
     isModalOpen.value = false;
     selectedRepair.value = null;
+    form.reset();
 };
 
 const confirmDelete = (repair) => {
@@ -139,10 +139,26 @@ watch(q, (value) => {
     });
 });
 
-// Function to open modal
 function openModal(repair) {
     selectedRepair.value = repair;
     isModalOpen.value = true;
+}
+
+function exportExcel() {
+    const table = document.querySelector("#mytable");
+
+    // Clone table to manipulate
+    const clone = table.cloneNode(true);
+
+    // Remove all cells with class "hidden-excel"
+    clone.querySelectorAll(".hidden-excel").forEach((el) => el.remove());
+
+    const workbook = XLSX.utils.table_to_book(clone, {
+        sheet: "Data",
+        raw: true,
+    });
+
+    XLSX.writeFile(workbook, "repairs-data.xlsx");
 }
 </script>
 
@@ -218,7 +234,7 @@ function openModal(repair) {
                     <div
                         class="flex flex-wrap items-center justify-between gap-4"
                     >
-                        <PrimaryButton type="button">
+                        <PrimaryButton type="button" @click="exportExcel">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="inline w-4 h-4 mr-2 fill-current"
@@ -239,7 +255,7 @@ function openModal(repair) {
                 </div>
             </div>
             <div class="px-2 overflow-x-auto">
-                <table class="min-w-full border border-gray-200">
+                <table class="min-w-full border border-gray-200" id="mytable">
                     <thead class="bg-gray-200">
                         <tr>
                             <th
@@ -278,12 +294,18 @@ function openModal(repair) {
                                 Last Checked At
                             </th>
                             <th
-                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300 hidden-excel"
                             >
                                 Created By - Repaired By
                             </th>
+
                             <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Repaired On
+                            </th>
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300 hidden-excel"
                             >
                                 Actions
                             </th>
@@ -331,12 +353,25 @@ function openModal(repair) {
 
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                                :class="[
+                                    'px-3 py-2 rounded text-[14px] font-semibold',
+                                    repair.location &&
+                                    repair.status === 'pending' &&
+                                    (repair.location
+                                        .toLowerCase()
+                                        .includes('leopack') ||
+                                        repair.location
+                                            .toLowerCase()
+                                            .includes('harare'))
+                                        ? 'bg-green-400'
+                                        : '',
+                                ]"
                             >
                                 {{ repair.location || "N/A" }}
                             </td>
                             <td
                                 :class="{
-                                    'bg-red-300':
+                                    'bg-red-400':
                                         repair.status === 'pending' &&
                                         repair.days_without_report > 1,
                                 }"
@@ -350,13 +385,19 @@ function openModal(repair) {
                                 {{ repair.last_check_at || "N/A" }}
                             </td>
                             <td
-                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 hidden-excel"
                             >
                                 {{ repair.user.name }}<br />
                                 {{ repair.done_by?.name }}
                             </td>
+
                             <td
-                                class="px-4 py-3 text-[14px] justify-center text-slate-900 border-r border-gray-200 flex gap-2"
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ repair.repairedondate }}<br />
+                            </td>
+                            <td
+                                class="hidden-excel px-4 py-3 text-[14px] justify-center text-slate-900 border-r border-gray-200 flex gap-2"
                             >
                                 <button @click="openEditModal(repair)">
                                     <Editicon />

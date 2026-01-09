@@ -22,7 +22,6 @@ class RepairTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->user = User::factory()->create();
         $this->truck = Truck::factory()->create();
         $this->fault = Fault::factory()->create();
@@ -44,7 +43,6 @@ class RepairTest extends TestCase
 
     public function test_truckid_is_required_when_creating_repair()
     {
-
         $response = $this->actingAs($this->user)->post('/repairs', [
             'fault_id' => 10,
         ]);
@@ -53,8 +51,6 @@ class RepairTest extends TestCase
 
     public function test_authenticated_user_can_create_repair()
     {
-
-
         $response = $this->actingAs($this->user)->post('/repairs', [
             'truck_id' => $this->truck->id,
             'fault_id' => $this->fault->id,
@@ -79,7 +75,7 @@ class RepairTest extends TestCase
             'status' => 'pending',
         ]);
 
-         $response = $this->actingAs($this->user)->post('/repairs', [
+        $response = $this->actingAs($this->user)->post('/repairs', [
             'truck_id' => $this->truck->id,
             'fault_id' => $this->fault->id,
         ]);
@@ -166,7 +162,6 @@ class RepairTest extends TestCase
 
     public function test_closing_non_existent_repair_returns_404()
     {
-
         $response = $this->actingAs($this->user)->put(
             route('closerepair', 1023),
             [
@@ -177,5 +172,13 @@ class RepairTest extends TestCase
         );
 
         $response->assertStatus(404);
+    }
+
+    public function test_authenticated_user_can_delete_repair()
+    {
+        $repair = Repair::factory()->create();
+        $response = $this->actingAs($this->user)->delete("/repairs/{$repair->id}");
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('repairs',['id'=>$repair->id]);
     }
 }

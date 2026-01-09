@@ -78,13 +78,13 @@ class RepairController extends Controller
     {
         $validated = $request->validated();
         $repair->update($validated);
-        return redirect()->back();
+             return redirect()->route('repairs.index')->with('success', 'Records created successfully');
+
     }
 
 
     public function closerepair(Request $request, $id)
     {
-
 
         $repair = Repair::findOrFail($id);
         $repairdata = $request->validate([
@@ -113,4 +113,11 @@ class RepairController extends Controller
         $message = "Processed {$result['processed']} positions; updated {$result['updated']} repair(s).";
         return redirect()->back()->with('success', $message);
     }
+
+    // Controller
+public function export()
+{
+    $calibrations = Repair::with(['truck', 'user', 'fault', 'doneBy'])->get(); // fetch ALL
+    return response()->json($calibrations);
+}
 }
