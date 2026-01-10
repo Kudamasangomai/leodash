@@ -18,9 +18,7 @@ class StoreDistanceCalibrationRequest extends FormRequest
 
             'trucks' => 'required|array',
             'trucks.*' => 'string',
-            // 'date_went_to_roadtest' => ['nullable', 'date'],
-            // 'road_test_done' => ['nullable', 'boolean'],
-            // 'notes' => ['nullable', 'string'],
+
         ];
     }
 
@@ -41,23 +39,4 @@ class StoreDistanceCalibrationRequest extends FormRequest
 });
 
     }
-
-    /**
-     * Get the validated data and parse trucks CSV into array.
-     */
-    // public function validated($key = null, $default = null)
-    // {
-    //     $data = parent::validated($key, $default);
-
-    //     if (isset($data['trucks']) && is_string($data['trucks'])) {
-    //         $trucksArray = array_filter(array_map('trim', explode(',', $data['trucks'])));
-    //         $data['trucks'] = $trucksArray;
-    //     }
-
-    //     if (!isset($data['created_by'])) {
-    //         $data['created_by'] = auth()->id();
-    //     }
-
-    //     return $data;
-    // }
 }

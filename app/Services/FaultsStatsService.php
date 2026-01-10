@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\DistanceCalibration;
 use App\Models\Fault;
 use App\Models\Truck;
 use Carbon\Carbon;
@@ -40,7 +41,7 @@ class FaultsStatsService
             ->get()
             ->keyBy('slug');
 
-        // trucks repaired twice in the last 30 days or 60 will see
+        // trucks repaired twice in the last 30 days
         $topTrucks = Truck::withCount([
             'repairs as completed_repairs' => fn($q) =>
             $q->where('status', 'completed')
@@ -50,9 +51,21 @@ class FaultsStatsService
             ->orderByDesc('completed_repairs')
             ->get();
 
+
+        $distancecalibrationbymake = DistanceCalibration::with('truck')
+            ->get()
+            ->groupBy(function ($dc) {
+                return $dc->truck->make;
+            })
+            ->map(function ($group) {
+                return  $group->pluck('truck_id')->unique()->count();
+            })
+            ->sortDesc();
+
         return [
             'faults'     => $faults,
             'topTrucks'  => $topTrucks,
+            'distancecalibrationbymake'  => $distancecalibrationbymake
         ];
     }
 }

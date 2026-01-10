@@ -138,11 +138,7 @@ watch(q, (value) => {
                             >
                                 Date Created
                             </th>
-                            <!-- <th
-                            class="p-2 border font-medium border-r text-[13px]  border-gray-300"
-                        >
-                            Asset name
-                        </th> -->
+                        
                             <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300"
                             >
@@ -215,13 +211,13 @@ watch(q, (value) => {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-600 border-r border-gray-200"
                             >
-                                <Link
-                                    prefetch="mount"
-                                    cache-for="2m"
-                                    :href="`/dstcalibrations/${cal.id}/edit`"
-                                    class="text-indigo-600 hover:text-indigo-900 me-3"
-                                    >Edit</Link
-                                >
+
+
+                                 <Link prefetch="mount"
+                                    cache-for="1m" :href="`/dstcalibrations/${cal.id}/edit`"
+                                   class="mr-2"  >
+                                    <Editicon />
+                                </Link>
 
                                 <a
                                     href="#"
@@ -258,10 +254,7 @@ watch(q, (value) => {
                     Are you sure you want to delete This Distance Calibration
                 </h2>
 
-                <!-- <p class="mt-1 text-sm text-gray-600">
-                    Once deleted, all of its related data will be permanently
-                    deleted.
-                </p> -->
+
 
                 <div class="flex justify-end mt-6">
                     <SecondaryButton @click="closeModal">

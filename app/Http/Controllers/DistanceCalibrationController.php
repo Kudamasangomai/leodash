@@ -67,15 +67,7 @@ class DistanceCalibrationController extends Controller
         }
         return redirect()->route('dstcalibrations.index')->with('success', 'Records created successfully');
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(DistanceCalibration $distanceCalibration): Response
-    {
-        return Inertia::render('DistanceCalibrations/Show', [
-            'calibration' => $distanceCalibration->load('creator'),
-        ]);
-    }
+
 
     /**
      * Show the form for editing the specified resource.

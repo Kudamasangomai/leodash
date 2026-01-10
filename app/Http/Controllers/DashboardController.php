@@ -21,6 +21,7 @@ class DashboardController extends Controller
             'inactiveReportingCount'  => $truckStatusService->inactiveReportingTrucks()->count(),
             'faultCounts'             => $stats['faults'],
             'topTrucks' => $stats['topTrucks'],
+            'distancecalibrationbymake'=>  $stats['distancecalibrationbymake'],
             'notes' =>  Note::orderBy('created_at', 'DESC')->take(15)->get(),
             'faultyunits' => FaultyUnit::take(15)->get(),
             'chartData' => [

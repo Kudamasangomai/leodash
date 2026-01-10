@@ -16,6 +16,7 @@ const props = defineProps({
     faultyunits: Array,
     chartData: Object,
     topTrucks: Array,
+    distancecalibrationbymake: Array
 });
 
 const showGtmodal = ref(false);
@@ -688,40 +689,19 @@ onMounted(() => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+
+                                                              <tr v-for="(count, make) in distancecalibrationbymake" :key="make">
                                                             <td
                                                                 class="text-left"
                                                             >
-                                                                <div>FLD</div>
+                                                                <div>{{ make }}</div>
                                                             </td>
                                                             <td>
-                                                                <div>5</div>
+                                                                <div>{{count }}</div>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td
-                                                                class="text-left"
-                                                            >
-                                                                <div>
-                                                                    Argosy
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div>5</div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                class="text-left"
-                                                            >
-                                                                <div>
-                                                                    Shacman
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div>5</div>
-                                                            </td>
-                                                        </tr>
+
+
                                                     </tbody>
                                                 </table>
                                             </div>

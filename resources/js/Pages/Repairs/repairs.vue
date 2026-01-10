@@ -110,9 +110,7 @@ const deleteRepair = () => {
 const getStatusBadgeColor = (status) => {
     const colors = {
         pending: "bg-yellow-400 text-yellow-800",
-        in_progress: "bg-blue-100 text-blue-800",
         completed: "bg-green-400 text-green-800",
-        on_hold: "bg-red-100 text-red-800",
     };
     return colors[status] || "bg-gray-100 text-gray-800";
 };
@@ -144,22 +142,7 @@ function openModal(repair) {
     isModalOpen.value = true;
 }
 
-function exportExcel() {
-    const table = document.querySelector("#mytable");
 
-    // Clone table to manipulate
-    const clone = table.cloneNode(true);
-
-    // Remove all cells with class "hidden-excel"
-    clone.querySelectorAll(".hidden-excel").forEach((el) => el.remove());
-
-    const workbook = XLSX.utils.table_to_book(clone, {
-        sheet: "Data",
-        raw: true,
-    });
-
-    XLSX.writeFile(workbook, "repairs-data.xlsx");
-}
 </script>
 
 <template>
