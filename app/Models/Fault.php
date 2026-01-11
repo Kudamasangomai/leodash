@@ -6,13 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Fault extends Model
 {
     use Sluggable, HasFactory;
 
     protected $guarded = ['id'];
-    public function repairs()
+    public function repairs(): HasMany
     {
         return $this->hasMany(Repair::class, 'fault_id');
     }
@@ -31,6 +32,13 @@ class Fault extends Model
                 'separator' => '_',
             ]
         ];
+    }
+
+       protected static function booted()
+    {
+        static::addGlobalScope('ordered', function ($query) {
+            $query->orderBy('name');
+        });
     }
 
 }

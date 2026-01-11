@@ -7,11 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+
+/**
+ * @property int $days_without_report
+ */
 class Repair extends Model
 {
 
-      use HasFactory;
+    use HasFactory;
     protected $guarded = ['id'];
+
+    // Optional: automatically include in JSON
+    protected $appends = ['days_without_report'];
 
     protected $casts = [
         'reported_at' => 'datetime',
@@ -32,12 +39,12 @@ class Repair extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function doneBy()
+    public function doneBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'done_by');
     }
 
-    public function fault()
+    public function fault(): BelongsTo
     {
         return $this->belongsTo(Fault::class);
     }
@@ -53,5 +60,20 @@ class Repair extends Model
             return 'The Truck with that fault  already has a pending repair.';
         }
         return null;
+    }
+
+
+    /**
+     * Compute how many days this repair has gone without a report.
+     */
+    public function getDaysWithoutReportAttribute(): ?int
+    {
+        if (! $this->last_reported_at) {
+            return 0;
+        }
+
+         return (int) Carbon::parse($this->last_reported_at)
+            ->startOfDay()
+            ->diffInDays(now()->startOfDay());
     }
 }

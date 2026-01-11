@@ -15,7 +15,7 @@ HeadingRowFormatter::default('none');
 class EventsReportImport implements ToCollection, WithHeadingRow
 {
     /**
-     * @param Collection $collection
+     *  Collection $collection
      */
     public function collection(Collection $rows)
     {
@@ -23,7 +23,7 @@ class EventsReportImport implements ToCollection, WithHeadingRow
             throw new Exception('Excel file is empty');
         }
 
-      
+
           //Validate required headers
 
         $requiredHeaders = [

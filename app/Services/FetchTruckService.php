@@ -25,6 +25,10 @@ class FetchTruckService
 
         if (empty($this->apiKey)) {
             Log::error('FetchLocationService: GLOBAL_TRACK_KEY is not set');
+              return [
+            'total' => 0,
+            'inserted' => 0,
+        ];
         }
 
         try {

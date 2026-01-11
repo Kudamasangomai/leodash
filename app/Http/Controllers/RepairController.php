@@ -40,7 +40,7 @@ class RepairController extends Controller
                 ? Carbon::parse($repair->last_reported_at)
                 ->startOfDay()
                 ->diffInDays(now()->startOfDay())
-                : null;
+                : 0;
             return $repair;
         });
 

@@ -26,22 +26,21 @@ class SendPendingRepairsService
             return;
         }
 
-        $today = now()->startOfDay();
+        // $today = now()->startOfDay();
+        // $repairs->transform(function ($repair) use ($today) {
+        //     $repair->days_without_report = $repair->last_reported_at
+        //         ? Carbon::parse($repair->last_reported_at)
+        //         ->startOfDay()
+        //         ->diffInDays($today)
+        //         : null;
 
-        $repairs->transform(function ($repair) use ($today) {
-            $repair->days_without_report = $repair->last_reported_at
-                ? Carbon::parse($repair->last_reported_at)
-                ->startOfDay()
-                ->diffInDays($today)
-                : null;
-
-            return $repair;
-        });
+        //     return $repair;
+        // });
 
         $technicians = [
             'kudam775@gmail.com',
-            'sendem@leozim.com',
-            'sendem2@leozim.com'
+            // 'sendem@leozim.com',
+            // 'sendem2@leozim.com'
         ];
 
         Mail::to($technicians)
