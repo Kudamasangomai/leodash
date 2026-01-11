@@ -39,8 +39,8 @@ class SendPendingRepairsService
 
         $technicians = [
             'kudam775@gmail.com',
-            // 'sendem@leozim.com',
-            // 'sendem2@leozim.com'
+            'sendem@leozim.com',
+            'sendem2@leozim.com'
         ];
 
         Mail::to($technicians)
