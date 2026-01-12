@@ -34,16 +34,6 @@ class RepairController extends Controller
             ->paginate(50)
             ->withQueryString();
 
-        // Calculate days without report for each repair
-        $repairs->getCollection()->transform(function ($repair) {
-            $repair->days_without_report = $repair->last_reported_at
-                ? Carbon::parse($repair->last_reported_at)
-                ->startOfDay()
-                ->diffInDays(now()->startOfDay())
-                : 0;
-            return $repair;
-        });
-
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
             'trucks' => Truck::all(),

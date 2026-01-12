@@ -68,7 +68,7 @@ class Repair extends Model
      */
     public function getDaysWithoutReportAttribute(): ?int
     {
-        if (! $this->last_reported_at) {
+        if (!$this->last_reported_at) {
             return 0;
         }
 

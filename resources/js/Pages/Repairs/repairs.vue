@@ -279,7 +279,13 @@ function openModal(repair) {
                             <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300 hidden-excel"
                             >
-                                Created By - Repaired By
+                                Created By
+                            </th>
+
+                              <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300 hidden-excel"
+                            >
+                                Repaired By
                             </th>
 
                             <th
@@ -340,6 +346,7 @@ function openModal(repair) {
                                     'px-3 py-2 rounded text-[14px] font-semibold',
                                     repair.location &&
                                     repair.status === 'pending' &&
+                                    !repair.location.toLowerCase().includes('beira') &&
                                     (repair.location
                                         .toLowerCase()
                                         .includes('leopack') ||
@@ -370,7 +377,12 @@ function openModal(repair) {
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 hidden-excel"
                             >
-                                {{ repair.user.name }}<br />
+                                {{ repair.user.name }}
+                            </td>
+                              <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 hidden-excel"
+                            >
+
                                 {{ repair.done_by?.name }}
                             </td>
 
@@ -406,13 +418,13 @@ function openModal(repair) {
                     </tbody>
                 </table>
 
-                <div class="flex gap-2 mt-4 justify-end">
+                <div class="flex justify-end gap-2 mt-4">
                     <Link
                         v-for="link in repairs.links"
                         :key="link.label"
                         :href="link.url ?? ''"
                         v-html="link.label"
-                        class="px-3 py-1 border rounded border-gray-200"
+                        class="px-3 py-1 border border-gray-200 rounded"
                         :class="{
                             'bg-blue-500 text-white': link.active,
                             'text-gray-400': !link.url,
@@ -630,7 +642,7 @@ function openModal(repair) {
             <!-- Modal Overlay -->
             <div>
                 <!-- Modal Content -->
-                <div class="bg-white rounded-2xl shadow-xl p-6 w-full">
+                <div class="w-full p-6 bg-white shadow-xl rounded-2xl">
                     <!-- Header -->
                     <div class="flex items-center justify-between mb-5">
                         <h2 class="text-xl font-bold">Repair Details</h2>
@@ -690,7 +702,7 @@ function openModal(repair) {
                         <!-- Description -->
                         <div class="pt-3 border-t">
                             <p class="mb-1">Job Description</p>
-                            <p class="bg-gray-200 rounded-lg p-3">
+                            <p class="p-3 bg-gray-200 rounded-lg">
                                 {{
                                     selectedRepair.comments ??
                                     "No description provided"
@@ -700,10 +712,10 @@ function openModal(repair) {
                     </div>
 
                     <!-- Footer -->
-                    <div class="mt-6 flex justify-end">
+                    <div class="flex justify-end mt-6">
                         <button
                             @click="closeModal"
-                            class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                            class="px-5 py-2 text-sm font-medium text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
                         >
                             Close
                         </button>
