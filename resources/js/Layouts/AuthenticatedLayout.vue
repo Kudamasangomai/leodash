@@ -212,17 +212,10 @@ onMounted(() => {
             <nav
                 id="sidebar-menu"
                 x-description="Mobile menu"
-                class="bg-[#446ad7] hidden text-white md:block fixed h-screen shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
+                class="bg-[#446ad7] hidden text-white md:block fixed h-full shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
             >
-                <Link href="javascript:void(0)"
-                    ><img
-                        src="https://readymadeui.com/readymadeui.svg"
-                        alt="logo"
-                        class="w-36"
-                    />
-                </Link>
 
-                <ul class="mt-6">
+                <ul class="mt-12">
                     <li>
                         <Link
                             prefetch="mount"

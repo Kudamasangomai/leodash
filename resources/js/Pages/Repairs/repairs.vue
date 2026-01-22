@@ -654,8 +654,6 @@ function openModal(repair) {
                                     selectedRepair.status === 'completed',
                                 'bg-yellow-100 text-yellow-700':
                                     selectedRepair.status === 'pending',
-                                'bg-red-100 text-red-700':
-                                    selectedRepair.status === 'failed',
                             }"
                         >
                             {{ selectedRepair.status }}
