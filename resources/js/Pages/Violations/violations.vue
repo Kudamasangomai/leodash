@@ -41,7 +41,7 @@ function submitUpload() {
             confirmDeleteCalibration.value = true;
         },
         onError: (errors) => {
-            alert(errors.file ?? "Excel import failed");
+            alert(errors.file ?? "Failed To Upload");
             form.reset();
         },
     });

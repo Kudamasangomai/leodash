@@ -713,7 +713,7 @@ onMounted(() => {
                     </div>
 
                     <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2 hidden"
                     >
                         <!-- box card -->
                         <div
@@ -796,7 +796,7 @@ onMounted(() => {
                     </div>
 
                     <div
-                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2"
+                        class="flex-shrink w-full max-w-full px-3 mb-6 md:px-4 lg:w-1/2 hidden"
                     >
                         <!-- box card -->
                         <div

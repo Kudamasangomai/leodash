@@ -54,8 +54,12 @@ function submitUpload() {
     uploadForm.post("/lightvehiclescoring/upload", {
         preserveScroll: true,
         onSuccess: () => {
-            resetForm(); // call our custom reset
+            resetForm();
             confirmDeleteCalibration.value = true;
+        },
+          onError: (errors) => {
+            alert(errors.file ?? "Failed To Upload");
+             resetForm();
         },
     });
 }

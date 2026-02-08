@@ -215,7 +215,7 @@ onMounted(() => {
                 class="bg-[#446ad7] hidden text-white md:block fixed h-full shadow-lg top-18 left-0 min-w-[225px] py-6 px-4 z-40 overflow-y-auto"
             >
 
-                <ul class="mt-12">
+                <ul class="mt-20">
                     <li>
                         <Link
                             prefetch="mount"
@@ -240,11 +240,13 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/repairs"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
 
-                                    class="w-[20px] h-[20px] mr-2"
-                                    fill="#ffffff"
+                                    class="w-[20px] h-[20px] mr-2 fill-white hover:fill-none"
+
+
                                     viewBox="0 0 640 512"
                                 >
                                     <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -261,14 +263,16 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/dstcalibrations"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
+ fill="none"                            
                                     viewBox="0 0 24 24"
-                                    class="w-[20px] h-[20px] mr-3"
+                                    class="w-[20px] h-[20px] mr-3 "
                                     stroke="currentColor"
                                     stroke-width="1.8"
+
                                 >
                                     <path
                                         stroke-linecap="round"
@@ -299,7 +303,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/early-start"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                    >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -325,7 +330,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/violations"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -356,7 +362,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/lightvehiclescoring"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -389,7 +396,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/trucks"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -416,7 +424,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/faults"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -449,7 +458,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/faultyunits"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -481,7 +491,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/notes"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -526,7 +537,8 @@ onMounted(() => {
                                 cache-for="1m"
                                 href="/users"
                                 class="text-white font-normal hover:text-slate-900 text-[14px] flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
@@ -578,7 +590,8 @@ onMounted(() => {
                                 as="button"
 
                                 class="text-white font-normal hover:text-slate-900 text-[14px] w-full flex items-center hover:bg-gray-100 rounded px-4 py-2 transition-all"
-                            >
+                           :class="{'fill-white': $page.url.startsWith('/logout')}"
+                                >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
