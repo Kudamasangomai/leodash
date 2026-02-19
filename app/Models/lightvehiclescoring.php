@@ -5,7 +5,7 @@ namespace App\Models;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 
-class Lightvehiclescoring extends Model
+class lightvehiclescoring extends Model
 {
     protected $guarded = ['id'];
 

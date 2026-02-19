@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Maatwebsite\Excel\Excel as ExcelService;
 use App\Imports\LightVehicleImport;
-use App\Models\Lightvehiclescoring;
+use App\Models\lightvehiclescoring;
 use App\Models\Truck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,7 @@ class LightvehiclescoringController extends Controller
 {
      public function index(Request $request)
     {
-        $report = Lightvehiclescoring::select(
+        $report = lightvehiclescoring::select(
             'asset_name',
             DB::raw('SUM(distance_km) as total_distance'),
             DB::raw('SUM(duration_seconds) as total_duration'),

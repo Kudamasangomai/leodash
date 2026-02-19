@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\LightVehicleScoring;
+use App\Models\lightVehicleScoring;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -31,7 +31,7 @@ class LightVehicleImport implements ToModel, WithHeadingRow
             $row['startdate'] = $date->format('Y-m-d');
 
 
-        return new LightVehicleScoring([
+        return new lightVehicleScoring([
             'start_date' => $row['startdate'],
             'asset_name' => $row['assetname'] ?? 'Unknown',
             'site_name' => $row['sitename'] ?? null,
