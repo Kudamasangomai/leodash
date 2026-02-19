@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RepairsExport;
 use App\Models\Repair;
 use App\Models\Truck;
 use Inertia\Inertia;
@@ -10,9 +12,9 @@ use App\Http\Requests\UpdateRepairRequest;
 use App\Models\Fault;
 use App\Models\User;
 use App\Services\FetchLocationService;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+
 
 class RepairController extends Controller
 {
@@ -68,8 +70,7 @@ class RepairController extends Controller
     {
         $validated = $request->validated();
         $repair->update($validated);
-             return redirect()->route('repairs.index')->with('success', 'Records created successfully');
-
+        return redirect()->route('repairs.index')->with('success', 'Records created successfully');
     }
 
 
@@ -105,9 +106,26 @@ class RepairController extends Controller
     }
 
     // Controller
-public function export()
-{
-    $calibrations = Repair::with(['truck', 'user', 'fault', 'doneBy'])->get(); // fetch ALL
-    return response()->json($calibrations);
-}
+    public function export()
+    {
+        $calibrations = Repair::with(['truck', 'user', 'fault', 'doneBy'])->get();
+        return response()->json($calibrations);
+    }
+
+
+    public function exportExcel(Request $request)
+    {
+
+        $validated = $request->validate([
+            'fromDate' => 'required|date',
+            'toDate' => 'required|date|after_or_equal:fromDate',
+        ]);
+
+        $fileName = 'LeoDashRepairs_' . date('Y-m-d_His') . '.xlsx';
+
+        return Excel::download(
+            new RepairsExport($validated['fromDate'], $validated['toDate']),
+            $fileName
+        );
+    }
 }

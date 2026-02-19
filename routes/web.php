@@ -44,7 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/repairs/fetchlocations', [RepairController::class, 'fetchLocations'])->name('fetchlocations');
     Route::get('/repairs/export', [RepairController::class, 'export'])->name('export');
     Route::put('/repairs/closerepair/{id}', [RepairController::class, 'closerepair'])->name('closerepair');
-    Route::resource('repairs', RepairController::class);
+    Route::post('/repairs/export-excel', [RepairController::class, 'exportExcel'])->name('repairs.export-excel');
+     Route::resource('repairs', RepairController::class);
 
     Route::post('/violations/upload', [ViolationController::class, 'upload'])->name('violations.upload');
     Route::get('/violations', [ViolationController::class , 'index'])->name('violations');

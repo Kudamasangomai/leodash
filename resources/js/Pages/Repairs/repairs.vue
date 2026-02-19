@@ -13,6 +13,8 @@ import Editicon from "@/Components/Editicon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Spinner from "@/Components/Spinner.vue";
 import Closeicon from "@/Components/Closeicon.vue";
+import axios from "axios";
+
 
 const props = defineProps({
     repairs: Object,
@@ -30,6 +32,7 @@ const deleteForm = useForm({});
 const showRepairModal = ref(false);
 const isModalOpen = ref(false); // controls modal visibility
 const selectedRepair = ref(null); // stores repair clicked
+const showExcelFormModal = ref(false);
 
 const form = useForm({
     truck_id: "",
@@ -39,6 +42,11 @@ const form = useForm({
     comments: "",
     donebyid: "",
     repairedondate: "",
+});
+
+const exportExcelForm = useForm({
+    fromDate: "",
+    toDate: "",
 });
 
 const openCreateModal = () => {
@@ -93,6 +101,7 @@ const closeModal = () => {
     repairToDelete.value = null;
     isModalOpen.value = false;
     selectedRepair.value = null;
+    showExcelFormModal.value = false;
     form.reset();
 };
 
@@ -142,7 +151,31 @@ function openModal(repair) {
     isModalOpen.value = true;
 }
 
+const exportExcel = () => {
+    showExcelFormModal.value = true;
+};
 
+const submitExportForm = () => {
+    axios.post("/repairs/export-excel", exportExcelForm.data(), {
+            responseType: "blob",
+        })
+        .then((response) => {
+            const today = new Date().toISOString().split("T")[0];
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `LeoDashRepairs_${today}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+            closeModal();
+            exportExcelForm.reset();
+        })
+        .catch((error) => {
+            console.error("Export failed:", error);
+        });
+};
 </script>
 
 <template>
@@ -282,7 +315,7 @@ function openModal(repair) {
                                 Created By
                             </th>
 
-                              <th
+                            <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300 hidden-excel"
                             >
                                 Repaired By
@@ -346,7 +379,9 @@ function openModal(repair) {
                                     'px-3 py-2 rounded text-[14px] font-semibold',
                                     repair.location &&
                                     repair.status === 'pending' &&
-                                    !repair.location.toLowerCase().includes('beira') &&
+                                    !repair.location
+                                        .toLowerCase()
+                                        .includes('beira') &&
                                     (repair.location
                                         .toLowerCase()
                                         .includes('leopack') ||
@@ -379,10 +414,9 @@ function openModal(repair) {
                             >
                                 {{ repair.user.name }}
                             </td>
-                              <td
+                            <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200 hidden-excel"
                             >
-
                                 {{ repair.done_by?.name }}
                             </td>
 
@@ -635,6 +669,63 @@ function openModal(repair) {
                         </PrimaryButton>
                     </div>
                 </form>
+            </div>
+        </Modal>
+
+        <Modal :show="showExcelFormModal" @close="closeModal">
+            <div>
+                <!-- Modal Content -->
+                <div class="w-full p-6 bg-white shadow-xl rounded-2xl">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-xl font-bold">
+                            Select Dates and Download
+                        </h2>
+                    </div>
+
+                    <form @submit.prevent="submitExportForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium"
+                                    >From Date</label
+                                >
+                                <input
+                                    v-model="exportExcelForm.fromDate"
+                                    type="date"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded shadow-sm"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium"
+                                    >To Date</label
+                                >
+                                <input
+                                    v-model="exportExcelForm.toDate"
+                                    type="date"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded shadow-sm"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 mt-6">
+                            <SecondaryButton @click="closeModal"
+                                >Cancel</SecondaryButton
+                            >
+                            <PrimaryButton type="submit"
+                                >
+                                <span
+                                v-if="exportExcelForm.processing"
+                                class="flex items-center gap-2"
+                            >
+                                <Spinner />
+                            </span>
+                                Download Excel</PrimaryButton
+                            >
+                       
+                        </div>
+                    </form>
+                </div>
             </div>
         </Modal>
 

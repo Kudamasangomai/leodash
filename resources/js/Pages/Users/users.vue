@@ -28,6 +28,7 @@ const userToDelete = ref(null);
 const form = useForm({
     name: "",
     email: "",
+    work_email: "",
     role: "",
     password: "",
 });
@@ -42,6 +43,7 @@ const openEditModal = (user) => {
     editinguser.value = user;
     (form.name = user.name),
         (form.email = user.email),
+          (form.work_email = user.work_email),
         (form.role= user.role),
         (form.password = user.password),
         (showFormModal.value = true);
@@ -147,6 +149,12 @@ const closeFormModal = () => {
                             >
                                 Email
                             </th>
+
+                            <th
+                                class="p-2 border font-medium border-r text-[13px] border-gray-300"
+                            >
+                                Work Email
+                            </th>
                             <th
                                 class="p-2 border font-medium border-r text-[13px] border-gray-300"
                             >
@@ -176,7 +184,11 @@ const closeFormModal = () => {
                             >
                                 {{ user.email }}
                             </td>
-
+                                 <td
+                                class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
+                            >
+                                {{ user.work_email }}
+                            </td>
                             <td
                                 class="px-4 py-3 text-[14px] text-slate-900 border-r border-gray-200"
                             >
@@ -246,6 +258,23 @@ const closeFormModal = () => {
                             class="mt-1 text-sm text-red-600"
                         >
                             {{ form.errors.email }}
+                        </div>
+                    </div>
+
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700"
+                            >Work Email</label
+                        >
+                        <input
+                            v-model="form.work_email"
+                            type="text"
+                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm"
+                        />
+                        <div
+                            v-if="form.errors.work_email"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ form.errors.work_email }}
                         </div>
                     </div>
 

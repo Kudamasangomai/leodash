@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(User $user)
     {
-          return true;
+        return true;
     }
 
     /**
@@ -35,7 +35,14 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user),
                 'role' => 'nullable',
 
-        ]
-    ];
+
+            ],
+            'work_email' => [
+                'required',
+                'email',
+                'max:50',
+                Rule::unique(User::class)->ignore($this->user),
+            ],
+        ];
     }
 }
