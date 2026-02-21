@@ -43,7 +43,7 @@ const fileInput = ref(null);
 function resetForm() {
     uploadForm.reset();
     if (fileInput.value) {
-        fileInput.value.value = null; // clear the file input visually
+        fileInput.value.value = null;
     }
 }
 function submitUpload() {
@@ -95,6 +95,9 @@ const submitForm = () => {
                     enctype="multipart/form-data"
                     class="space-y-4"
                 >
+                <div class="text-blue-500 font-bold">
+                    Download the scoring detailed report as csv then convert to .xls or .xlsx then upload
+                </div>
                     <div>
                         <label class="block text-sm font-medium">
                             Select Excel File (.xls or .xlsx)

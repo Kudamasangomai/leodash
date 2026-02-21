@@ -8,12 +8,13 @@ use App\Models\lightvehiclescoring;
 use App\Models\Truck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 
 class LightvehiclescoringController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $report = lightvehiclescoring::select(
             'asset_name',
@@ -63,9 +64,12 @@ class LightvehiclescoringController extends Controller
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls'
         ]);
-        DB::table('lightvehiclescorings')->truncate();
-        $excel->import(new LightVehicleImport, $request->file('file'));
-        return back()->with('success', 'File uploaded successfully');
+        try {
+            DB::table('lightvehiclescorings')->truncate();
+            $excel->import(new LightVehicleImport, $request->file('file'));
+            return back()->with('success', 'File uploaded successfully');
+        } catch (\Throwable $th) {
+            return back()->withErrors('warning', 'Failed to Upload');
+        }
     }
-
 }

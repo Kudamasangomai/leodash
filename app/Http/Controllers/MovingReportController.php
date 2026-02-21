@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\MovingReport;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -14,7 +13,8 @@ class MovingReportController extends Controller
 
 
         // These trucks must not be included in the final query their shunt buses
-        $excludedTrucks = ['LEOCC07', 'LEOCC26', 'LEOCC57', 'LEOCC62', 'K01', 'H07', 'L12'];
+        // for serious project create a column in db e.g activetrucks or not or staffbuses
+        $excludedTrucks = ['LEOCC07', 'LEOCC26','LEOCC26', 'LEOCC57', 'LEOCC62', 'K01', 'H07', 'L12'];
 
 
         $locationFilters = [

@@ -11,7 +11,7 @@ import { ref, watch } from "vue";
 import Spinner from "@/Components/Spinner.vue";
 
 const props = defineProps({
-    v: Object,
+    v: Object, // were am i using this lol
     reports:Array
 });
 
@@ -23,7 +23,7 @@ const closeModal = () => {
     copytable.value = false;
 };
 
-// --- New: upload form logic ---
+// -- upload form logic ---
 const uploadForm = useForm({
     file: null,
 });
@@ -38,15 +38,16 @@ function submitUpload() {
         return;
     }
 
-    // Post to the upload route. Adjust URL if your route differs.
+    // Post to the upload route.
     uploadForm.post("/moving-report/upload", {
         preserveScroll: true,
         onSuccess: () => {
             uploadForm.reset();
              confirmDeleteCalibration.value = true;
         },
-        onError: () => {
-            // errors available in uploadForm.errors
+         onError: (errors) => {
+            alert(errors.file ?? "Failed To Upload Early Start Report");
+            uploadForm.reset();
         },
     });
 }
@@ -91,7 +92,11 @@ function copyTable() {
             </PageHeader>
 
             <!-- New: Vue-compatible file upload form (replaces Splade form) -->
-            <div class="p-6 mb-4 space-y-6 rounded shadow-sm">
+            <div class="p-6 mb-4 space-y-6 rounded shadow-sm bg-white">
+
+                 <div class="text-blue-500 font-bold">
+                    Download the Moving report from Global track  then convert to Excel 93 workbook then upload
+                </div>
                 <form @submit.prevent="submitUpload" enctype="multipart/form-data" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">
@@ -209,7 +214,7 @@ function copyTable() {
         </MainContent>
 
         <Modal :show="confirmDeleteCalibration" @close="closeModal">
-            <div class="p-4 bg-green-200">
+            <div class="p-4 bg-white">
                 <h2 class="text-lg font-medium text-gray-900">
                    Early Start Report Succesfully Generated
                 </h2>

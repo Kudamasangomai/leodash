@@ -42,7 +42,7 @@ class ViolationController extends Controller
             $violations = Violation::latest()->take(400)->get();
             return Redirect::back()->with('', $violations);
         } catch (\Throwable $th) {
-            
+
             return back()->withErrors('warning', 'Something is Wrong with your file');
         }
     }

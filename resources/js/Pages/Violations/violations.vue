@@ -30,6 +30,7 @@ function onFileChange(e) {
     uploadForm.file = f;
 }
 
+
 function submitUpload() {
     if (!uploadForm.file) {return;}
 
@@ -42,12 +43,13 @@ function submitUpload() {
         },
         onError: (errors) => {
             alert(errors.file ?? "Failed To Upload");
-            form.reset();
+           uploadForm.reset();
+
         },
     });
 }
 
-// modal visibility
+
 // store clicked eventType
 const selectedEventType = ref("");
 
@@ -64,7 +66,7 @@ function copyTable(eventType) {
 
     // Create a temporary textarea
     const textarea = document.createElement("textarea");
-    textarea.value = table.innerText; // plain text from table
+    textarea.value = table.innerText;
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand("copy"); // copy to clipboard
@@ -91,6 +93,10 @@ function copyTable(eventType) {
                     enctype="multipart/form-data"
                     class="space-y-4"
                 >
+
+                 <div class="text-blue-500 font-bold">
+                    Download the  Events report as csv then convert to .xls or .xlsx then upload
+                </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">
                             Select Excel File (.xls or .xlsx)
@@ -135,6 +141,7 @@ function copyTable(eventType) {
             </div>
             <!-- end new -->
             <div
+               v-if="group && group.length"
                 v-for="(group, eventType) in violations"
                 :key="eventType"
                 class="mb-8 text-center py-4"
@@ -149,7 +156,7 @@ function copyTable(eventType) {
                         Copy Table
                     </button>
                 </div>
-                <div class="px-2 overflow-x-auto">
+                <div class="px-2 overflow-x-auto" >
                     <table class="min-w-full border border-gray-200">
                         <thead class="bg-gray-200">
                             <tr>
@@ -170,7 +177,7 @@ function copyTable(eventType) {
                             class="divide-y divide-gray-200 whitespace-nowrap"
                         >
                             <tr
-                                v-if="group"
+
                                 v-for="row in group"
                                 :key="row.id"
                                 class="text-center odd:bg-gray-50"
@@ -221,14 +228,13 @@ function copyTable(eventType) {
                                     {{ row.event_type }}
                                 </td>
                             </tr>
-                            <tr v-else>
-                                <td colspan="6" class="py-3 text-center">
-                                    Nothing to show
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div v-else class="py-6 text-center text-xl">
+      Violations Table Empty
             </div>
         </MainContent>
 
