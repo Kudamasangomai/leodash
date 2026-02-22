@@ -472,9 +472,11 @@ const submitExportForm = () => {
         <!-- Form Modal -->
         <Modal :show="showFormModal" @close="closeModal">
             <div class="p-6 bg-white">
-                <h2 class="mb-4 text-lg font-medium text-gray-900">
+                    <h2 class="mb-4 text-lg font-medium text-gray-900">
                     {{ editingRepair ? "Edit Repair" : "Create New Repair" }}
                 </h2>
+
+
 
                 <form @submit.prevent="submitForm" class="space-y-4">
                     <div>
@@ -722,7 +724,7 @@ const submitExportForm = () => {
                             </span>
                                 Download Excel</PrimaryButton
                             >
-                       
+
                         </div>
                     </form>
                 </div>

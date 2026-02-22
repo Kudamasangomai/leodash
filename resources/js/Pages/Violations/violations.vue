@@ -87,14 +87,14 @@ function copyTable(eventType) {
                 </div>
             </PageHeader>
 
-            <div class="p-6 mb-4 space-y-6 shadow-sm bg-white rounded-md">
+            <div class="p-6 mb-4 space-y-6 bg-white rounded-md shadow-sm">
                 <form
                     @submit.prevent="submitUpload"
                     enctype="multipart/form-data"
                     class="space-y-4"
                 >
 
-                 <div class="text-blue-500 font-bold">
+                 <div class="font-bold text-blue-500">
                     Download the  Events report as csv then convert to .xls or .xlsx then upload
                 </div>
                     <div>
@@ -141,10 +141,10 @@ function copyTable(eventType) {
             </div>
             <!-- end new -->
             <div
-               v-if="group && group.length"
+
                 v-for="(group, eventType) in violations"
                 :key="eventType"
-                class="mb-8 text-center py-4"
+                class="py-4 mb-8 text-center"
             >
                 <h2 class="mb-2 text-lg font-bold">{{ eventType }} Events</h2>
 
@@ -177,7 +177,6 @@ function copyTable(eventType) {
                             class="divide-y divide-gray-200 whitespace-nowrap"
                         >
                             <tr
-
                                 v-for="row in group"
                                 :key="row.id"
                                 class="text-center odd:bg-gray-50"
@@ -232,9 +231,6 @@ function copyTable(eventType) {
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div v-else class="py-6 text-center text-xl">
-      Violations Table Empty
             </div>
         </MainContent>
 

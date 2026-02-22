@@ -12,8 +12,6 @@ class DashboardController extends Controller
 {
     public function __invoke(TruckStatusService $truckStatusService, FaultsStatsService $faultsStats)
     {
-
-
         $stats = $faultsStats->faultstats();
 
         return Inertia::render('Dashboard', [
