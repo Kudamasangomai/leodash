@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateDistanceCalibrationRequest;
 use App\Models\DistanceCalibration;
 use App\Models\Truck;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,6 +19,11 @@ class DistanceCalibrationController extends Controller
     public function index()
     {
 
+    /**
+     *  we could use trait in future for the search functionality
+     *  since we have the same search logic in both RepairController
+     *  and DistanceCalibrationController
+     *  */
         $calibrations = DistanceCalibration::query()
             ->when(request('q'), function ($query, $q) {
                 $query->where(function ($query) use ($q) {
@@ -28,7 +32,7 @@ class DistanceCalibrationController extends Controller
                     });
                 });
             })->with(['truck', 'user'])
-            ->paginate(50)
+            ->paginate(20)
             ->withQueryString();
 
         return Inertia::render('DistanceCalibrations/calibrations', [

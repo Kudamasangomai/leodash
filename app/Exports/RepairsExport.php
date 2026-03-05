@@ -21,7 +21,6 @@ class RepairsExport implements FromQuery, WithHeadings, WithMapping
     public function query()
     {
         return Repair::query()
-            // ->whereBetween('created_at', [$this->fromDate , $this->toDate])
             ->WhereBetween('repairedondate', [$this->fromDate, $this->toDate])
             ->with(['truck', 'fault', 'user', 'doneBy'])
             ->orderBy('created_at', 'desc');

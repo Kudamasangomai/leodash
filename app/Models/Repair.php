@@ -16,8 +16,6 @@ class Repair extends Model
 
     use HasFactory;
     protected $guarded = ['id'];
-
-    // Optional: automatically include in JSON
     protected $appends = ['days_without_report'];
 
     protected $casts = [
@@ -25,6 +23,7 @@ class Repair extends Model
         'checked_at' => 'datetime',
 
     ];
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d M Y');
@@ -49,14 +48,13 @@ class Repair extends Model
         return $this->belongsTo(Fault::class);
     }
 
-    public static function hasPendingReapir($fault_id, $truck_id)
+    public static function hasPendingRepair($fault_id, $truck_id)
     {
-        if (
-            self::where('fault_id', $fault_id)
+        if (self::where('fault_id', $fault_id)
             ->where('truck_id', $truck_id)
             ->wherestatus('pending')
-            ->exists()
-        ) {
+            ->exists())
+        {
             return 'The Truck with that fault  already has a pending repair.';
         }
         return null;
@@ -64,16 +62,30 @@ class Repair extends Model
 
 
     /**
-     * Compute how many days this repair has gone without a report.
+     * Computed Attribute
+     * Calculates how many days this truck has gone without a report.
      */
     public function getDaysWithoutReportAttribute(): ?int
     {
         if (!$this->last_reported_at) {
             return 0;
         }
-
-         return (int) Carbon::parse($this->last_reported_at)
+        return (int) Carbon::parse($this->last_reported_at)
             ->startOfDay()
             ->diffInDays(now()->startOfDay());
+    }
+
+    public function scopeSearch($query, $q)
+    {
+        $query->when($q, function ($query) use ($q) {
+            $query->where(function ($query) use ($q) {
+                $query->whereHas('truck', function ($query) use ($q) {
+                    $query->where('unitname', 'like', "%{$q}%");
+                })
+                    ->orWhereHas('fault', function ($query) use ($q) {
+                        $query->where('name', 'like', "%{$q}%");
+                    });
+            });
+        });
     }
 }

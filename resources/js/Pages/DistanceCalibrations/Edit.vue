@@ -106,8 +106,8 @@ const submit = () => {
                             prefetch="mount"
                             cache-for="5m"
                             :href="route('dstcalibrations.index')"
-                            class="text-gray-600"
-                            >Cancel</Link
+                                 class="inline-flex items-center rounded-md border border-transparent bg-[#e92614]  px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out "
+  >Cancel</Link
                         >
                     </div>
                 </form>

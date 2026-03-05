@@ -21,24 +21,16 @@ class RepairController extends Controller
     public function index()
     {
         $repairs = Repair::query()
-            ->when(request('q'), function ($query, $q) {
-                $query->where(function ($query) use ($q) {
-                    $query->whereHas('truck', function ($query) use ($q) {
-                        $query->where('unitname', 'like', "%{$q}%");
-                    })
-                        ->orWhereHas('fault', function ($query) use ($q) {
-                            $query->where('name', 'like', "%{$q}%");
-                        });
-                });
-            })->with(['truck', 'user', 'fault', 'doneBy'])
+            ->search(request('q'))
+            ->with(['truck', 'user', 'fault', 'doneBy'])
             ->orderByRaw("(status = 'pending') DESC")
-            ->orderBy('created_at', 'DESC')
-            ->paginate(50)
+            ->latest()
+            ->paginate(30)
             ->withQueryString();
 
         return Inertia::render('Repairs/repairs', [
             'repairs' => $repairs,
-            'trucks' => Truck::all(),
+            'trucks' => Truck::all(), // get only the columns you need
             'faults' => Fault::all(),
             'users' =>  User::all(),
         ]);
@@ -49,7 +41,7 @@ class RepairController extends Controller
 
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
-        $haspendingrepair = Repair::hasPendingReapir($validated['fault_id'], $validated['truck_id']);
+        $haspendingrepair = Repair::hasPendingRepair($validated['fault_id'], $validated['truck_id']);
 
         if ($haspendingrepair) {
             return back()->with('warning', $haspendingrepair);
@@ -57,13 +49,6 @@ class RepairController extends Controller
 
         Repair::create($validated);
         return back()->with('success', 'Record created Successful');
-    }
-
-    public function show(Repair $repair)
-    {
-        return Inertia::render('Repairs/Show', [
-            'repair' => $repair->load(['truck', 'user']),
-        ]);
     }
 
     public function update(UpdateRepairRequest $request, Repair $repair)
@@ -85,12 +70,13 @@ class RepairController extends Controller
 
         $repair->update(
             $repairdata + [
-                'status' => 'completed',
+                'status' => 'completed', // use enum class
                 'done_by' => $request->donebyid,
             ]
         );
         return back()->with('success', 'Record Completed Successfully');
     }
+
     public function destroy(Repair $repair)
     {
         $repair->delete();
@@ -105,12 +91,12 @@ class RepairController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-    // Controller
-    public function export()
-    {
-        $calibrations = Repair::with(['truck', 'user', 'fault', 'doneBy'])->get();
-        return response()->json($calibrations);
-    }
+
+    // public function export()
+    // {
+    //    $repairs = Repair::with(['truck', 'user', 'fault', 'doneBy'])->get();
+    //     return response()->json($repairs);
+    // }
 
 
     public function exportExcel(Request $request)

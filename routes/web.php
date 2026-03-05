@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
+
     Route::get('/trucks/fetch', [TruckController::class, 'fetch'])->name('trucks.fetch');
     Route::resource('trucks', TruckController::class);
 
@@ -39,13 +40,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/early-start', [MovingReportController::class , 'index'])->name('early-start');
     Route::post('/moving-report/upload', [MovingReportImportController::class, 'upload'])->name('moving-report.upload');
-    Route::get('/early-start', [MovingReportController::class , 'index'])->name('early-start');
 
+    // Route::get('/repairs/export', [RepairController::class, 'export'])->name('export');
     Route::get('/repairs/fetchlocations', [RepairController::class, 'fetchLocations'])->name('fetchlocations');
-    Route::get('/repairs/export', [RepairController::class, 'export'])->name('export');
     Route::put('/repairs/closerepair/{id}', [RepairController::class, 'closerepair'])->name('closerepair');
     Route::post('/repairs/export-excel', [RepairController::class, 'exportExcel'])->name('repairs.export-excel');
-     Route::resource('repairs', RepairController::class);
+    Route::resource('repairs', RepairController::class)->except('show');
+
 
     Route::post('/violations/upload', [ViolationController::class, 'upload'])->name('violations.upload');
     Route::get('/violations', [ViolationController::class , 'index'])->name('violations');
