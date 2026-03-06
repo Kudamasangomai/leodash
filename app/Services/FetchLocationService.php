@@ -9,6 +9,12 @@ use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+
+/**
+ *  The main purpose of this service is to fetch
+ *  location data from an external API(GT) for trucks
+ *  and update relevant records in the database.
+ */
 class FetchLocationService
 {
 
@@ -42,10 +48,12 @@ class FetchLocationService
 
             $response = Http::timeout(6000)->get($url);
 
+            // If the response fails, it logs an error message.
             if ($response->failed()) {
                 Log::error('FetchLocationService: failed to fetch XML', ['status' => $response->status()]);
             }
 
+            // If the response body is empty, it logs a warning.
             $body = $response->body();
             if (empty($body)) {
                 Log::warning('FetchLocationService: empty response body');

@@ -12,8 +12,11 @@ class FaultsStatsService
     public function faultstats()
     {
 
+
+        //  calculates the date 30 days prior to the current date
         $last30days = Carbon::now()->subDays(30)->startOfDay();
 
+        // fault types that the system is concerned with / want to display
         $faults = [
             'gt_not_reporting',
             'fm_not_reporting',
@@ -24,6 +27,13 @@ class FaultsStatsService
             'gps_speed',
             'faulty_gps',
         ];
+
+        /**
+         *  get faults from the database along with their associated
+         *  pending repairs. Eager load repairs related to
+         *  faults that have a pending status and gets related truck
+         *  information.
+         */
 
         $faults = Fault::with([
 
@@ -41,7 +51,7 @@ class FaultsStatsService
             ->get()
             ->keyBy('slug');
 
-        // trucks repaired twice in the last 30 days
+        // trucks repaired more than twice in the last 30 days
         $topTrucks = Truck::withCount([
             'repairs as completed_repairs' => fn($q) =>
             $q->where('status', 'completed')
@@ -51,6 +61,15 @@ class FaultsStatsService
             ->orderByDesc('completed_repairs')
             ->get();
 
+
+        /**
+         * Distance Calibration:
+         * This part compiles distance calibrations by truck make(fld /shacman / argosy etc):
+         * Eager Loads:gets distance calibration records along with the truck data.
+         * Grouping: Calibrations are grouped by the truck's make.
+         * Counting Unique Trucks: The inner mapping counts unique truck IDs in each group.
+         * Sorting: The final result is sorted in descending order.
+         */
 
         $distancecalibrationbymake = DistanceCalibration::with('truck')
             ->get()
